@@ -1,0 +1,8 @@
+buildserver | request received: Object {"id": Number(1), "jsonrpc": String("2.0"), "method": String("build/initialize"), "params": Object {"bspVersion": String("2.0"), "capabilities": Object {"languageIds": Array [String("c"), String("cpp"), String("objective-c"), String("objective-cpp"), String("swift")]}, "displayName": String("SourceKit-LSP"), "rootUri": String("file:///Users/sean7218/bazel/hello-bazel/"), "version": String("1.0")}}
+buildserver | response send: {"id":1,"jsonrpc":"2.0","result":{"bspVersion":"2.0","capabilities":{},"displayName":"bazel-build-erver","version":"1.0.0"}}
+buildserver | request received: Object {"jsonrpc": String("2.0"), "method": String("build/initialized"), "params": Object {}}
+buildserver | response send: {"id":1,"jsonrpc":"2.0","result":{"bspVersion":"2.0","capabilities":{},"displayName":"bazel-build-erver","version":"1.0.0"}}
+buildserver | request received: Object {"id": Number(2), "jsonrpc": String("2.0"), "method": String("textDocument/registerForChanges"), "params": Object {"action": String("register"), "uri": String("file:///Users/sean7218/bazel/hello-bazel/hello.swift")}}
+buildserver | response send: {"id":1,"jsonrpc":"2.0","result":{"bspVersion":"2.0","capabilities":{},"displayName":"bazel-build-erver","version":"1.0.0"}}
+buildserver | request received: Object {"id": Number(3), "jsonrpc": String("2.0"), "method": String("textDocument/registerForChanges"), "params": Object {"action": String("unregister"), "uri": String("file:///Users/sean7218/bazel/hello-bazel/hello.swift")}}
+buildserver | response send: {"id":1,"jsonrpc":"2.0","result":{"bspVersion":"2.0","capabilities":{},"displayName":"bazel-build-erver","version":"1.0.0"}}

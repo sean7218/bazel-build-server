@@ -1,1 +1,3 @@
-{"jsonrpc":"2.0","result":"{}","id":1}
+Content-Length: 124
+
+{"jsonrpc":"2.0","result":{"bspVersion":"2.0","capabilities":{},"displayName":"bazel-build-erver","version":"1.0.0"},"id":2}
