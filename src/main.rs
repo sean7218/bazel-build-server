@@ -94,92 +94,39 @@ fn main() -> io::Result<()> {
             _ = send(& response, &mut stdout);
             writeln!(file, "buildserver | response send | {}", response.to_string())?;
         } else if request.method == "build/initialized" {
-            let response = serde_json::json!({
-                "jsonrpc": "2.0",
-                "id": request.id.unwrap(),
-                "result": null
-            });
-            _ = send(& response, &mut stdout);
-            writeln!(file, "buildserver | response send | {}", response.to_string())?; 
+            // do not send any response
         } else if request.method == "build/shutdown" {
-            let response = serde_json::json!({
-                "jsonrpc": "2.0",
-                "id": request.id.unwrap(),
-                "result": null
-            });
-            _ = send(& response, &mut stdout);
-            writeln!(file, "buildserver | response send | {}", response.to_string())?;
+            // do not send any response
         } else if request.method == "build/exit" {
-            let response = serde_json::json!({
-                "jsonrpc": "2.0",
-                "id": request.id.unwrap(),
-                "result": null
-            });
-            _ = send(& response, &mut stdout);
-            writeln!(file, "buildserver | response send | {}", response.to_string())?;
+            // do not send any response
         } else if request.method == "textDocument/registerForChanges" {
+            // notification should not include "id": request.id.unwrap(),
             let response = serde_json::json!({
                 "jsonrpc": "2.0",
-                "id":  request.id.unwrap(),
-                "result": {
+                "method": "build/sourceKitOptionsChanged",
+                "params": {
                     "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift",
                     "updatedOptions": {
                         "workingDirectory": "/Users/sean7218/bazel/hello-bazel",
                         "options": [
                             "-target",
                             "arm64-apple-macos15.1",
+                            "-sdk",
+                            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk",
                             "-emit-object",
                             "-output-file-map",
                             "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.output_file_map.json",
-                            "-Xfrontend",
-                            "-no-clang-module-breadcrumbs",
                             "-emit-module-path",
                             "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.swiftmodule",
-                            "-enforce-exclusivity=checked",
                             "-emit-const-values-path",
                             "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components_objs/Button.swift.swiftconstvalues",
-                            "-Xfrontend",
-                            "-const-gather-protocols-file",
-                            "-Xfrontend",
-                            "external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json",
-                            "-DDEBUG",
-                            "-Onone",
-                            "-Xfrontend",
-                            "-internalize-at-link",
-                            "-Xfrontend",
-                            "-no-serialize-debugging-options",
-                            "-enable-testing",
-                            "-disable-sandbox",
-                            "-gline-tables-only",
-                            "-Xwrapped-swift=-file-prefix-pwd-is-dot",
                             "-module-cache-path",
                             "bazel-out/darwin_arm64-fastbuild/bin/_swift_module_cache",
                             "-Ibazel-out/darwin_arm64-fastbuild/bin/Sources/Utils",
-                            "-Xwrapped-swift=-macro-expansion-dir=bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.macro-expansions",
-                            "-Xcc",
-                            "-iquote.",
-                            "-Xcc",
-                            "-iquotebazel-out/darwin_arm64-fastbuild/bin",
-                            "-Xfrontend",
-                            "-color-diagnostics",
-                            "-enable-batch-mode",
                             "-module-name",
                             "Components",
-                            "-file-prefix-map",
-                            "__BAZEL_XCODE_DEVELOPER_DIR__=DEVELOPER_DIR",
-                            "-enable-bare-slash-regex",
-                            "-Xfrontend",
-                            "-disable-clang-spi",
-                            "-enable-experimental-feature",
-                            "AccessLevelOnImport",
-                            "-parse-as-library",
                             "-index-store-path",
                             "/Users/sean7218/bazel/hello-bazel/bazel-out/indexstore",
-                            "-static",
-                            "-Xcc",
-                            "-O0",
-                            "-Xcc",
-                            "-DDEBUG=1",
                             "Sources/Components/Button.swift",
                         ]
                     },
@@ -187,6 +134,8 @@ fn main() -> io::Result<()> {
             });
             _ = send(& response, &mut stdout);
             writeln!(file, "buildserver | response send | {}", response.to_string())?;
+        } else if request.method == "window/showMessage" {
+            
         } else {
             write!(file, "buildserver | error | unknown request {}", request.method)?;
         }
