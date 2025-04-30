@@ -1,14 +1,20 @@
-use std::{fs::OpenOptions, io::{self, BufRead, BufReader, Read, Write }};
-
-use json_rpc::{send, JsonRpcRequest};
-use serde_json::{to_string, Value};
 mod json_rpc;
+mod logger;
+use json_rpc::{JsonRpcRequest, send};
+use logger::Logger;
+use serde_json;
+use std::{
+    fs::OpenOptions,
+    io::{self, BufRead, BufReader, Read},
+};
 
 fn main() -> io::Result<()> {
-    let mut file = OpenOptions::new()
-        .create(true)
-        .append(true)
-        .open("/users/sean7218/bazel/buildserver/output.txt")?;
+    let mut logger = Logger {
+        file: OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open("/users/sean7218/bazel/buildserver/output.txt")?,
+    };
 
     let stdin = io::stdin();
     let stdout = io::stdout();
@@ -22,7 +28,7 @@ fn main() -> io::Result<()> {
             buffer.clear();
             let bytes = reader.read_line(&mut buffer)?;
             if bytes == 0 {
-                write!(file, "buildserver | exist")?;
+                logger.info("eof -> exist");
                 return Ok(()); // EOF
             }
 
@@ -41,7 +47,7 @@ fn main() -> io::Result<()> {
         let content_length = match content_length {
             Some(len) => len,
             None => {
-                write!(file, "buildserver | error | Missing Content-Length header")?;
+                logger.info("Missing Content-Length header");
                 continue;
             }
         };
@@ -52,47 +58,17 @@ fn main() -> io::Result<()> {
         let request: JsonRpcRequest = match serde_json::from_slice(&body) {
             Ok(json) => json,
             Err(e) => {
-                writeln!(file, "buildserver | error | {:?}", e)?;
+                logger.debug(&e);
                 continue;
             }
         };
 
-        writeln!(file, "buildserver | request received | {:?}", request)?;
-      
+        logger.debug(&request);
+
         if request.method == "build/initialize" {
-            let response = serde_json::json!({
-                "jsonrpc": "2.0",
-                "id": request.id,
-                "result": {
-                    "displayName": "bazel-build-erver",
-                    "version": "1.0.0",
-                    "bspVersion": "2.0",
-                    "rootUri": "file:///Users/sean7218/bazel/hello-bazel/",
-                    "capabilities": {
-                        "compileProvider": {
-                            "languageIds": ["c", "cpp", "objective-c", "objective-cpp", "swift"]
-                        },
-                        "testProvider": null,
-                        "runProvider": null,
-                        "debugProvider": null,
-                        "inverseSourcesProvider": true,
-                        "dependencySourcesProvider": false,
-                        "resourcesProvider": false,
-                        "outputPathsProvider": false,
-                        "buildTargetChangedProvider": true,
-                    },
-                    "dataKind": "sourceKit",
-                    "data": {
-                        "indexDatabasePath": "/Users/sean7218/bazel/hello-bazel/.index-db",
-                        "indexStorePath": "/Users/sean7218/hello-bazel/bazel-out/indexstore",
-                        "outputPathsProvider": true,
-                        "prepareProvider": true,
-                        "sourceKitOptionsProvider": true
-                    }
-                }
-            });
-            _ = send(& response, &mut stdout);
-            writeln!(file, "buildserver | response send | {}", response.to_string())?;
+            let response = Responses::initialize(&request.id);
+            send(&response, &mut stdout);
+            logger.debug(&response);
         } else if request.method == "build/initialized" {
             // do not send any response
         } else if request.method == "build/shutdown" {
@@ -101,44 +77,109 @@ fn main() -> io::Result<()> {
             // do not send any response
         } else if request.method == "textDocument/registerForChanges" {
             // notification should not include "id": request.id.unwrap(),
-            let response = serde_json::json!({
-                "jsonrpc": "2.0",
-                "method": "build/sourceKitOptionsChanged",
-                "params": {
-                    "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift",
-                    "updatedOptions": {
-                        "workingDirectory": "/Users/sean7218/bazel/hello-bazel",
-                        "options": [
-                            "-target",
-                            "arm64-apple-macos15.1",
-                            "-sdk",
-                            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk",
-                            "-emit-object",
-                            "-output-file-map",
-                            "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.output_file_map.json",
-                            "-emit-module-path",
-                            "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.swiftmodule",
-                            "-emit-const-values-path",
-                            "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components_objs/Button.swift.swiftconstvalues",
-                            "-module-cache-path",
-                            "bazel-out/darwin_arm64-fastbuild/bin/_swift_module_cache",
-                            "-Ibazel-out/darwin_arm64-fastbuild/bin/Sources/Utils",
-                            "-module-name",
-                            "Components",
-                            "-index-store-path",
-                            "/Users/sean7218/bazel/hello-bazel/bazel-out/indexstore",
-                            "Sources/Components/Button.swift",
-                        ]
-                    },
-                }
-            });
-            _ = send(& response, &mut stdout);
-            writeln!(file, "buildserver | response send | {}", response.to_string())?;
+            let response = Responses::options();
+            send(&response, &mut stdout);
+            logger.debug(&response);
+
+            // let change_response = Responses::did_change();
+            // _ = send(& change_response, &mut stdout);
+            // logger.info(&format!("response send -> {:?}", change_response));
         } else if request.method == "window/showMessage" {
-            
+            // do not send any response
         } else {
-            write!(file, "buildserver | error | unknown request {}", request.method)?;
+            let error = format!("unkown request: {:?}", request);
+            logger.info(&error);
         }
     }
 }
 
+struct Responses {}
+impl Responses {
+    #[allow(dead_code)]
+    fn options() -> serde_json::Value {
+        serde_json::json!({
+            "jsonrpc": "2.0",
+            "method": "build/sourceKitOptionsChanged",
+            "params": {
+                "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift",
+                "updatedOptions": {
+                    "workingDirectory": "/Users/sean7218/bazel/hello-bazel",
+                    "options": [
+                        "-target",
+                        "arm64-apple-macos15.1",
+                        "-sdk",
+                        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk",
+                        "-emit-object",
+                        "-output-file-map",
+                        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.output_file_map.json",
+                        "-emit-module-path",
+                        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.swiftmodule",
+                        "-emit-const-values-path",
+                        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components_objs/Button.swift.swiftconstvalues",
+                        "-module-cache-path",
+                        "bazel-out/darwin_arm64-fastbuild/bin/_swift_module_cache",
+                        "-Ibazel-out/darwin_arm64-fastbuild/bin/Sources/Utils",
+                        "-module-name",
+                        "Components",
+                        "-index-store-path",
+                        "/Users/sean7218/bazel/hello-bazel/bazel-out/indexstore",
+                        "Sources/Components/Button.swift",
+                    ]
+                },
+            }
+        })
+    }
+
+    #[allow(dead_code)]
+    fn did_change() -> serde_json::Value {
+        serde_json::json!({
+            "jsonrpc": "2.0",
+            "method": "buildTarget/didChange",
+            "params": {
+                "changes": [
+                    {
+                        "target": {
+                            "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift",
+                        },
+                        "kind": 2
+                    }
+                ]
+            }
+        })
+    }
+
+    #[allow(dead_code)]
+    fn initialize(id: &Option<serde_json::Number>) -> serde_json::Value {
+        serde_json::json!({
+            "jsonrpc": "2.0",
+            "id": id,
+            "result": {
+                "displayName": "bazel-build-erver",
+                "version": "1.0.0",
+                "bspVersion": "2.0",
+                "rootUri": "file:///Users/sean7218/bazel/hello-bazel/",
+                "capabilities": {
+                    "compileProvider": {
+                        "languageIds": ["c", "cpp", "objective-c", "objective-cpp", "swift"]
+                    },
+                    "testProvider": null,
+                    "runProvider": null,
+                    "debugProvider": null,
+                    "inverseSourcesProvider": true,
+                    "dependencySourcesProvider": true,
+                    "resourcesProvider": true,
+                    "outputPathsProvider": true,
+                    "buildTargetChangedProvider": true,
+                },
+                "dataKind": "sourceKit",
+                "data": {
+                    "indexDatabasePath": "/Users/sean7218/bazel/hello-bazel/.index-db",
+                    "indexStorePath": "/Users/sean7218/hello-bazel/bazel-out/indexstore",
+                    "outputPathsProvider": true,
+                    "prepareProvider": true,
+                    "sourceKitOptionsProvider": true
+                }
+            }
+        })
+    }
+}

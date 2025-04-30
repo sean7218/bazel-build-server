@@ -1,3 +1,0 @@
-Content-Length: 271
-
-{"jsonrpc":"2.0","method":"build\/initialize","params":{"rootUri":"file:\/\/\/Users\/sean7218\/bazel\/hello-bazel\/","version":"1.0","capabilities":{"languageIds":["c","cpp","objective-c","objective-cpp","swift"]},"displayName":"SourceKit-LSP","bspVersion":"2.0"},"id":1}
