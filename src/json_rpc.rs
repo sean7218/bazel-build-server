@@ -16,7 +16,35 @@ pub struct JsonRpcRequest {
 pub struct JsonRpcResponse {
     pub jsonrpc: &'static str,
     pub result: Value,
-    pub id: i32,
+    pub id: Option<Number>,
+}
+
+impl JsonRpcResponse {
+    pub fn new(id: Option<Number>, result: Value) -> Self {
+        JsonRpcResponse {
+            jsonrpc: "2.0",
+            result,
+            id,
+        }
+    }
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[allow(dead_code)]
+pub struct JsonRpcNotification {
+    pub jsonrpc: &'static str,
+    pub method: &'static str,
+    pub params: Value,
+}
+
+impl JsonRpcNotification {
+    pub fn new(method: &'static str, params: Value) -> Self {
+        JsonRpcNotification {
+            jsonrpc: "2.0",
+            method,
+            params,
+        }
+    }
 }
 
 pub fn send(response: &serde_json::Value, stdout: &mut std::io::StdoutLock<'static>) {
