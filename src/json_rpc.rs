@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use serde_json::{Number, Value};
+use serde_json::{to_value, Number, Value};
 use std::io::Write;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -45,6 +45,11 @@ impl JsonRpcNotification {
             params,
         }
     }
+}
+
+pub fn send_response(response: &JsonRpcResponse, stdout: &mut std::io::StdoutLock<'static>) {
+    let value = to_value(&response).unwrap();
+    send(&value, stdout);
 }
 
 pub fn send(response: &serde_json::Value, stdout: &mut std::io::StdoutLock<'static>) {

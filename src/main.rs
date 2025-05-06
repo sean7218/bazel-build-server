@@ -1,6 +1,6 @@
 mod json_rpc;
 mod logger;
-use json_rpc::{JsonRpcNotification, JsonRpcRequest, JsonRpcResponse, send};
+use json_rpc::{send, send_response, JsonRpcNotification, JsonRpcRequest, JsonRpcResponse};
 use logger::Logger;
 use serde_json::{self, to_value};
 use std::{
@@ -78,41 +78,36 @@ fn main() -> io::Result<()> {
         } else if request.method == "build/exit" {
             // do not send any response
         } else if request.method == "workspace/buildTargets" {
-            // do not send any response
-            Handlers::workspace_buildtargets(request);
+            let response = Responses::build_targets(request.id);
+            send_response(&response, &mut stdout);
+            logger.debug(&response);
         } else if request.method == "buildTarget/sources" {
-            // do not send any response
+            let response = Responses::target_sources(request.id);
+            send_response(&response, &mut stdout);
+            logger.debug(&response);
         } else if request.method == "textDocument/sourceKitOptions" {
-            // do not send any response
+            let response = Responses::sourcekit_options(request);
+            send_response(&response, &mut stdout);
+            logger.debug(&response);
         } else if request.method == "buildTarget/didChange" {
-            // do not send any response
+            // TODO: buildTarget/didChange
         } else if request.method == "workspace/waitForBuildSystemUpdates" {
-            // do not send any response
+            // TODO: waitForBuildSystemUpdates
         } else if request.method == "buildTarget/prepare" {
-            // do not send any response
+            // TODO: buildTarget/prepare
         } else if request.method == "textDocument/registerForChanges" {
-            // notification should not include "id": request.id.unwrap(),
+            // INFO: notification should not include "id": request.id.unwrap(),
+            // this endpoint is for push model (legacy)
             let response = Responses::options_changed();
             let value = to_value(&response)?;
             send(&value, &mut stdout);
             logger.debug(&response);
-
-            // let change_response = Responses::did_change();
-            // _ = send(& change_response, &mut stdout);
-            // logger.info(&format!("response send -> {:?}", change_response));
         } else if request.method == "window/showMessage" {
-            // do not send any response
+            // TODO: send to editor notification
         } else {
             let error = format!("unkown request: {:?}", request);
             logger.info(&error);
         }
-    }
-}
-struct Handlers {}
-
-impl Handlers {
-    fn workspace_buildtargets(request: JsonRpcRequest) {
-        
     }
 }
 
@@ -154,12 +149,12 @@ impl Responses {
     fn did_change() -> JsonRpcNotification {
         let params = serde_json::json!({
             "changes": [
-                {
-                    "target": {
-                        "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift",
-                    },
-                    "kind": 2
-                }
+            {
+                "target": {
+                    "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift",
+                },
+                "kind": 2
+            }
             ]
         });
         JsonRpcNotification::new("buildTarget/didChange", params)
@@ -196,4 +191,128 @@ impl Responses {
         });
         JsonRpcResponse::new(id, result)
     }
+
+    #[allow(dead_code)]
+    fn build_targets(id: Option<serde_json::Number>) -> JsonRpcResponse {
+        JsonRpcResponse {
+            id: id,
+            jsonrpc: "2.0",
+            result: serde_json::json!({
+                "targets": [
+                {
+                    "id": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils" },
+                    "tags": ["library"],
+                    "languageIds": ["swift"],
+                    "dependencies": [],
+                    "capabilities": {
+                        "canCompile": true,
+                        "canTest": true,
+                        "canRun": false,
+                        "canDebug": false,
+                    }
+                },
+                {
+                    "id": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components" },
+                    "tags": ["library"],
+                    "languageIds": ["swift"],
+                    "dependencies": [
+                    { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils" }
+                    ],
+                    "capabilities": {
+                        "canCompile": true,
+                        "canTest": true,
+                        "canRun": false,
+                        "canDebug": false,
+                    }
+                }
+                ]
+            })
+        }
+    }
+
+    #[allow(dead_code)]
+    fn target_sources(id: Option<serde_json::Number>) -> JsonRpcResponse {
+        let response = JsonRpcResponse {
+            id: id,
+            jsonrpc: "2.0",
+            result: serde_json::json!({
+                "items": [
+                {
+                    "target": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils" },
+                    "sources": [
+                    { "kind": 1, "generated": false, "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/AwesomeUtils.swift" }
+                    ]
+                },
+                {
+                    "target": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components" },
+                    "sources": [
+                    { "kind": 1, "generated": false, "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift" }
+                    ]
+                }
+                ]
+            })
+        };
+        return response
+    }
+
+    #[allow(dead_code)]
+    fn sourcekit_options(request: JsonRpcRequest) -> JsonRpcResponse {
+        let uri = request.params["textDocument"]["uri"].as_str().unwrap();
+        if uri.contains("AwesomeUtils.swift") {
+            return JsonRpcResponse {
+                id: request.id,
+                jsonrpc: "2.0",
+                result: serde_json::json!({
+                    "compilerArguments": [
+                        "-target",
+                        "arm64-apple-macos15.1",
+                        "-sdk",
+                        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk",
+                        "-module-name",
+                        "Utils",
+                        "-index-store-path",
+                        "/Users/sean7218/bazel/hello-bazel/bazel-out/indexstore",
+                        "/Users/sean7218/bazel/hello-bazel/Sources/Utils/AwesomeUtils.swift",
+                    ]
+                })
+            };
+        } else if uri.contains("Button.swift") {
+            return JsonRpcResponse {
+                id: request.id,
+                jsonrpc: "2.0",
+                result: serde_json::json!({
+                    "compilerArguments": [
+                        "-target",
+                        "arm64-apple-macos15.1",
+                        "-sdk",
+                        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk",
+                        "-emit-object",
+                        "-output-file-map",
+                        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.output_file_map.json",
+                        "-emit-module-path",
+                        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.swiftmodule",
+                        "-emit-const-values-path",
+                        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components_objs/Button.swift.swiftconstvalues",
+                        "-module-cache-path",
+                        "bazel-out/darwin_arm64-fastbuild/bin/_swift_module_cache",
+                        "-Ibazel-out/darwin_arm64-fastbuild/bin/Sources/Utils",
+                        "-module-name",
+                        "Components",
+                        "-index-store-path",
+                        "/Users/sean7218/bazel/hello-bazel/bazel-out/indexstore",
+                        "/Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift",
+                    ]
+                })
+            };
+        } else {
+            return JsonRpcResponse {
+                id: request.id,
+                jsonrpc: "2.0",
+                result: serde_json::json!({
+                    "compilerArguments": []
+                })
+            };
+        }
+    }
 }
+
