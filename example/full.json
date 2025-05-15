@@ -1,0 +1,557 @@
+{
+  "artifacts": [
+    {
+      "id": 1,
+      "pathFragmentId": 1
+    },
+    {
+      "id": 2,
+      "pathFragmentId": 7
+    },
+    {
+      "id": 3,
+      "pathFragmentId": 13
+    },
+    {
+      "id": 4,
+      "pathFragmentId": 15
+    },
+    {
+      "id": 5,
+      "pathFragmentId": 18
+    },
+    {
+      "id": 6,
+      "pathFragmentId": 25
+    },
+    {
+      "id": 7,
+      "pathFragmentId": 28
+    },
+    {
+      "id": 8,
+      "pathFragmentId": 29
+    },
+    {
+      "id": 9,
+      "pathFragmentId": 30
+    },
+    {
+      "id": 10,
+      "pathFragmentId": 31,
+      "isTreeArtifact": true
+    },
+    {
+      "id": 11,
+      "pathFragmentId": 32
+    },
+    {
+      "id": 12,
+      "pathFragmentId": 34
+    },
+    {
+      "id": 13,
+      "pathFragmentId": 35
+    },
+    {
+      "id": 14,
+      "pathFragmentId": 36
+    },
+    {
+      "id": 15,
+      "pathFragmentId": 38
+    },
+    {
+      "id": 16,
+      "pathFragmentId": 39
+    },
+    {
+      "id": 17,
+      "pathFragmentId": 40,
+      "isTreeArtifact": true
+    },
+    {
+      "id": 18,
+      "pathFragmentId": 41
+    },
+    {
+      "id": 19,
+      "pathFragmentId": 43
+    }
+  ],
+  "actions": [
+    {
+      "targetId": 1,
+      "actionKey": "8d6733f5e67821bb2e2e4aaf55a8bf9ba9b2da64f56b3078bc4413b154aacd12",
+      "mnemonic": "SwiftCompile",
+      "configurationId": 1,
+      "arguments": [
+        "bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker",
+        "swiftc",
+        "-target",
+        "arm64-apple-macos15.1",
+        "-sdk",
+        "__BAZEL_XCODE_SDKROOT__",
+        "-debug-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-Xwrapped-swift\u003d-bazel-target-label\u003d@@//Sources/Components:Components",
+        "-emit-object",
+        "-output-file-map",
+        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.output_file_map.json",
+        "-Xfrontend",
+        "-no-clang-module-breadcrumbs",
+        "-emit-module-path",
+        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.swiftmodule",
+        "-enforce-exclusivity\u003dchecked",
+        "-emit-const-values-path",
+        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components_objs/Button.swift.swiftconstvalues",
+        "-Xfrontend",
+        "-const-gather-protocols-file",
+        "-Xfrontend",
+        "external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json",
+        "-DDEBUG",
+        "-Onone",
+        "-Xfrontend",
+        "-internalize-at-link",
+        "-Xfrontend",
+        "-no-serialize-debugging-options",
+        "-enable-testing",
+        "-disable-sandbox",
+        "-gline-tables-only",
+        "-Xwrapped-swift\u003d-file-prefix-pwd-is-dot",
+        "-module-cache-path",
+        "bazel-out/darwin_arm64-fastbuild/bin/_swift_module_cache",
+        "-Ibazel-out/darwin_arm64-fastbuild/bin/Sources/Utils",
+        "-Xwrapped-swift\u003d-macro-expansion-dir\u003dbazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.macro-expansions",
+        "-Xcc",
+        "-iquote.",
+        "-Xcc",
+        "-iquotebazel-out/darwin_arm64-fastbuild/bin",
+        "-Xfrontend",
+        "-color-diagnostics",
+        "-enable-batch-mode",
+        "-module-name",
+        "Components",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003dDEVELOPER_DIR",
+        "-enable-bare-slash-regex",
+        "-Xfrontend",
+        "-disable-clang-spi",
+        "-enable-experimental-feature",
+        "AccessLevelOnImport",
+        "-parse-as-library",
+        "-index-store-path",
+        "/Users/sean7218/bazel/hello-bazel/.indexstore",
+        "-static",
+        "-Xcc",
+        "-O0",
+        "-Xcc",
+        "-DDEBUG\u003d1",
+        "Sources/Components/Button.swift"
+      ],
+      "environmentVariables": [
+        {
+          "key": "XCODE_VERSION_OVERRIDE",
+          "value": "16.1.0.16B40"
+        },
+        {
+          "key": "APPLE_SDK_PLATFORM",
+          "value": "MacOSX"
+        },
+        {
+          "key": "APPLE_SDK_VERSION_OVERRIDE",
+          "value": "15.1"
+        }
+      ],
+      "inputDepSetIds": [1],
+      "outputIds": [7, 8, 9, 10, 11, 12],
+      "executionInfo": [
+        {
+          "key": "requires-darwin"
+        },
+        {
+          "key": "requires-worker-protocol",
+          "value": "json"
+        },
+        {
+          "key": "supports-workers",
+          "value": "1"
+        },
+        {
+          "key": "supports-xcode-requirements-set"
+        }
+      ],
+      "primaryOutputId": 7,
+      "executionPlatform": "@@platforms//host:host"
+    },
+    {
+      "targetId": 2,
+      "actionKey": "2f8b747449b5819d6497e88688bb4ac81c8763c82bd8ce39ff344b01fff54466",
+      "mnemonic": "SwiftCompile",
+      "configurationId": 1,
+      "arguments": [
+        "bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker",
+        "swiftc",
+        "-target",
+        "arm64-apple-macos15.1",
+        "-sdk",
+        "__BAZEL_XCODE_SDKROOT__",
+        "-debug-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-Xwrapped-swift\u003d-bazel-target-label\u003d@@//Sources/Utils:Utils",
+        "-emit-object",
+        "-output-file-map",
+        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Utils/Utils.output_file_map.json",
+        "-Xfrontend",
+        "-no-clang-module-breadcrumbs",
+        "-emit-module-path",
+        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Utils/Utils.swiftmodule",
+        "-enforce-exclusivity\u003dchecked",
+        "-emit-const-values-path",
+        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Utils/Utils_objs/AwesomeUtils.swift.swiftconstvalues",
+        "-Xfrontend",
+        "-const-gather-protocols-file",
+        "-Xfrontend",
+        "external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json",
+        "-DDEBUG",
+        "-Onone",
+        "-Xfrontend",
+        "-internalize-at-link",
+        "-Xfrontend",
+        "-no-serialize-debugging-options",
+        "-enable-testing",
+        "-disable-sandbox",
+        "-gline-tables-only",
+        "-Xwrapped-swift\u003d-file-prefix-pwd-is-dot",
+        "-module-cache-path",
+        "bazel-out/darwin_arm64-fastbuild/bin/_swift_module_cache",
+        "-Xwrapped-swift\u003d-macro-expansion-dir\u003dbazel-out/darwin_arm64-fastbuild/bin/Sources/Utils/Utils.macro-expansions",
+        "-Xcc",
+        "-iquote.",
+        "-Xcc",
+        "-iquotebazel-out/darwin_arm64-fastbuild/bin",
+        "-Xfrontend",
+        "-color-diagnostics",
+        "-enable-batch-mode",
+        "-module-name",
+        "Utils",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003dDEVELOPER_DIR",
+        "-enable-bare-slash-regex",
+        "-Xfrontend",
+        "-disable-clang-spi",
+        "-enable-experimental-feature",
+        "AccessLevelOnImport",
+        "-parse-as-library",
+        "-index-store-path",
+        "/Users/sean7218/bazel/hello-bazel/.indexstore",
+        "-static",
+        "-Xcc",
+        "-O0",
+        "-Xcc",
+        "-DDEBUG\u003d1",
+        "Sources/Utils/AwesomeUtils.swift"
+      ],
+      "environmentVariables": [
+        {
+          "key": "XCODE_VERSION_OVERRIDE",
+          "value": "16.1.0.16B40"
+        },
+        {
+          "key": "APPLE_SDK_PLATFORM",
+          "value": "MacOSX"
+        },
+        {
+          "key": "APPLE_SDK_VERSION_OVERRIDE",
+          "value": "15.1"
+        }
+      ],
+      "inputDepSetIds": [4],
+      "outputIds": [3, 15, 16, 17, 18, 19],
+      "executionInfo": [
+        {
+          "key": "requires-darwin"
+        },
+        {
+          "key": "requires-worker-protocol",
+          "value": "json"
+        },
+        {
+          "key": "supports-workers",
+          "value": "1"
+        },
+        {
+          "key": "supports-xcode-requirements-set"
+        }
+      ],
+      "primaryOutputId": 3,
+      "executionPlatform": "@@platforms//host:host"
+    }
+  ],
+  "targets": [
+    {
+      "id": 1,
+      "label": "//Sources/Components:Components",
+      "ruleClassId": 1
+    },
+    {
+      "id": 2,
+      "label": "//Sources/Utils:Utils",
+      "ruleClassId": 1
+    }
+  ],
+  "depSetOfFiles": [
+    {
+      "id": 2,
+      "directArtifactIds": [1, 2, 3, 4]
+    },
+    {
+      "id": 3,
+      "directArtifactIds": [5, 6]
+    },
+    {
+      "id": 1,
+      "transitiveDepSetIds": [2, 3]
+    },
+    {
+      "id": 5,
+      "directArtifactIds": [13, 2, 14]
+    },
+    {
+      "id": 4,
+      "transitiveDepSetIds": [5, 3]
+    }
+  ],
+  "configuration": [
+    {
+      "id": 1,
+      "mnemonic": "darwin_arm64-fastbuild",
+      "platformName": "darwin_arm64",
+      "checksum": "0de042f7f216bd39770efda4fe9ac141f679167720307fb3637d83903e80fc71"
+    }
+  ],
+  "ruleClasses": [
+    {
+      "id": 1,
+      "name": "swift_library"
+    }
+  ],
+  "pathFragments": [
+    {
+      "id": 6,
+      "label": "bazel-out"
+    },
+    {
+      "id": 5,
+      "label": "darwin_arm64-fastbuild",
+      "parentId": 6
+    },
+    {
+      "id": 4,
+      "label": "bin",
+      "parentId": 5
+    },
+    {
+      "id": 3,
+      "label": "Sources",
+      "parentId": 4
+    },
+    {
+      "id": 2,
+      "label": "Components",
+      "parentId": 3
+    },
+    {
+      "id": 1,
+      "label": "Components.output_file_map.json",
+      "parentId": 2
+    },
+    {
+      "id": 12,
+      "label": "external"
+    },
+    {
+      "id": 11,
+      "label": "rules_swift+",
+      "parentId": 12
+    },
+    {
+      "id": 10,
+      "label": "swift",
+      "parentId": 11
+    },
+    {
+      "id": 9,
+      "label": "toolchains",
+      "parentId": 10
+    },
+    {
+      "id": 8,
+      "label": "config",
+      "parentId": 9
+    },
+    {
+      "id": 7,
+      "label": "const_protocols_to_gather.json",
+      "parentId": 8
+    },
+    {
+      "id": 14,
+      "label": "Utils",
+      "parentId": 3
+    },
+    {
+      "id": 13,
+      "label": "Utils.swiftmodule",
+      "parentId": 14
+    },
+    {
+      "id": 17,
+      "label": "Sources"
+    },
+    {
+      "id": 16,
+      "label": "Components",
+      "parentId": 17
+    },
+    {
+      "id": 15,
+      "label": "Button.swift",
+      "parentId": 16
+    },
+    {
+      "id": 24,
+      "label": "darwin_arm64-opt-exec-ST-d57f47055a04",
+      "parentId": 6
+    },
+    {
+      "id": 23,
+      "label": "bin",
+      "parentId": 24
+    },
+    {
+      "id": 22,
+      "label": "external",
+      "parentId": 23
+    },
+    {
+      "id": 21,
+      "label": "rules_swift+",
+      "parentId": 22
+    },
+    {
+      "id": 20,
+      "label": "tools",
+      "parentId": 21
+    },
+    {
+      "id": 19,
+      "label": "worker",
+      "parentId": 20
+    },
+    {
+      "id": 18,
+      "label": "worker",
+      "parentId": 19
+    },
+    {
+      "id": 27,
+      "label": "internal",
+      "parentId": 24
+    },
+    {
+      "id": 26,
+      "label": "_middlemen",
+      "parentId": 27
+    },
+    {
+      "id": 25,
+      "label": "external_Srules_Uswift+_Stools_Sworker_Sworker-runfiles",
+      "parentId": 26
+    },
+    {
+      "id": 28,
+      "label": "Components.swiftmodule",
+      "parentId": 2
+    },
+    {
+      "id": 29,
+      "label": "Components.swiftdoc",
+      "parentId": 2
+    },
+    {
+      "id": 30,
+      "label": "Components.swiftsourceinfo",
+      "parentId": 2
+    },
+    {
+      "id": 31,
+      "label": "Components.macro-expansions",
+      "parentId": 2
+    },
+    {
+      "id": 33,
+      "label": "Components_objs",
+      "parentId": 2
+    },
+    {
+      "id": 32,
+      "label": "Button.swift.o",
+      "parentId": 33
+    },
+    {
+      "id": 34,
+      "label": "Button.swift.swiftconstvalues",
+      "parentId": 33
+    },
+    {
+      "id": 35,
+      "label": "Utils.output_file_map.json",
+      "parentId": 14
+    },
+    {
+      "id": 37,
+      "label": "Utils",
+      "parentId": 17
+    },
+    {
+      "id": 36,
+      "label": "AwesomeUtils.swift",
+      "parentId": 37
+    },
+    {
+      "id": 38,
+      "label": "Utils.swiftdoc",
+      "parentId": 14
+    },
+    {
+      "id": 39,
+      "label": "Utils.swiftsourceinfo",
+      "parentId": 14
+    },
+    {
+      "id": 40,
+      "label": "Utils.macro-expansions",
+      "parentId": 14
+    },
+    {
+      "id": 42,
+      "label": "Utils_objs",
+      "parentId": 14
+    },
+    {
+      "id": 41,
+      "label": "AwesomeUtils.swift.o",
+      "parentId": 42
+    },
+    {
+      "id": 43,
+      "label": "AwesomeUtils.swift.swiftconstvalues",
+      "parentId": 42
+    }
+  ]
+}
