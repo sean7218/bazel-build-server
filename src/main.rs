@@ -1,35 +1,19 @@
-#![allow(dead_code)]
 mod aquery;
 mod json_rpc;
 mod logger;
 mod messages;
 
 use json_rpc::{send, send_response, JsonRpcNotification, JsonRpcRequest, JsonRpcResponse};
-use logger::Logger;
+use log::debug;
+use logger::{get_logger, Logger};
 use messages::initialize_build_request::{BuildServerCapabilities, CompileProvider, InitializeBuildRequest, InitializeBuildResponse, SourceKitInitializeBuildResponseData};
-use serde_json::{self, from_value, to_value, Value};
+use serde_json::{self, from_value, to_value, Error, Value};
 use std::{
-    fs::OpenOptions,
-    io::{self, BufRead, BufReader, Read},
+    fs::{read, File, OpenOptions},
+    io::{self, read_to_string, BufRead, BufReader, Read}, path::{Path, PathBuf},
 };
 
 fn main() -> io::Result<()> {
-    let home_dir = dirs::home_dir().expect("Failed to get home directory.");
-    let config_dir = home_dir.join(".config");
-    let server_dir = config_dir.join("sourcekit-bsp");
-    let log_file = server_dir.join("bsp.log");
-
-    if !server_dir.exists() {
-        std::fs::create_dir_all(&server_dir)?;
-    }
-
-    let mut logger = Logger {
-        file: OpenOptions::new()
-            .create(true)
-            .append(true)
-            .open(log_file)?,
-    };
-
     let stdin = io::stdin();
     let stdout = io::stdout();
     let mut stdout = stdout.lock();
@@ -42,7 +26,7 @@ fn main() -> io::Result<()> {
             buffer.clear();
             let bytes = reader.read_line(&mut buffer)?;
             if bytes == 0 {
-                logger.info("eof -> exist");
+                mylog!("eof -> exist");
                 return Ok(()); // EOF
             }
 
@@ -61,7 +45,7 @@ fn main() -> io::Result<()> {
         let content_length = match content_length {
             Some(len) => len,
             None => {
-                logger.info("Missing Content-Length header");
+                mylog!("Missing Content-Length header");
                 continue;
             }
         };
@@ -72,19 +56,40 @@ fn main() -> io::Result<()> {
         let request: JsonRpcRequest = match serde_json::from_slice(&body) {
             Ok(json) => json,
             Err(e) => {
-                logger.info("Failed to parse the request");
-                logger.debug(&e);
+                mydebug!(&e);
                 continue;
             }
         };
 
-        logger.debug(&request);
+        mydebug!(&request);
 
         if request.method == "build/initialize" {
+            let init_request = from_value
+                ::<InitializeBuildRequest>(request.params.clone())
+                .expect("Failed to deserialize InitializeBuildRequest.");
+
+            let root_uri = Path::new(&init_request.root_uri);
+            let config_uri = root_uri.join("buildServer.json");
+
+            mylog!(&root_uri.to_str().unwrap());
+            mylog!(&config_uri.to_str().unwrap());
+
+            let bytes = match std::fs::read("/Users/sean7218/bazel/hello-bazel/buildServer.json") {
+                Ok(content) => content,
+                Err(error) => {
+                    // mydebug!(&error);
+                    panic!()
+                }
+            };
+
+            let config: Value = serde_json
+                ::from_slice(&bytes)
+                .unwrap();
+
             let response = Responses::initialize_build_response(request);
             let value = to_value(&response)?;
             send(&value, &mut stdout);
-            logger.debug(&response);
+            mydebug!(&response);
         } else if request.method == "build/initialized" {
             // do not send any response
         } else if request.method == "build/shutdown" {
@@ -95,15 +100,15 @@ fn main() -> io::Result<()> {
         } else if request.method == "workspace/buildTargets" {
             let response = Responses::build_targets(request.id);
             send_response(&response, &mut stdout);
-            logger.debug(&response);
+            mydebug!(&response);
         } else if request.method == "buildTarget/sources" {
             let response = Responses::target_sources(request.id);
             send_response(&response, &mut stdout);
-            logger.debug(&response);
+            mydebug!(&response);
         } else if request.method == "textDocument/sourceKitOptions" {
             let response = Responses::sourcekit_options(request);
             send_response(&response, &mut stdout);
-            logger.debug(&response);
+            mydebug!(&response);
         } else if request.method == "buildTarget/didChange" {
             // TODO: buildTarget/didChange
         } else if request.method == "workspace/waitForBuildSystemUpdates" {
@@ -116,19 +121,18 @@ fn main() -> io::Result<()> {
             let response = Responses::options_changed();
             let value = to_value(&response)?;
             send(&value, &mut stdout);
-            logger.debug(&response);
+            mydebug!(&response);
         } else if request.method == "window/showMessage" {
             // TODO: send to editor notification
         } else {
             let error = format!("unkown request: {:?}", request);
-            logger.info(&error);
+            mylog!(&error);
         }
     }
 }
 
 struct Responses {}
 impl Responses {
-    #[allow(dead_code)]
     fn options_changed() -> JsonRpcNotification {
         let params = serde_json::json!({
             "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift",
@@ -151,7 +155,6 @@ impl Responses {
         JsonRpcNotification::new("build/sourceKitOptionsChanged", params)
     }
 
-    #[allow(dead_code)]
     fn did_change() -> JsonRpcNotification {
         let params = serde_json::json!({
             "changes": [
@@ -166,7 +169,6 @@ impl Responses {
         JsonRpcNotification::new("buildTarget/didChange", params)
     }
 
-    #[allow(dead_code)]
     fn initialize_build_response(request: JsonRpcRequest) -> JsonRpcResponse {
         let result = InitializeBuildResponse::new(
             "bazel-build-server",
@@ -188,8 +190,8 @@ impl Responses {
             },
             "sourceKit",
             SourceKitInitializeBuildResponseData {
-                index_database_path: Some(String::from("/Users/sean7218/bazel/hello-bazel/.index-db")),
-                index_store_path: Some(String::from("/Users/sean7218/hello-bazel/bazel-out/indexstore")),
+                index_database_path: None, // Some(String::from("/Users/sean7218/bazel/hello-bazel/.index-db")),
+                index_store_path: None, // Some(String::from("/Users/sean7218/hello-bazel/bazel-out/indexstore")),
                 output_paths_provider: Some(true),
                 prepare_provider: Some(true),
                 source_kit_options_provider: Some(true),

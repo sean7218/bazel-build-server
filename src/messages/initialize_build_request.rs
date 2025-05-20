@@ -141,7 +141,8 @@ impl From<SourceKitInitializeBuildResponseData> for Value {
         let value = match to_value(value) {
             Ok(v) => v,
             Err(e) => {
-                println!("Failed to serialize SourceKitInitializeBuildResponseData: {}", e);
+                println!("Failed to serialize SourceKitInitializeBuildResponseData");
+                println!("{}", e);
                 Value::Null
             }
         };
