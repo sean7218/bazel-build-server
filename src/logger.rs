@@ -59,7 +59,7 @@ impl Logger {
 }
 
 #[macro_export]
-macro_rules! mylog {
+macro_rules! log_str {
     ($msg:expr) => {
         $crate::get_logger().lock().unwrap().log($msg)
     };
@@ -69,16 +69,16 @@ macro_rules! mylog {
 }
 
 #[macro_export]
-macro_rules! mydebug {
+macro_rules! log_debug {
     ($msg:expr) => {
         $crate::get_logger().lock().unwrap().debug($msg)
     };
 }
 
 #[macro_export]
-macro_rules! mypretty {
+macro_rules! log_pretty {
     ($msg:expr) => {
-        $crate::get_logger().lock().unwrap().mypretty($msg)
+        $crate::get_logger().lock().unwrap().pretty($msg)
     };
 }
 

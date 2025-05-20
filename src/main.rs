@@ -4,13 +4,11 @@ mod logger;
 mod messages;
 
 use json_rpc::{send, send_response, JsonRpcNotification, JsonRpcRequest, JsonRpcResponse};
-use log::debug;
-use logger::{get_logger, Logger};
+use logger::{get_logger};
 use messages::initialize_build_request::{BuildServerCapabilities, CompileProvider, InitializeBuildRequest, InitializeBuildResponse, SourceKitInitializeBuildResponseData};
-use serde_json::{self, from_value, to_value, Error, Value};
+use serde_json::{self, from_value, to_value, Value};
 use std::{
-    fs::{read, File, OpenOptions},
-    io::{self, read_to_string, BufRead, BufReader, Read}, path::{Path, PathBuf},
+    io::{self, BufRead, BufReader, Read}, path::{Path},
 };
 
 fn main() -> io::Result<()> {
@@ -26,7 +24,7 @@ fn main() -> io::Result<()> {
             buffer.clear();
             let bytes = reader.read_line(&mut buffer)?;
             if bytes == 0 {
-                mylog!("eof -> exist");
+                log_str!("eof -> exist");
                 return Ok(()); // EOF
             }
 
@@ -45,7 +43,7 @@ fn main() -> io::Result<()> {
         let content_length = match content_length {
             Some(len) => len,
             None => {
-                mylog!("Missing Content-Length header");
+                log_str!("Missing Content-Length header");
                 continue;
             }
         };
@@ -56,12 +54,12 @@ fn main() -> io::Result<()> {
         let request: JsonRpcRequest = match serde_json::from_slice(&body) {
             Ok(json) => json,
             Err(e) => {
-                mydebug!(&e);
+                log_debug!(&e);
                 continue;
             }
         };
 
-        mydebug!(&request);
+        log_debug!(&request);
 
         if request.method == "build/initialize" {
             let init_request = from_value
@@ -71,13 +69,13 @@ fn main() -> io::Result<()> {
             let root_uri = Path::new(&init_request.root_uri);
             let config_uri = root_uri.join("buildServer.json");
 
-            mylog!(&root_uri.to_str().unwrap());
-            mylog!(&config_uri.to_str().unwrap());
+            log_str!(&root_uri.to_str().unwrap());
+            log_str!(&config_uri.to_str().unwrap());
 
             let bytes = match std::fs::read("/Users/sean7218/bazel/hello-bazel/buildServer.json") {
                 Ok(content) => content,
                 Err(error) => {
-                    // mydebug!(&error);
+                    // log_debug!(&error);
                     panic!()
                 }
             };
@@ -89,7 +87,7 @@ fn main() -> io::Result<()> {
             let response = Responses::initialize_build_response(request);
             let value = to_value(&response)?;
             send(&value, &mut stdout);
-            mydebug!(&response);
+            log_pretty!(&value);
         } else if request.method == "build/initialized" {
             // do not send any response
         } else if request.method == "build/shutdown" {
@@ -100,15 +98,15 @@ fn main() -> io::Result<()> {
         } else if request.method == "workspace/buildTargets" {
             let response = Responses::build_targets(request.id);
             send_response(&response, &mut stdout);
-            mydebug!(&response);
+            log_debug!(&response);
         } else if request.method == "buildTarget/sources" {
             let response = Responses::target_sources(request.id);
             send_response(&response, &mut stdout);
-            mydebug!(&response);
+            log_debug!(&response);
         } else if request.method == "textDocument/sourceKitOptions" {
             let response = Responses::sourcekit_options(request);
             send_response(&response, &mut stdout);
-            mydebug!(&response);
+            log_debug!(&response);
         } else if request.method == "buildTarget/didChange" {
             // TODO: buildTarget/didChange
         } else if request.method == "workspace/waitForBuildSystemUpdates" {
@@ -121,12 +119,12 @@ fn main() -> io::Result<()> {
             let response = Responses::options_changed();
             let value = to_value(&response)?;
             send(&value, &mut stdout);
-            mydebug!(&response);
+            log_debug!(&response);
         } else if request.method == "window/showMessage" {
             // TODO: send to editor notification
         } else {
             let error = format!("unkown request: {:?}", request);
-            mylog!(&error);
+            log_str!(&error);
         }
     }
 }
