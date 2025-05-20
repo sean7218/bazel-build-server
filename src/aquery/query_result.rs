@@ -51,7 +51,7 @@ pub struct EnvironmentVariable {
     pub value: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct PathFragment {
     pub id: u8,
