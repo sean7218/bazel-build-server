@@ -75,7 +75,7 @@ fn main() -> io::Result<()> {
             let bytes = match std::fs::read("/Users/sean7218/bazel/hello-bazel/buildServer.json") {
                 Ok(content) => content,
                 Err(error) => {
-                    // log_debug!(&error);
+                    log_debug!(&error);
                     panic!()
                 }
             };
@@ -83,6 +83,8 @@ fn main() -> io::Result<()> {
             let config: Value = serde_json
                 ::from_slice(&bytes)
                 .unwrap();
+
+            log_pretty!(&config);
 
             let response = Responses::initialize_build_response(request);
             let value = to_value(&response)?;
@@ -188,8 +190,8 @@ impl Responses {
             },
             "sourceKit",
             SourceKitInitializeBuildResponseData {
-                index_database_path: None, // Some(String::from("/Users/sean7218/bazel/hello-bazel/.index-db")),
-                index_store_path: None, // Some(String::from("/Users/sean7218/hello-bazel/bazel-out/indexstore")),
+                index_database_path: Some(String::from("/Users/sean7218/bazel/hello-bazel/.index-db")),
+                index_store_path: Some(String::from("/Users/sean7218/hello-bazel/.indexstore")),
                 output_paths_provider: Some(true),
                 prepare_provider: Some(true),
                 source_kit_options_provider: Some(true),
@@ -273,7 +275,7 @@ impl Responses {
                 result: serde_json::json!({
                     "compilerArguments": [
                         "-swift-version",
-                        "6.1.0",
+                        "6",
                         "-target",
                         "arm64-apple-macos15.1",
                         "-sdk",
@@ -281,7 +283,7 @@ impl Responses {
                         "-module-name",
                         "Utils",
                         "-index-store-path",
-                        "/Users/sean7218/bazel/hello-bazel/bazel-out/indexstore",
+                        "/Users/sean7218/bazel/hello-bazel/.indexstore",
                         "/Users/sean7218/bazel/hello-bazel/Sources/Utils/AwesomeUtils.swift",
                     ]
                 })
@@ -295,13 +297,14 @@ impl Responses {
                         "-module-name",
                         "Components",
                         "-swift-version",
-                        "6.1.0",
+                        "6",
                         "-target",
                         "arm64-apple-macos15.1",
                         "-sdk",
                         "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk",
                         "-I/Users/sean7218/bazel/hello-bazel/bazel-bin/Sources/Utils",
-                        "/Users/sean7218/bazel/hello-bazel/bazel-out/indexstore",
+                        "-index-store-path",
+                        "/Users/sean7218/bazel/hello-bazel/.indexstore",
                         "/Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift",
                         ]
                 })
