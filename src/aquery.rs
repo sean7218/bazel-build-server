@@ -1,9 +1,10 @@
 // #![allow(dead_code)]
 mod query_result;
 use query_result::{Action, Artifact, DepSetOfFiles, PathFragment, QueryResult};
-use serde_json::from_slice;
+use serde::{Deserialize, Serialize};
+use serde_json::{from_slice, to_string_pretty};
 use std::{
-    collections::HashMap, fmt, process::Command
+    collections::HashMap, fmt, path::PathBuf, process::Command
 };
 
 
@@ -45,6 +46,7 @@ pub fn aquery(target: &str, current_dir: &str) {
     }
 
     // construct all input files 
+    let mut bazel_targets: Vec<BazelTarget> = vec![];
     for action in query_result.actions {
         let input_files = build_input_files(
             &artifacts,
@@ -53,10 +55,48 @@ pub fn aquery(target: &str, current_dir: &str) {
             &action
         );
 
-        println!("input_files: {:?}", input_files);
+        let mut compiler_arguments: Vec<String> = vec![];
+        for arg in action.arguments {
+            // println!("{}", arg);
+            if arg.contains("-Xwrapped-swift") {
+                // skip
+            } else if arg.contains("__BAZEL_XCODE_SDKROOT__") {
+                let _arg = arg.replace(
+                    "__BAZEL_XCODE_SDKROOT__",
+                    "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk"
+                );
+                compiler_arguments.push(_arg);
+            } else {
+                compiler_arguments.push(arg);
+            }
+        }
+        // println!("args: {:?}", compiler_arguments);
+
+        let target = query_result.targets
+            .iter()
+            .find(|t| t.id == 1)
+            .unwrap();
+        let bazel_target = BazelTarget {
+            id: action.target_id,
+            label: target.label.clone(),
+            input_files,
+            compiler_arguments
+        };
+        bazel_targets.push(bazel_target);
     }
+
+    let targets = serde_json::to_value(bazel_targets).expect("");
+    let str = to_string_pretty(&targets).expect("");
+    println!("bazel_targets: {}", str);
 }
 
+#[derive(Debug, Deserialize, Serialize)]
+pub struct BazelTarget {
+    pub id: u8,
+    pub label: String,
+    pub input_files: Vec<String>,
+    pub compiler_arguments: Vec<String>,
+}
 
 pub fn build_input_files(
     artifacts: &HashMap<u8, Artifact>,
@@ -150,7 +190,7 @@ pub fn build_file_path(
         }
     }
 
-    println!("file_path: {:?}", file_path);
+    // println!("file_path: {:?}", file_path);
 
     return file_path;
 }
