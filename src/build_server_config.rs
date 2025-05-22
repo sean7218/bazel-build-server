@@ -3,7 +3,7 @@ use std::{error::Error, fmt::Display, fs::read};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-use crate::log_debug;
+use crate::{log_debug, log_str};
 
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -17,65 +17,41 @@ pub struct BuildServerConfig {
 }
 
 impl BuildServerConfig {
-    pub fn parse(root_uri: &str) -> Result<BuildServerConfig, ConfigError> {
+    pub fn parse(root_uri: &str) -> Option<BuildServerConfig> {
+
         let root_uri = match Url::parse(root_uri) {
             Ok(v) => v,
-            Err(_) => return Err(ConfigError::InvalidUri)
+            Err(e) => {
+                log_debug!(&e);
+                return None
+            }
         };
 
         let root_path = match root_uri.to_file_path() {
             Ok(v) => v,
-            Err(()) => return Err(ConfigError::InvalidUri)
+            Err(()) => {
+                log_str!("Invalid path for root_uri.");
+                return None
+            }
         };
 
         let config_path = root_path.join("buildServer.json");
 
         let bytes = match read(config_path) {
             Ok(v) => v,
-            Err(_) => return Err(ConfigError::ConfigNotFound)
+            Err(e) => {
+                log_debug!(&e);
+                return None
+            }
         };
 
         match serde_json::from_slice(&bytes) {
             Ok(v) => return v,
             Err(e) => {
                 log_debug!(&e);
-                return Err(ConfigError::ConfigNotParsed)
+                return None
             }
         }
-    }
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub enum ConfigError {
-    InvalidUri,
-    ConfigNotFound,
-    ConfigNotParsed,
-}
-
-impl Display for ConfigError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::InvalidUri => {
-                return write!(f, "ConfigError: Invalid Uri.")
-            }
-            Self::ConfigNotFound => {
-                return write!(f, "ConfigError: Config not found.")
-            }
-            Self::ConfigNotParsed => {
-                write!(f, "ConfigError: Config can't be parsed.")
-            }
-        }
-    }
-}
-
-impl Error for ConfigError {}
-
-impl From<ConfigError> for std::io::Error {
-    fn from(value: ConfigError) -> Self {
-        std::io::Error::new(
-            std::io::ErrorKind::NotFound, 
-            value.to_string()
-        )
     }
 }
 
