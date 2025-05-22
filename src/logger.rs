@@ -48,6 +48,7 @@ impl Logger {
 
     pub fn debug<T: Debug>(&mut self, obj: &T) {
         let message = format!("{:?}", obj);
+        // let message = format!("{:#?}", obj);
         self.log(&message);
     }
 
