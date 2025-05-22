@@ -1,14 +1,17 @@
 mod aquery;
+mod build_server_config;
 mod json_rpc;
 mod logger;
 mod messages;
 
+use build_server_config::BuildServerConfig;
 use json_rpc::{send, send_response, JsonRpcNotification, JsonRpcRequest, JsonRpcResponse};
 use logger::{get_logger};
 use messages::initialize_build_request::{BuildServerCapabilities, CompileProvider, InitializeBuildRequest, InitializeBuildResponse, SourceKitInitializeBuildResponseData};
 use serde_json::{self, from_value, to_value, Value};
+use url::Url;
 use std::{
-    io::{self, BufRead, BufReader, Read}, path::{Path},
+    fs::read, io::{self, BufRead, BufReader, Read}, path::Path
 };
 
 fn main() -> io::Result<()> {
@@ -66,25 +69,9 @@ fn main() -> io::Result<()> {
                 ::<InitializeBuildRequest>(request.params.clone())
                 .expect("Failed to deserialize InitializeBuildRequest.");
 
-            let root_uri = Path::new(&init_request.root_uri);
-            let config_uri = root_uri.join("buildServer.json");
-
-            log_str!(&root_uri.to_str().unwrap());
-            log_str!(&config_uri.to_str().unwrap());
-
-            let bytes = match std::fs::read("/Users/sean7218/bazel/hello-bazel/buildServer.json") {
-                Ok(content) => content,
-                Err(error) => {
-                    log_debug!(&error);
-                    panic!()
-                }
-            };
-
-            let config: Value = serde_json
-                ::from_slice(&bytes)
-                .unwrap();
-
-            log_pretty!(&config);
+            let build_server_config = BuildServerConfig
+                ::parse(&init_request.root_uri)?;
+            log_debug!(&build_server_config);
 
             let response = Responses::initialize_build_response(request);
             let value = to_value(&response)?;
@@ -140,9 +127,9 @@ impl Responses {
                 "workingDirectory": "/Users/sean7218/bazel/hello-bazel",
                 "options": [
                     "-target",
-                    "arm64-apple-macos15.1",
+                    "arm64-apple-macos15.4",
                     "-sdk",
-                    "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk",
+                    "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
                     "-swift-version",
                     "6",
                     "-emit-object",
@@ -257,39 +244,48 @@ impl Responses {
         JsonRpcResponse::new(request.id, value)
     }
 
-    #[allow(dead_code)]
     fn build_targets(id: Option<serde_json::Number>) -> JsonRpcResponse {
         JsonRpcResponse {
             id: id,
             jsonrpc: "2.0",
             result: serde_json::json!({
                 "targets": [
-                {
-                    "id": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/" },
-                    "tags": ["library"],
-                    "languageIds": ["swift"],
-                    "dependencies": [],
-                    "capabilities": {
-                        "canCompile": true,
-                        "canTest": true,
-                        "canRun": false,
-                        "canDebug": false,
+                    {
+                        "id": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/" },
+                        "tags": ["library"],
+                        "languageIds": ["swift"],
+                        "dependencies": [],
+                        "capabilities": {
+                            "canCompile": true,
+                            "canTest": true,
+                            "canRun": false,
+                            "canDebug": false,
+                        },
+                        "dataKind": "sourceKit",
+                        "data": {
+                            "toolchain": "file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/"
+                        }
+                    },
+                    {
+                        "id": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/" },
+                        "tags": ["library"],
+                        "languageIds": ["swift"],
+                        "dependencies": [
+                            {
+                                "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/"
+                            }
+                        ],
+                        "capabilities": {
+                            "canCompile": true,
+                            "canTest": true,
+                            "canRun": false,
+                            "canDebug": false,
+                        },
+                        "dataKind": "sourceKit",
+                        "data": {
+                            "toolchain": "file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/"
+                        }
                     }
-                },
-                {
-                    "id": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/" },
-                    "tags": ["library"],
-                    "languageIds": ["swift"],
-                    "dependencies": [
-                    { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/" }
-                    ],
-                    "capabilities": {
-                        "canCompile": true,
-                        "canTest": true,
-                        "canRun": false,
-                        "canDebug": false,
-                    }
-                }
                 ]
             })
         }
@@ -305,13 +301,21 @@ impl Responses {
                 {
                     "target": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/" },
                     "sources": [
-                    { "kind": 1, "generated": false, "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/AwesomeUtils.swift" }
+                        {
+                            "kind": 1,
+                            "generated": false,
+                            "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/AwesomeUtils.swift"
+                        }
                     ]
                 },
                 {
                     "target": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/" },
                     "sources": [
-                    { "kind": 1, "generated": false, "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift" }
+                        {
+                            "kind": 1,
+                            "generated": false,
+                            "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift"
+                        }
                     ]
                 }
                 ]
@@ -330,64 +334,15 @@ impl Responses {
                 result: serde_json::json!({
                     "compilerArguments": [
                         "-target",
-                        "arm64-apple-macos15.1",
+                        "arm64-apple-macos15.4",
                         "-sdk",
-                        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk",
+                        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
                         "-swift-version",
                         "6",
-                        "-debug-prefix-map",
-                        "/Applications/Xcode.app/Contents/Developer=/PLACEHOLDER_DEVELOPER_DIR",
-                        "-file-prefix-map",
-                        "/Applications/Xcode.app/Contents/Developer=/PLACEHOLDER_DEVELOPER_DIR",
-                        "-emit-object",
-                        "-output-file-map",
-                        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Utils/Utils.output_file_map.json",
-                        "-Xfrontend",
-                        "-no-clang-module-breadcrumbs",
-                        "-emit-module-path",
-                        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Utils/Utils.swiftmodule",
-                        "-enforce-exclusivity=checked",
-                        "-emit-const-values-path",
-                        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Utils/Utils_objs/AwesomeUtils.swift.swiftconstvalues",
-                        "-Xfrontend",
-                        "-const-gather-protocols-file",
-                        "-Xfrontend",
-                        "external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json",
-                        "-DDEBUG",
-                        "-Onone",
-                        "-Xfrontend",
-                        "-internalize-at-link",
-                        "-Xfrontend",
-                        "-no-serialize-debugging-options",
-                        "-enable-testing",
-                        "-disable-sandbox",
-                        "-gline-tables-only",
-                        "-module-cache-path",
-                        "bazel-out/darwin_arm64-fastbuild/bin/_swift_module_cache",
-                        "-Xcc",
-                        "-iquote.",
-                        "-Xcc",
-                        "-iquotebazel-out/darwin_arm64-fastbuild/bin",
-                        "-Xfrontend",
-                        "-color-diagnostics",
-                        "-enable-batch-mode",
                         "-module-name",
                         "Utils",
-                        "-file-prefix-map",
-                        "/Applications/Xcode.app/Contents/Developer=DEVELOPER_DIR",
-                        "-enable-bare-slash-regex",
-                        "-Xfrontend",
-                        "-disable-clang-spi",
-                        "-enable-experimental-feature",
-                        "AccessLevelOnImport",
-                        "-parse-as-library",
                         "-index-store-path",
                         "/Users/sean7218/bazel/hello-bazel/.indexstore",
-                        "-static",
-                        "-Xcc",
-                        "-O0",
-                        "-Xcc",
-                        "-DDEBUG=1",
                         "/Users/sean7218/bazel/hello-bazel/Sources/Utils/AwesomeUtils.swift"
                     ]
                 })
@@ -399,61 +354,17 @@ impl Responses {
                 result: serde_json::json!({
                     "compilerArguments": [
                         "-target",
-                        "arm64-apple-macos15.1",
+                        "arm64-apple-macos15.4",
                         "-sdk",
-                        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk",
+                        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
                         "-swift-version",
                         "6",
-                        "-emit-object",
-                        "-output-file-map",
-                        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.output_file_map.json",
-                        "-Xfrontend",
-                        "-no-clang-module-breadcrumbs",
-                        "-emit-module-path",
-                        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components.swiftmodule",
-                        "-enforce-exclusivity=checked",
-                        "-emit-const-values-path",
-                        "bazel-out/darwin_arm64-fastbuild/bin/Sources/Components/Components_objs/Button.swift.swiftconstvalues",
-                        "-Xfrontend",
-                        "-const-gather-protocols-file",
-                        "-Xfrontend",
-                        "external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json",
-                        "-DDEBUG",
-                        "-Onone",
-                        "-Xfrontend",
-                        "-internalize-at-link",
-                        "-Xfrontend",
-                        "-no-serialize-debugging-options",
-                        "-enable-testing",
-                        "-disable-sandbox",
-                        "-gline-tables-only",
-                        "-module-cache-path",
-                        "bazel-out/darwin_arm64-fastbuild/bin/_swift_module_cache",
                         "-Ibazel-out/darwin_arm64-fastbuild/bin/Sources/Utils",
-                        "-Xcc",
-                        "-iquote.",
-                        "-Xcc",
-                        "-iquotebazel-out/darwin_arm64-fastbuild/bin",
-                        "-Xfrontend",
-                        "-color-diagnostics",
-                        "-enable-batch-mode",
                         "-module-name",
                         "Components",
-                        "-enable-bare-slash-regex",
-                        "-Xfrontend",
-                        "-disable-clang-spi",
-                        "-enable-experimental-feature",
-                        "AccessLevelOnImport",
-                        "-parse-as-library",
                         "-index-store-path",
                         "/Users/sean7218/bazel/hello-bazel/.indexstore",
-                        "-static",
-                        "-Xcc",
-                        "-O0",
-                        "-Xcc",
-                        "-DDEBUG=1",
                         "/Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift"
-
                     ]
                 })
             };
@@ -469,4 +380,5 @@ impl Responses {
     }
 }
 
-                        // swiftc Sources/Components/Button.swift -module-name Components -I bazel-bin/Sources/Utils/ -L bazel-bin/Sources/Utils/ -l Utils -target arm64-apple-macos15.1 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk
+// swiftc Sources/Components/Button.swift -module-name Components -I bazel-bin/Sources/Utils/ -L bazel-bin/Sources/Utils/ -l Utils -target arm64-apple-macos15.1 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk
+
