@@ -1,5 +1,6 @@
+#![allow(dead_code)]
 use serde::{Deserialize, Serialize};
-use serde_json::{to_value, Value};
+use serde_json::{Value, to_value};
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -46,7 +47,7 @@ pub struct InitializeBuildResponse {
     pub bsp_version: &'static str,
     pub capabilities: BuildServerCapabilities,
     pub data_kind: Option<&'static str>,
-    pub data: Option<Value>
+    pub data: Option<Value>,
 }
 
 impl InitializeBuildResponse {
@@ -56,7 +57,7 @@ impl InitializeBuildResponse {
         bsp_version: &'static str,
         capabilities: BuildServerCapabilities,
         data_kind: &'static str,
-        data: SourceKitInitializeBuildResponseData 
+        data: SourceKitInitializeBuildResponseData,
     ) -> Self {
         InitializeBuildResponse {
             display_name,
@@ -64,16 +65,14 @@ impl InitializeBuildResponse {
             bsp_version,
             capabilities,
             data_kind: Some(data_kind),
-            data: Some(data.into())
+            data: Some(data.into()),
         }
     }
 }
 
 impl From<InitializeBuildResponse> for Value {
     fn from(value: InitializeBuildResponse) -> Self {
-        to_value(value).expect(
-            "Failed to serialize InitializeBuildResponse"
-        )
+        to_value(value).expect("Failed to serialize InitializeBuildResponse")
     }
 }
 
@@ -119,21 +118,21 @@ pub struct BuildServerCapabilities {
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SourceKitInitializeBuildResponseData {
-  /// The directory to which the index store is written during compilation, ie. the path passed to `-index-store-path`
-  /// for `swiftc` or `clang` invocations
-  pub index_database_path: Option<String>,
+    /// The directory to which the index store is written during compilation, ie. the path passed to `-index-store-path`
+    /// for `swiftc` or `clang` invocations
+    pub index_database_path: Option<String>,
 
-  /// The path at which SourceKit-LSP can store its index database, aggregating data from `indexStorePath`
-  pub index_store_path: Option<String>,
+    /// The path at which SourceKit-LSP can store its index database, aggregating data from `indexStorePath`
+    pub index_store_path: Option<String>,
 
-  /// Whether the server implements the `buildTarget/outputPaths` request.
-  pub output_paths_provider: Option<bool>,
+    /// Whether the server implements the `buildTarget/outputPaths` request.
+    pub output_paths_provider: Option<bool>,
 
-  /// Whether the build server supports the `buildTarget/prepare` request.
-  pub prepare_provider: Option<bool>,
+    /// Whether the build server supports the `buildTarget/prepare` request.
+    pub prepare_provider: Option<bool>,
 
-  /// Whether the server implements the `textDocument/sourceKitOptions` request.
-  pub source_kit_options_provider: Option<bool>,
+    /// Whether the server implements the `textDocument/sourceKitOptions` request.
+    pub source_kit_options_provider: Option<bool>,
 }
 
 impl From<SourceKitInitializeBuildResponseData> for Value {
@@ -146,31 +145,30 @@ impl From<SourceKitInitializeBuildResponseData> for Value {
                 Value::Null
             }
         };
-        return value
+        return value;
     }
 }
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CompileProvider {
-    pub language_ids: Vec<&'static str>
+    pub language_ids: Vec<&'static str>,
 }
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TestProvider {
-    pub language_ids: Vec<String>
+    pub language_ids: Vec<String>,
 }
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RunProvider {
-    pub language_ids: Vec<String>
+    pub language_ids: Vec<String>,
 }
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DebugProvider {
-    pub language_ids: Vec<String>
+    pub language_ids: Vec<String>,
 }
-

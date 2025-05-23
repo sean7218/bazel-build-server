@@ -1,0 +1,9 @@
+{
+  "name": "hello-bazel-bsp",
+  "argv": [
+    "/Users/sean7218/bazel/buildserver/target/debug/buildserver"
+  ],
+  "version": "1.0.0",  
+  "bspVersion": "2.0.0",
+  "languages": ["swift"]
+}

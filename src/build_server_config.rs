@@ -1,10 +1,9 @@
-use std::{error::Error, fmt::Display, fs::read};
+use std::fs::read;
 
 use serde::{Deserialize, Serialize};
 use url::Url;
 
 use crate::{log_debug, log_str};
-
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -13,17 +12,26 @@ pub struct BuildServerConfig {
     pub argv: Vec<String>,
     pub version: String,
     pub bsp_version: String,
-    pub languages: Vec<String>
+    pub languages: Vec<String>,
 }
 
 impl BuildServerConfig {
-    pub fn parse(root_uri: &str) -> Option<BuildServerConfig> {
+    pub fn default() -> Self {
+        BuildServerConfig {
+            name: String::new(),
+            argv: vec![],
+            version: String::new(),
+            bsp_version: String::new(),
+            languages: vec![]
+        }
+    }
 
+    pub fn parse(root_uri: &str) -> Option<BuildServerConfig> {
         let root_uri = match Url::parse(root_uri) {
             Ok(v) => v,
             Err(e) => {
                 log_debug!(&e);
-                return None
+                return None;
             }
         };
 
@@ -31,7 +39,7 @@ impl BuildServerConfig {
             Ok(v) => v,
             Err(()) => {
                 log_str!("Invalid path for root_uri.");
-                return None
+                return None;
             }
         };
 
@@ -41,7 +49,7 @@ impl BuildServerConfig {
             Ok(v) => v,
             Err(e) => {
                 log_debug!(&e);
-                return None
+                return None;
             }
         };
 
@@ -49,9 +57,8 @@ impl BuildServerConfig {
             Ok(v) => return v,
             Err(e) => {
                 log_debug!(&e);
-                return None
+                return None;
             }
         }
     }
 }
-

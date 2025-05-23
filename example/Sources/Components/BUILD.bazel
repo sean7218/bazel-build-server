@@ -8,7 +8,7 @@ swift_library(
     deps = ["//Sources/Utils:Utils"],
     copts = [
         "-index-store-path",
-        "/Users/sean7218/bazel/hello-bazel/.indexstore",
+        "./.indexstore",
     ],
 )
 

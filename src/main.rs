@@ -3,19 +3,83 @@ mod build_server_config;
 mod json_rpc;
 mod logger;
 mod messages;
+mod support_types;
 
+use aquery::BazelTarget;
 use build_server_config::BuildServerConfig;
 use json_rpc::{JsonRpcNotification, JsonRpcRequest, JsonRpcResponse, send, send_response};
 use logger::get_logger;
-use messages::{build_target::{BuildTarget, BuildTargetIdentifier}, initialize_build_request::{
+use messages::initialize_build_request::{
     BuildServerCapabilities, CompileProvider, InitializeBuildRequest, InitializeBuildResponse,
     SourceKitInitializeBuildResponseData,
-}};
+};
 use serde_json::{self, from_value, to_value};
+use std::{
+    io::{self, BufRead, BufReader, Read},
+    path::PathBuf,
+};
+use support_types::build_target::{BuildTarget, BuildTargetCapabilities, BuildTargetIdentifier};
 use url::Url;
-use std::{io::{self, BufRead, BufReader, Read}, path::{Path, PathBuf}};
 
-fn main() -> io::Result<()> {
+type Error = Box<dyn std::error::Error>;
+type Result<T> = core::result::Result<T, Error>;
+
+fn handle_initialize_request() -> Result<RequestHandler> {
+    let stdin = io::stdin();
+    let stdout = io::stdout();
+    let mut stdout = stdout.lock();
+    let mut reader = BufReader::new(stdin.lock());
+    let mut content_length = None;
+    let mut buffer = String::new();
+    loop {
+        buffer.clear();
+        let bytes = reader.read_line(&mut buffer)?;
+        if bytes == 0 {
+            log_str!("build_initialize eof -> exit");
+            return Err("build_initialize eof -> exit".into());
+        }
+
+        if buffer == "\r\n" {
+            break; // End of headers
+        }
+
+        if let Some(colon_position) = buffer.find(":") {
+            let (key, value) = buffer.split_at(colon_position);
+            if key.eq_ignore_ascii_case("Content-Length") {
+                content_length = value[1..].trim().parse::<usize>().ok();
+            }
+        }
+    }
+
+    let content_length = match content_length {
+        Some(len) => len,
+        None => return Err("Missing Content-Length header".into()),
+    };
+
+    let mut body: Vec<u8> = vec![0; content_length];
+    reader.read_exact(&mut body)?;
+
+    let request: JsonRpcRequest = match serde_json::from_slice(&body) {
+        Ok(v) => v,
+        Err(_) => return Err("Fail to parse JsonRpcRequest".into()),
+    };
+    let request_handler = RequestHandler::initialize(&request)?;
+    let response = request_handler.build_initialize(&request);
+    let value = to_value(&response)?;
+    send(&value, &mut stdout);
+    Ok(request_handler)
+}
+
+fn main() -> Result<()> {
+    let request_handler = match handle_initialize_request() {
+        Ok(v) => v,
+        Err(e) => {
+            log_str!("[Error] Build server crashed: ");
+            log_debug!(&e);
+            return Ok(());
+        }
+    };
+
     let stdin = io::stdin();
     let stdout = io::stdout();
     let mut stdout = stdout.lock();
@@ -64,35 +128,11 @@ fn main() -> io::Result<()> {
         };
 
         log_debug!(&request);
-        let mut request_handler = RequestHandler {
-            root_path: None
-        };
 
-        if request.method == "build/initialize" {
-            let init_request = from_value::<InitializeBuildRequest>(request.params.clone())
-                .expect("Failed to deserialize InitializeBuildRequest.");
-
-            let build_server_config = BuildServerConfig::parse(&init_request.root_uri).unwrap();
-            log_debug!(&build_server_config);
-
-            if let Ok(root_url) = Url::parse(&init_request.root_uri) {
-                if let Ok(root_path) = root_url.to_file_path() {
-                    request_handler.set_root_path(root_path);
-                }
-            }
-
-            let response = request_handler.build_initialize(request);
-            let value = to_value(&response)?;
-            send(&value, &mut stdout);
-            log_pretty!(&value);
-        } else if request.method == "build/initialized" {
-            // do not send any response
-        } else if request.method == "build/shutdown" {
-            // TODO: any addtional cleanup
-        } else if request.method == "build/exit" {
-            return Ok(());
+        if request.method == "build/initialized" {
+            log_str!("yayyy: build/initialized");
         } else if request.method == "workspace/buildTargets" {
-            let response = Responses::build_targets(request.id);
+            let response = request_handler.workspace_build_targets(request);
             send_response(&response, &mut stdout);
             log_debug!(&response);
         } else if request.method == "buildTarget/sources" {
@@ -118,6 +158,10 @@ fn main() -> io::Result<()> {
             log_debug!(&response);
         } else if request.method == "window/showMessage" {
             // TODO: send to editor notification
+        } else if request.method == "build/shutdown" {
+            // TODO: any addtional cleanup
+        } else if request.method == "build/exit" {
+            return Ok(());
         } else {
             let error = format!("unkown request: {:?}", request);
             log_str!(&error);
@@ -126,25 +170,35 @@ fn main() -> io::Result<()> {
 }
 
 struct RequestHandler {
-    root_path: Option<PathBuf>
+    config: BuildServerConfig,
+    root_path: PathBuf,
 }
 
 impl RequestHandler {
-    fn set_root_path(&mut self, root_path: PathBuf) {
-        self.root_path = Some(root_path);
+    fn initialize(request: &JsonRpcRequest) -> Result<Self> {
+        let build_request: InitializeBuildRequest = from_value(request.params.clone())?;
+
+        let config = BuildServerConfig::parse(&build_request.root_uri)
+            .ok_or(Error::from("Failed to parse BuildServerConfig"))?;
+
+        let root_url = Url::parse(&build_request.root_uri)?;
+
+        let root_path = root_url
+            .to_file_path()
+            .map_err(|_| "Failed to convert root_uri to file path")?;
+
+        Ok(RequestHandler { config, root_path })
     }
 
-    fn build_initialize(&self, request: JsonRpcRequest) -> JsonRpcResponse {
-        let root_path = self.root_path.clone().unwrap();
-        let index_database_path = root_path
-            .join(".index-db")
-            .to_string_lossy()
-            .into_owned();
-        let index_store_path = root_path
-            .join(".indexstore")
-            .to_string_lossy()
-            .into_owned();
+    fn root_string(&self) -> String {
+        let root = self.root_path.clone();
+        root.to_string_lossy().into_owned()
+    }
 
+    fn build_initialize(&self, request: &JsonRpcRequest) -> JsonRpcResponse {
+        let root_path = self.root_path.clone();
+        let index_database_path = root_path.join(".index-db").to_string_lossy().into_owned();
+        let index_store_path = root_path.join(".indexstore").to_string_lossy().into_owned();
 
         let result = InitializeBuildResponse::new(
             "bazel-build-server",
@@ -174,11 +228,71 @@ impl RequestHandler {
             },
         );
         let value = to_value(result).expect("Failed to serialize InitializeBuildResponse.");
-        JsonRpcResponse::new(request.id, value)
-    } 
+        JsonRpcResponse::new(request.id.clone(), value)
+    }
 
-    fn workspace_build_targets(&self, request: JsonRpcRequest) {
+    fn workspace_build_targets(&self, request: JsonRpcRequest) -> JsonRpcResponse {
+        let dir = PathBuf::from("/Users/sean7218/bazel/buildserver/example/");
+        let targets = aquery::aquery("//Sources/Components", &dir);
+        log_debug!(&self.root_path);
+        // let mut build_targets: Vec<BuildTarget> = vec![];
+        // for target in targets {
+        //     let build_target: BuildTarget = target.into();
+        //     build_targets.push(build_target);
+        // }
+        // log_debug!(&build_targets);
+        // return JsonRpcResponse {
+        //     id: request.id,
+        //     jsonrpc: "2.0",
+        //     result: serde_json::to_value(build_targets).expect("")
+        // }
 
+        JsonRpcResponse {
+            id: request.id,
+            jsonrpc: "2.0",
+            result: serde_json::json!({
+                "targets": [
+                {
+                    "id": { "uri": "file:///Users/sean7218/bazel/buildserver/example/Sources/Utils:Utils" },
+                    "tags": ["library"],
+                    "languageIds": ["swift"],
+                    "dependencies": [],
+                    "capabilities": {
+                        "canCompile": true,
+                        "canTest": true,
+                        "canRun": false,
+                        "canDebug": false,
+                    },
+                    // "dataKind": "sourceKit",
+                    // "data": {
+                    //     "toolchain": "file:///Users/sean7218/Library/Developer/Toolchains/swift-6.1-RELEASE.xctoolchain/"
+                    //     // "toolchain": "file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain"
+                    // }
+                },
+                {
+                    "id": { "uri": "file:///Users/sean7218/bazel/buildserver/example/Sources/Components:Components" },
+                    "tags": ["library"],
+                    "languageIds": ["swift"],
+                    "dependencies": [
+                    {
+                        "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/"
+                    }
+                    ],
+                    "capabilities": {
+                        "canCompile": true,
+                        "canTest": true,
+                        "canRun": false,
+                        "canDebug": false,
+                    },
+                    // "dataKind": "sourceKit",
+                    // "data": {
+                    //     "toolchain": "file:///Users/sean7218/Library/Developer/Toolchains/swift-6.1-RELEASE.xctoolchain/"
+                    //     // "toolchain": "file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain"
+                    // }
+                }
+                ]
+            }),
+        }
     }
 }
 
@@ -207,6 +321,7 @@ impl Responses {
         JsonRpcNotification::new("build/sourceKitOptionsChanged", params)
     }
 
+    #[allow(dead_code)]
     fn did_change() -> JsonRpcNotification {
         let params = serde_json::json!({
             "changes": [
@@ -219,55 +334,6 @@ impl Responses {
             ]
         });
         JsonRpcNotification::new("buildTarget/didChange", params)
-    }
-
-    fn build_targets(id: Option<serde_json::Number>) -> JsonRpcResponse {
-        JsonRpcResponse {
-            id: id,
-            jsonrpc: "2.0",
-            result: serde_json::json!({
-                "targets": [
-                {
-                    "id": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/" },
-                    "tags": ["library"],
-                    "languageIds": ["swift"],
-                    "dependencies": [],
-                    "capabilities": {
-                        "canCompile": true,
-                        "canTest": true,
-                        "canRun": false,
-                        "canDebug": false,
-                    },
-                    // "dataKind": "sourceKit",
-                    // "data": {
-                    //     "toolchain": "file:///Users/sean7218/Library/Developer/Toolchains/swift-6.1-RELEASE.xctoolchain/"
-                    //     // "toolchain": "file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain"
-                    // }
-                },
-                {
-                    "id": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/" },
-                    "tags": ["library"],
-                    "languageIds": ["swift"],
-                    "dependencies": [
-                    {
-                        "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/"
-                    }
-                    ],
-                    "capabilities": {
-                        "canCompile": true,
-                        "canTest": true,
-                        "canRun": false,
-                        "canDebug": false,
-                    },
-                    // "dataKind": "sourceKit",
-                    // "data": {
-                    //     "toolchain": "file:///Users/sean7218/Library/Developer/Toolchains/swift-6.1-RELEASE.xctoolchain/"
-                    //     // "toolchain": "file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain"
-                    // }
-                }
-                ]
-            }),
-        }
     }
 
     #[allow(dead_code)]
@@ -478,4 +544,32 @@ impl Responses {
     }
 }
 
+impl From<BazelTarget> for BuildTarget {
+    fn from(value: BazelTarget) -> Self {
+        BuildTarget {
+            id: BuildTargetIdentifier {
+                uri: value.uri.to_string(),
+            },
+            display_name: Some(value.label),
+            base_directory: None,
+            tags: vec![],
+            language_ids: vec![
+                "c".to_string(),
+                "cpp".to_string(),
+                "objective-c".to_string(),
+                "objective-cpp".to_string(),
+                "swift".to_string(),
+            ],
+            dependencies: vec![],
+            capabilities: BuildTargetCapabilities {
+                can_compile: Some(true),
+                can_test: Some(true),
+                can_run: Some(false),
+                can_debug: Some(false),
+            },
+            data_kind: None,
+            data: None,
+        }
+    }
+}
 // swiftc Sources/Components/Button.swift -module-name Components -I bazel-bin/Sources/Utils/ -L bazel-bin/Sources/Utils/ -l Utils -target arm64-apple-macos15.1 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk

@@ -7,7 +7,7 @@ swift_library(
     visibility = ["//visibility:public"],
     copts = [
         "-index-store-path",
-        "/Users/sean7218/bazel/hello-bazel/.indexstore",
+        "./.indexstore",
     ],
 )
 

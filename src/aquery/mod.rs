@@ -1,32 +1,22 @@
-// #![allow(dead_code)]
+#![allow(dead_code)]
 mod query_result;
 use query_result::{Action, Artifact, DepSetOfFiles, PathFragment, QueryResult};
 use serde::{Deserialize, Serialize};
 use serde_json::{from_slice, to_string_pretty};
-use std::{
-    collections::HashMap, fmt, path::PathBuf, process::Command
-};
-
+use url::{ParseError, Url};
+use std::{collections::HashMap, path::PathBuf, process::Command};
 
 /// Outputs list of targets, each target should have set of input files
 /// params:
 ///   - target: full name of the target (example: //Libraries/Utils:UtilsLib)
 ///   - current_dir: the directory where the bazel WORKSPACE is
-pub fn aquery(target: &str, current_dir: &str) {
+pub fn aquery(target: &str, current_dir: &PathBuf) -> Vec<BazelTarget> {
     let mnemonic = format!("mnemonic(\"SwiftCompile\", deps({}))", target);
     let output = Command::new("bazel")
-        .args(&[
-            "aquery",
-            &mnemonic,
-            "--output=jsonproto",
-        ])
-        .current_dir(current_dir)
+        .args(&["aquery", &mnemonic, "--output=jsonproto"])
+        .current_dir(current_dir.clone())
         .output()
         .expect("Failed to start aquery process");
-
-    // println!("status: {}", output.status);
-    // println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
-    // println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
 
     let query_result: QueryResult = from_slice(&output.stdout)
         .expect("Failed to parse output");
@@ -45,15 +35,10 @@ pub fn aquery(target: &str, current_dir: &str) {
         fragments.insert(fragment.id, fragment);
     }
 
-    // construct all input files 
+    // construct all input files
     let mut bazel_targets: Vec<BazelTarget> = vec![];
     for action in query_result.actions {
-        let input_files = build_input_files(
-            &artifacts,
-            &files, 
-            &fragments, 
-            &action
-        );
+        let input_files = build_input_files(&artifacts, &files, &fragments, &action);
 
         let mut compiler_arguments: Vec<String> = vec![];
         for arg in action.arguments {
@@ -72,27 +57,30 @@ pub fn aquery(target: &str, current_dir: &str) {
         }
         // println!("args: {:?}", compiler_arguments);
 
-        let target = query_result.targets
-            .iter()
-            .find(|t| t.id == 1)
-            .unwrap();
+        let target = query_result.targets.iter().find(|t| t.id == 1).unwrap();
+
+        let uri = bazel_to_uri(&current_dir, &target.label).unwrap();
+
         let bazel_target = BazelTarget {
             id: action.target_id,
+            uri: uri,
             label: target.label.clone(),
             input_files,
-            compiler_arguments
+            compiler_arguments,
         };
         bazel_targets.push(bazel_target);
     }
 
-    let targets = serde_json::to_value(bazel_targets).expect("");
-    let str = to_string_pretty(&targets).expect("");
-    println!("bazel_targets: {}", str);
+    let targets = serde_json::to_value(&bazel_targets).expect("");
+    // let str = to_string_pretty(&targets).expect("");
+    // println!("bazel_targets: {}", str);
+    return bazel_targets
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct BazelTarget {
     pub id: u8,
+    pub uri: Url,
     pub label: String,
     pub input_files: Vec<String>,
     pub compiler_arguments: Vec<String>,
@@ -102,7 +90,7 @@ pub fn build_input_files(
     artifacts: &HashMap<u8, Artifact>,
     files: &HashMap<u8, DepSetOfFiles>,
     fragments: &HashMap<u8, PathFragment>,
-    action: &Action
+    action: &Action,
 ) -> Vec<String> {
     let mut input_files: Vec<String> = vec![];
     for id in action.input_dep_set_ids.clone() {
@@ -122,14 +110,13 @@ pub fn build_input_files(
         for id in path_ids {
             let leaf = fragments.get(&id).unwrap();
             let file_path = build_file_path(&fragments, leaf);
-            input_files.push(file_path); 
+            input_files.push(file_path);
         }
 
         // println!("input_files: {:?}", input_files);
     }
     return input_files;
 }
-
 
 /// each file set can have both direct ids and transitive sets
 ///  "depSetOfFiles": [
@@ -140,10 +127,7 @@ pub fn build_input_files(
 ///    },
 ///  ]
 ///  return artifact_ids
-pub fn build_artifact_ids(
-    file_set: &DepSetOfFiles,
-    files: &HashMap<u8, DepSetOfFiles>
-) -> Vec<u8> {
+pub fn build_artifact_ids(file_set: &DepSetOfFiles, files: &HashMap<u8, DepSetOfFiles>) -> Vec<u8> {
     let direct_ids = file_set.direct_artifact_ids.clone();
     let transitive_ids = file_set.transitive_dep_set_ids.clone();
 
@@ -170,10 +154,7 @@ pub fn build_artifact_ids(
 ///    { "id": 2, "label": "Components", "parentId": 3 },
 ///    { "id": 3, "label": "Sources", "parentId": None },
 /// ]
-pub fn build_file_path(
-    fragments: &HashMap<u8, PathFragment>,
-    leaf: &PathFragment
-) -> String {
+pub fn build_file_path(fragments: &HashMap<u8, PathFragment>, leaf: &PathFragment) -> String {
     let mut file_path = String::new();
     let mut current = Some(leaf);
     while let Some(fragment) = current {
@@ -195,17 +176,46 @@ pub fn build_file_path(
     return file_path;
 }
 
-mod tests {
-    use std::collections::HashMap;
+/// Convert bazel target name to Uri-compatible encoding
+pub fn bazel_to_uri(base: &PathBuf, name: &String) -> Result<Url, ()> {
+    let trimmed = name.trim_start_matches("//");
+    let joined = base.join(trimmed);
+    return Url::from_file_path(joined)
+}
 
-    use super::{build_artifact_ids, build_file_path, query_result::{DepSetOfFiles, PathFragment}};
+mod tests {
+    use std::{collections::HashMap, path::PathBuf};
+
+    use super::{
+        bazel_to_uri, build_artifact_ids, build_file_path, query_result::{DepSetOfFiles, PathFragment}
+    };
+
+    #[test]
+    fn test_bazel_to_uri() {
+        let base = PathBuf::from("/Users/sean7218/bazel/hello-bazel/");
+        let name = String::from("//Sources/Components:Components");
+        let uri = bazel_to_uri(&base, &name);
+        println!("{:?}", uri);
+
+        let ext = String::from("@rules_swift//swift:toolchain");
+        let uri = bazel_to_uri(&base, &ext);
+        println!("{:?}", uri);
+
+        let ext = String::from("@my~lib//src:core-lib");
+        let uri = bazel_to_uri(&base, &ext);
+        println!("{:?}", uri);
+
+        let ext = String::from("@vendor.pkg//:init");
+        let uri = bazel_to_uri(&base, &ext);
+        println!("{:?}", uri);
+    }
 
     #[test]
     fn test_build_artifact_ids() {
         let one = DepSetOfFiles {
             id: 1,
             direct_artifact_ids: Some(vec![11]),
-            transitive_dep_set_ids: Some(vec![2, 3])
+            transitive_dep_set_ids: Some(vec![2, 3]),
         };
         let two = DepSetOfFiles {
             id: 2,
@@ -232,17 +242,17 @@ mod tests {
         let leaf = PathFragment {
             id: 1,
             label: "Button.swift".to_string(),
-            parent_id: Some(2)
+            parent_id: Some(2),
         };
         let parent = PathFragment {
             id: 2,
             label: "Components".to_string(),
-            parent_id: Some(3)
+            parent_id: Some(3),
         };
         let root = PathFragment {
             id: 3,
             label: "Sources".to_string(),
-            parent_id: None
+            parent_id: None,
         };
         let mut fragments = HashMap::new();
         fragments.insert(1, leaf.clone());
@@ -260,9 +270,10 @@ mod tests {
             .expect("Failed to find current_dir!")
             .join("example");
 
-        super::aquery(
-            "//Sources/Components",
-            dir.to_str().unwrap()
-        );
+        let targets = super::aquery("//Sources/Components", &dir);
+
+        for target in targets {
+            println!("{:#?}", target);
+        }
     }
 }

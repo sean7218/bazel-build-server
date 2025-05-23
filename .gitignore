@@ -5,3 +5,8 @@ bazel-bin
 bazel-bin
 bazel-example
 bazel-testlogs
+.index-db
+.indexstore
+
+# macos
+.DS_Store
