@@ -16,16 +16,6 @@ pub struct BuildServerConfig {
 }
 
 impl BuildServerConfig {
-    pub fn default() -> Self {
-        BuildServerConfig {
-            name: String::new(),
-            argv: vec![],
-            version: String::new(),
-            bsp_version: String::new(),
-            languages: vec![]
-        }
-    }
-
     pub fn parse(root_uri: &str) -> Option<BuildServerConfig> {
         let root_uri = match Url::parse(root_uri) {
             Ok(v) => v,

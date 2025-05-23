@@ -1,170 +1,113 @@
 mod aquery;
-mod build_server_config;
 mod json_rpc;
-mod logger;
 mod messages;
 mod support_types;
+mod utils;
+mod error;
 
+use crate::error::{Error, Result};
 use aquery::BazelTarget;
 use build_server_config::BuildServerConfig;
-use json_rpc::{JsonRpcNotification, JsonRpcRequest, JsonRpcResponse, send, send_response};
-use logger::get_logger;
+use json_rpc::{
+    JsonRpcNotification, JsonRpcRequest, JsonRpcResponse, read_request, send, send_response,
+};
 use messages::initialize_build_request::{
     BuildServerCapabilities, CompileProvider, InitializeBuildRequest, InitializeBuildResponse,
     SourceKitInitializeBuildResponseData,
 };
 use serde_json::{self, from_value, to_value};
 use std::{
-    io::{self, BufRead, BufReader, Read},
+    io::{self, BufReader, StdoutLock},
     path::PathBuf,
 };
-use support_types::build_target::{BuildTarget, BuildTargetCapabilities, BuildTargetIdentifier};
+use support_types::{
+    build_server_config, build_target::{BuildTarget, BuildTargetCapabilities, BuildTargetIdentifier}, methods::RequestMethod
+};
 use url::Url;
 
-type Error = Box<dyn std::error::Error>;
-type Result<T> = core::result::Result<T, Error>;
+fn handle_initialize_request(
+    reader: &mut BufReader<io::StdinLock<'static>>,
+    stdout: &mut StdoutLock<'static>,
+) -> Result<RequestHandler> {
+    match read_request(reader) {
+        Ok(request) => {
+            let request_handler = RequestHandler::initialize(&request)?;
+            let response = request_handler.build_initialize(&request);
+            let value = to_value(&response)?;
+            send(&value, stdout);
+            return Ok(request_handler);
+        }
+        Err(e) => {
+            log_str!("Failed to read_request");
+            return Err(e);
+        }
+    }
+}
 
-fn handle_initialize_request() -> Result<RequestHandler> {
+fn main() -> Result<()> {
     let stdin = io::stdin();
     let stdout = io::stdout();
     let mut stdout = stdout.lock();
     let mut reader = BufReader::new(stdin.lock());
-    let mut content_length = None;
-    let mut buffer = String::new();
-    loop {
-        buffer.clear();
-        let bytes = reader.read_line(&mut buffer)?;
-        if bytes == 0 {
-            log_str!("build_initialize eof -> exit");
-            return Err("build_initialize eof -> exit".into());
-        }
 
-        if buffer == "\r\n" {
-            break; // End of headers
-        }
-
-        if let Some(colon_position) = buffer.find(":") {
-            let (key, value) = buffer.split_at(colon_position);
-            if key.eq_ignore_ascii_case("Content-Length") {
-                content_length = value[1..].trim().parse::<usize>().ok();
-            }
-        }
-    }
-
-    let content_length = match content_length {
-        Some(len) => len,
-        None => return Err("Missing Content-Length header".into()),
-    };
-
-    let mut body: Vec<u8> = vec![0; content_length];
-    reader.read_exact(&mut body)?;
-
-    let request: JsonRpcRequest = match serde_json::from_slice(&body) {
-        Ok(v) => v,
-        Err(_) => return Err("Fail to parse JsonRpcRequest".into()),
-    };
-    let request_handler = RequestHandler::initialize(&request)?;
-    let response = request_handler.build_initialize(&request);
-    let value = to_value(&response)?;
-    send(&value, &mut stdout);
-    Ok(request_handler)
-}
-
-fn main() -> Result<()> {
-    let request_handler = match handle_initialize_request() {
+    let request_handler = match handle_initialize_request(&mut reader, &mut stdout) {
         Ok(v) => v,
         Err(e) => {
-            log_str!("[Error] Build server crashed: ");
+            log_str!("[Error] Build server crashed due to invalid initial request");
             log_debug!(&e);
             return Ok(());
         }
     };
 
-    let stdin = io::stdin();
-    let stdout = io::stdout();
-    let mut stdout = stdout.lock();
-    let mut reader = BufReader::new(stdin.lock());
+    log_str!("🟢 Build Server Initialized");
 
     loop {
-        let mut content_length = None;
-        let mut buffer = String::new();
-        loop {
-            buffer.clear();
-            let bytes = reader.read_line(&mut buffer)?;
-            if bytes == 0 {
-                log_str!("eof -> exist");
-                return Ok(()); // EOF
-            }
-
-            if buffer == "\r\n" {
-                break; // End of headers
-            }
-
-            if let Some(colon_position) = buffer.find(":") {
-                let (key, value) = buffer.split_at(colon_position);
-                if key.eq_ignore_ascii_case("Content-Length") {
-                    content_length = value[1..].trim().parse::<usize>().ok();
-                }
-            }
-        }
-
-        let content_length = match content_length {
-            Some(len) => len,
-            None => {
-                log_str!("Missing Content-Length header");
-                continue;
-            }
-        };
-
-        let mut body: Vec<u8> = vec![0; content_length];
-        reader.read_exact(&mut body)?;
-
-        let request: JsonRpcRequest = match serde_json::from_slice(&body) {
-            Ok(json) => json,
+        let request = match read_request(&mut reader) {
+            Ok(v) => v,
             Err(e) => {
                 log_debug!(&e);
                 continue;
             }
         };
 
-        log_debug!(&request);
+        log_str!("➡️ {:#?}", &request);
 
-        if request.method == "build/initialized" {
-            log_str!("yayyy: build/initialized");
-        } else if request.method == "workspace/buildTargets" {
-            let response = request_handler.workspace_build_targets(request);
-            send_response(&response, &mut stdout);
-            log_debug!(&response);
-        } else if request.method == "buildTarget/sources" {
-            let response = Responses::target_sources(request.id);
-            send_response(&response, &mut stdout);
-            log_debug!(&response);
-        } else if request.method == "textDocument/sourceKitOptions" {
-            let response = Responses::sourcekit_options(request);
-            send_response(&response, &mut stdout);
-            log_debug!(&response);
-        } else if request.method == "buildTarget/didChange" {
-            // TODO: buildTarget/didChange
-        } else if request.method == "workspace/waitForBuildSystemUpdates" {
-            // TODO: waitForBuildSystemUpdates
-        } else if request.method == "buildTarget/prepare" {
-            // TODO: buildTarget/prepare
-        } else if request.method == "textDocument/registerForChanges" {
-            // INFO: notification should not include "id": request.id.unwrap(),
-            // this endpoint is for push model (legacy)
-            let response = Responses::options_changed();
-            let value = to_value(&response)?;
-            send(&value, &mut stdout);
-            log_debug!(&response);
-        } else if request.method == "window/showMessage" {
-            // TODO: send to editor notification
-        } else if request.method == "build/shutdown" {
-            // TODO: any addtional cleanup
-        } else if request.method == "build/exit" {
-            return Ok(());
-        } else {
-            let error = format!("unkown request: {:?}", request);
-            log_str!(&error);
+        match RequestMethod::from_str(&request.method) {
+            RequestMethod::BuildInitialized => {
+                log_str!("[success] 🤩 oh yay: build server initialized");
+            }
+            RequestMethod::WorkspaceBuildTargets => {
+                let response = request_handler.workspace_build_targets(request);
+                send_response(&response, &mut stdout);
+                log_debug!(&response);
+            }
+            RequestMethod::BuildTargetSources => {
+                let response = Responses::target_sources(request.id);
+                send_response(&response, &mut stdout);
+                log_debug!(&response);
+            }
+            RequestMethod::TextDocumentSourceKitOptions => {
+                let response = Responses::sourcekit_options(request);
+                send_response(&response, &mut stdout);
+                log_debug!(&response);
+            }
+            RequestMethod::TextDocumentRegisterForChanges => {
+                // INFO: this endpoint is for push model (legacy)
+                let response = Responses::options_changed();
+                let value = to_value(&response)?;
+                send(&value, &mut stdout);
+                log_debug!(&response);
+            }
+            RequestMethod::BuildTargetPrepare => {}
+            RequestMethod::BuildTargetDidChange => {}
+            RequestMethod::BuildShutDown => {}
+            RequestMethod::BuildExit => {}
+            RequestMethod::WindowShowMessage => {}
+            RequestMethod::WorkspaceWaitForBuildSystemUpdates => {}
+            RequestMethod::Unknown => {
+                log_str!(&format!("[Warn] 🤷 Unkown request: {:?}", request));
+                return Ok(());
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
+use crate::{error::Result, log_str};
 use serde::{Deserialize, Serialize};
 use serde_json::{to_value, Number, Value};
-use std::io::Write;
+use std::io::{self, BufRead, BufReader, Read, Write};
 
 #[derive(Debug, Deserialize, Serialize)]
 #[allow(dead_code)]
@@ -69,4 +70,39 @@ pub fn send(response: &serde_json::Value, stdout: &mut std::io::StdoutLock<'stat
     }
 
     stdout.flush().expect("stdout flush failed");
+}
+
+pub fn read_request(reader: &mut BufReader<io::StdinLock<'static>>) -> Result<JsonRpcRequest> {
+    let mut content_length = None;
+    let mut buffer = String::new();
+    loop {
+        buffer.clear();
+        let bytes = reader.read_line(&mut buffer)?;
+        if bytes == 0 {
+            log_str!("this is weird");
+            return Err("eof -> exiting".into()); // EOF
+        }
+
+        if buffer == "\r\n" {
+            break; // End of headers
+        }
+
+        if let Some(colon_position) = buffer.find(":") {
+            let (key, value) = buffer.split_at(colon_position);
+            if key.eq_ignore_ascii_case("Content-Length") {
+                content_length = value[1..].trim().parse::<usize>().ok();
+            }
+        }
+    }
+
+    let content_length = match content_length {
+        Some(len) => len,
+        None => return Err("Missing Content-Length header".into())
+    };
+
+    let mut body: Vec<u8> = vec![0; content_length];
+    reader.read_exact(&mut body)?;
+    let request: JsonRpcRequest = serde_json::from_slice(&body)?;
+
+    Ok(request)
 }

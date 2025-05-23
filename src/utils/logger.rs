@@ -62,24 +62,24 @@ impl Logger {
 #[macro_export]
 macro_rules! log_str {
     ($msg:expr) => {
-        $crate::get_logger().lock().unwrap().log($msg)
+        $crate::utils::logger::get_logger().lock().unwrap().log($msg)
     };
     ($fmt:expr, $($arg:tt)*) => {
-        $crate::get_logger().lock().unwrap().log(&format!($fmt, $($arg)*))
+        $crate::utils::logger::get_logger().lock().unwrap().log(&format!($fmt, $($arg)*))
     };
 }
 
 #[macro_export]
 macro_rules! log_debug {
     ($msg:expr) => {
-        $crate::get_logger().lock().unwrap().debug($msg)
+        $crate::utils::logger::get_logger().lock().unwrap().debug($msg)
     };
 }
 
 #[macro_export]
 macro_rules! log_pretty {
     ($msg:expr) => {
-        $crate::get_logger().lock().unwrap().pretty($msg)
+        $crate::utils::logger::get_logger().lock().unwrap().pretty($msg)
     };
 }
 
