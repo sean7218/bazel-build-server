@@ -52,6 +52,7 @@ impl Logger {
         self.log(&message);
     }
 
+    #[allow(dead_code)]
     pub fn pretty(&mut self, value: &Value) {
         let message = to_string_pretty(value)
             .expect("Failed to be pretty!");

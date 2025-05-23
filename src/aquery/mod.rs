@@ -71,13 +71,13 @@ pub fn aquery(target: &str, current_dir: &PathBuf) -> Vec<BazelTarget> {
         bazel_targets.push(bazel_target);
     }
 
-    let targets = serde_json::to_value(&bazel_targets).expect("");
+    // let targets = serde_json::to_value(&bazel_targets).expect("");
     // let str = to_string_pretty(&targets).expect("");
     // println!("bazel_targets: {}", str);
     return bazel_targets
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct BazelTarget {
     pub id: u8,
     pub uri: Url,

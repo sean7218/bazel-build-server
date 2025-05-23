@@ -1,4 +1,4 @@
-use crate::{error::Result, log_str};
+use crate::{error::Result};
 use serde::{Deserialize, Serialize};
 use serde_json::{to_value, Number, Value};
 use std::io::{self, BufRead, BufReader, Read, Write};
@@ -79,7 +79,6 @@ pub fn read_request(reader: &mut BufReader<io::StdinLock<'static>>) -> Result<Js
         buffer.clear();
         let bytes = reader.read_line(&mut buffer)?;
         if bytes == 0 {
-            log_str!("this is weird");
             return Err("eof -> exiting".into()); // EOF
         }
 

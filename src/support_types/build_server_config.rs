@@ -13,6 +13,7 @@ pub struct BuildServerConfig {
     pub version: String,
     pub bsp_version: String,
     pub languages: Vec<String>,
+    pub target: String,
 }
 
 impl BuildServerConfig {

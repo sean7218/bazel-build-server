@@ -17,8 +17,7 @@ use messages::initialize_build_request::{
 };
 use serde_json::{self, from_value, to_value};
 use std::{
-    io::{self, BufReader, StdoutLock},
-    path::PathBuf,
+    io::{self, BufReader, StdoutLock}, path::PathBuf
 };
 use support_types::{
     build_server_config, build_target::{BuildTarget, BuildTargetCapabilities, BuildTargetIdentifier}, methods::RequestMethod
@@ -37,10 +36,7 @@ fn handle_initialize_request(
             send(&value, stdout);
             return Ok(request_handler);
         }
-        Err(e) => {
-            log_str!("Failed to read_request");
-            return Err(e);
-        }
+        Err(e) => return Err(e)
     }
 }
 
@@ -50,7 +46,7 @@ fn main() -> Result<()> {
     let mut stdout = stdout.lock();
     let mut reader = BufReader::new(stdin.lock());
 
-    let request_handler = match handle_initialize_request(&mut reader, &mut stdout) {
+    let mut request_handler = match handle_initialize_request(&mut reader, &mut stdout) {
         Ok(v) => v,
         Err(e) => {
             log_str!("[Error] Build server crashed due to invalid initial request");
@@ -66,7 +62,7 @@ fn main() -> Result<()> {
             Ok(v) => v,
             Err(e) => {
                 log_debug!(&e);
-                continue;
+                return Ok(());
             }
         };
 
@@ -79,12 +75,12 @@ fn main() -> Result<()> {
             RequestMethod::WorkspaceBuildTargets => {
                 let response = request_handler.workspace_build_targets(request);
                 send_response(&response, &mut stdout);
-                log_debug!(&response);
+                log_str!("↩️ {:#?}", response);
             }
             RequestMethod::BuildTargetSources => {
-                let response = Responses::target_sources(request.id);
+                let response = request_handler.build_target_sources(request);
                 send_response(&response, &mut stdout);
-                log_debug!(&response);
+                log_str!("↩️ {:#?}", response);
             }
             RequestMethod::TextDocumentSourceKitOptions => {
                 let response = Responses::sourcekit_options(request);
@@ -100,8 +96,12 @@ fn main() -> Result<()> {
             }
             RequestMethod::BuildTargetPrepare => {}
             RequestMethod::BuildTargetDidChange => {}
-            RequestMethod::BuildShutDown => {}
-            RequestMethod::BuildExit => {}
+            RequestMethod::BuildShutDown => {
+                return Ok(())
+            }
+            RequestMethod::BuildExit => {
+                return Ok(())
+            }
             RequestMethod::WindowShowMessage => {}
             RequestMethod::WorkspaceWaitForBuildSystemUpdates => {}
             RequestMethod::Unknown => {
@@ -112,9 +112,11 @@ fn main() -> Result<()> {
     }
 }
 
+#[allow(dead_code)]
 struct RequestHandler {
     config: BuildServerConfig,
     root_path: PathBuf,
+    targets: Vec<BazelTarget>
 }
 
 impl RequestHandler {
@@ -130,12 +132,7 @@ impl RequestHandler {
             .to_file_path()
             .map_err(|_| "Failed to convert root_uri to file path")?;
 
-        Ok(RequestHandler { config, root_path })
-    }
-
-    fn root_string(&self) -> String {
-        let root = self.root_path.clone();
-        root.to_string_lossy().into_owned()
+        Ok(RequestHandler { config, root_path, targets: vec![] })
     }
 
     fn build_initialize(&self, request: &JsonRpcRequest) -> JsonRpcResponse {
@@ -174,67 +171,54 @@ impl RequestHandler {
         JsonRpcResponse::new(request.id.clone(), value)
     }
 
-    fn workspace_build_targets(&self, request: JsonRpcRequest) -> JsonRpcResponse {
-        let dir = PathBuf::from("/Users/sean7218/bazel/buildserver/example/");
-        let targets = aquery::aquery("//Sources/Components", &dir);
-        log_debug!(&self.root_path);
-        // let mut build_targets: Vec<BuildTarget> = vec![];
-        // for target in targets {
-        //     let build_target: BuildTarget = target.into();
-        //     build_targets.push(build_target);
-        // }
-        // log_debug!(&build_targets);
-        // return JsonRpcResponse {
-        //     id: request.id,
-        //     jsonrpc: "2.0",
-        //     result: serde_json::to_value(build_targets).expect("")
-        // }
+    fn workspace_build_targets(&mut self, request: JsonRpcRequest) -> JsonRpcResponse {
+        let dir = &self.root_path;
+        let target = &self.config.target;
+        let targets = aquery::aquery(&target, &dir);
+        let mut build_targets: Vec<BuildTarget> = vec![];
+        for target in targets {
+            let build_target: BuildTarget = target.clone().into();
+            build_targets.push(build_target);
+            self.targets.push(target);
+        }
 
-        JsonRpcResponse {
+        return JsonRpcResponse {
             id: request.id,
             jsonrpc: "2.0",
             result: serde_json::json!({
-                "targets": [
+                "targets": serde_json::to_value(build_targets).expect("")
+            })
+        };
+    }
+
+    fn build_target_sources(&self, request: JsonRpcRequest) -> JsonRpcResponse {
+        return JsonRpcResponse {
+            id: request.id,
+            jsonrpc: "2.0",
+            result: serde_json::json!({
+                "items": [
                 {
-                    "id": { "uri": "file:///Users/sean7218/bazel/buildserver/example/Sources/Utils:Utils" },
-                    "tags": ["library"],
-                    "languageIds": ["swift"],
-                    "dependencies": [],
-                    "capabilities": {
-                        "canCompile": true,
-                        "canTest": true,
-                        "canRun": false,
-                        "canDebug": false,
-                    },
-                    // "dataKind": "sourceKit",
-                    // "data": {
-                    //     "toolchain": "file:///Users/sean7218/Library/Developer/Toolchains/swift-6.1-RELEASE.xctoolchain/"
-                    //     // "toolchain": "file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain"
-                    // }
+                    "target": { "uri": "file:///Users/sean7218/bazel/buildserver/example/Sources/Utils:Utils" },
+                    "sources": [
+                    {
+                        "kind": 1,
+                        "generated": false,
+                        "uri": "file:///Users/sean7218/bazel/buildserver/example/Sources/Utils/AwesomeUtils.swift"
+                    }
+                    ]
                 },
                 {
-                    "id": { "uri": "file:///Users/sean7218/bazel/buildserver/example/Sources/Components:Components" },
-                    "tags": ["library"],
-                    "languageIds": ["swift"],
-                    "dependencies": [
+                    "target": { "uri": "file:///Users/sean7218/bazel/buildserver/example/Sources/Components:Components" },
+                    "sources": [
                     {
-                        "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/"
+                        "kind": 1,
+                        "generated": false,
+                        "uri": "file:///Users/sean7218/bazel/buildserver/example/Sources/Components/Button.swift"
                     }
-                    ],
-                    "capabilities": {
-                        "canCompile": true,
-                        "canTest": true,
-                        "canRun": false,
-                        "canDebug": false,
-                    },
-                    // "dataKind": "sourceKit",
-                    // "data": {
-                    //     "toolchain": "file:///Users/sean7218/Library/Developer/Toolchains/swift-6.1-RELEASE.xctoolchain/"
-                    //     // "toolchain": "file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain"
-                    // }
+                    ]
                 }
                 ]
-            }),
+            })
         }
     }
 }
@@ -242,6 +226,7 @@ impl RequestHandler {
 struct Responses {}
 
 impl Responses {
+    #[allow(dead_code)]
     fn options_changed() -> JsonRpcNotification {
         let params = serde_json::json!({
             "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift",
@@ -277,39 +262,6 @@ impl Responses {
             ]
         });
         JsonRpcNotification::new("buildTarget/didChange", params)
-    }
-
-    #[allow(dead_code)]
-    fn target_sources(id: Option<serde_json::Number>) -> JsonRpcResponse {
-        let response = JsonRpcResponse {
-            id,
-            jsonrpc: "2.0",
-            result: serde_json::json!({
-                "items": [
-                {
-                    "target": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/" },
-                    "sources": [
-                    {
-                        "kind": 1,
-                        "generated": false,
-                        "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Utils/AwesomeUtils.swift"
-                    }
-                    ]
-                },
-                {
-                    "target": { "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/" },
-                    "sources": [
-                    {
-                        "kind": 1,
-                        "generated": false,
-                        "uri": "file:///Users/sean7218/bazel/hello-bazel/Sources/Components/Button.swift"
-                    }
-                    ]
-                }
-                ]
-            }),
-        };
-        return response;
     }
 
     #[allow(dead_code)]
@@ -515,4 +467,4 @@ impl From<BazelTarget> for BuildTarget {
         }
     }
 }
-// swiftc Sources/Components/Button.swift -module-name Components -I bazel-bin/Sources/Utils/ -L bazel-bin/Sources/Utils/ -l Utils -target arm64-apple-macos15.1 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk
+
