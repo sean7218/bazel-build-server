@@ -53,6 +53,11 @@ pub fn send_response(response: &JsonRpcResponse, stdout: &mut std::io::StdoutLoc
     send(&value, stdout);
 }
 
+pub fn send_notification(response: &JsonRpcNotification, stdout: &mut std::io::StdoutLock<'static>) {
+    let value = to_value(&response).unwrap();
+    send(&value, stdout);
+}
+
 pub fn send(response: &serde_json::Value, stdout: &mut std::io::StdoutLock<'static>) {
     let response_str = response.to_string();
     let response_len = response_str.len();

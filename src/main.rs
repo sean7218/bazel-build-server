@@ -9,12 +9,12 @@ use crate::error::{Error, Result};
 use aquery::BazelTarget;
 use build_server_config::BuildServerConfig;
 use json_rpc::{
-    JsonRpcNotification, JsonRpcRequest, JsonRpcResponse, read_request, send, send_response,
+    read_request, send, send_notification, send_response, JsonRpcNotification, JsonRpcRequest, JsonRpcResponse
 };
-use messages::{build_target_sources_request::{BuildTargetSourcesRequest, BuildTargetSourcesResponse, SourceItem, SourceItemKind, SourcesItem}, initialize_build_request::{
+use messages::{build_target_sources_request::{BuildTargetSourcesRequest, BuildTargetSourcesResponse, SourceItem, SourcesItem}, initialize_build_request::{
     BuildServerCapabilities, CompileProvider, InitializeBuildRequest, InitializeBuildResponse,
     SourceKitInitializeBuildResponseData,
-}};
+}, text_document_source_kit_options_request::{TextDocumentSourceKitOptionsRequest, TextDocumentSourceKitOptionsResponse}};
 use serde_json::{self, from_value, to_value};
 use std::{
     io::{self, BufReader, StdoutLock}, path::PathBuf
@@ -22,7 +22,6 @@ use std::{
 use support_types::{
     build_server_config, build_target::{BuildTarget, BuildTargetCapabilities, BuildTargetIdentifier}, methods::RequestMethod
 };
-use url::Url;
 
 fn main() -> Result<()> {
     let stdin = io::stdin();
@@ -33,8 +32,7 @@ fn main() -> Result<()> {
     let mut request_handler = match handle_initialize_request(&mut reader, &mut stdout) {
         Ok(v) => v,
         Err(e) => {
-            log_str!("[Error] Build server crashed due to invalid initial request");
-            log_debug!(&e);
+            log_str!("👻 handle_initialize_request failed. \n {:#?}", &e);
             return Ok(());
         }
     };
@@ -45,7 +43,7 @@ fn main() -> Result<()> {
         let request = match read_request(&mut reader) {
             Ok(v) => v,
             Err(e) => {
-                log_debug!(&e);
+                log_str!("👻 read_request(&mut reader) failed. \n {:#?}", &e);
                 return Ok(());
             }
         };
@@ -54,7 +52,7 @@ fn main() -> Result<()> {
 
         match RequestMethod::from_str(&request.method) {
             RequestMethod::BuildInitialized => {
-                log_str!("[success] 🤩 oh yay: build server initialized");
+                log_str!("🤩 oh yay: build server initialized");
             }
             RequestMethod::WorkspaceBuildTargets => {
                 let response = request_handler.workspace_build_targets(request)?;
@@ -67,29 +65,24 @@ fn main() -> Result<()> {
                 log_str!("↩️ {:#?}", response);
             }
             RequestMethod::TextDocumentSourceKitOptions => {
-                let response = Responses::sourcekit_options(request);
+                let response = request_handler.sourcekit_options(request)?;
                 send_response(&response, &mut stdout);
-                log_debug!(&response);
+                log_str!("↩️ {:#?}", response);
             }
             RequestMethod::TextDocumentRegisterForChanges => {
-                // INFO: this endpoint is for push model (legacy)
+                // INFO: this endpoint is for legacy push-based model
                 let response = Responses::options_changed();
-                let value = to_value(&response)?;
-                send(&value, &mut stdout);
-                log_debug!(&response);
+                send_notification(&response, &mut stdout);
+                log_str!("↩️ {:#?}", response);
             }
             RequestMethod::BuildTargetPrepare => {}
             RequestMethod::BuildTargetDidChange => {}
-            RequestMethod::BuildShutDown => {
-                return Ok(())
-            }
-            RequestMethod::BuildExit => {
-                return Ok(())
-            }
+            RequestMethod::BuildShutDown => { return Ok(()) }
+            RequestMethod::BuildExit => { return Ok(()) }
             RequestMethod::WindowShowMessage => {}
             RequestMethod::WorkspaceWaitForBuildSystemUpdates => {}
             RequestMethod::Unknown => {
-                log_str!(&format!("[Warn] 🤷 Unkown request: {:?}", request));
+                log_str!(&format!("🤷 Unkown request: {:#?}", request));
                 return Ok(());
             }
         }
@@ -112,7 +105,6 @@ fn handle_initialize_request(
     }
 }
 
-#[allow(dead_code)]
 struct RequestHandler {
     config: BuildServerConfig,
     root_path: PathBuf,
@@ -194,7 +186,6 @@ impl RequestHandler {
         Ok(response)
     }
 
-
     fn build_target_sources(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
         let source_request: BuildTargetSourcesRequest = serde_json::from_value(request.params)?;
         let mut items: Vec<SourcesItem> = vec![];
@@ -214,7 +205,7 @@ impl RequestHandler {
 
             items.push(SourcesItem { target, sources });
         }
-    
+
         let result = BuildTargetSourcesResponse { items };
         let resp = JsonRpcResponse {
             id: request.id,
@@ -222,6 +213,31 @@ impl RequestHandler {
             result: serde_json::to_value(result)?
         };
         Ok(resp)
+    }
+
+    fn sourcekit_options(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
+        let req: TextDocumentSourceKitOptionsRequest = from_value(request.params)?;
+        let target = match self.targets
+            .iter()
+            .find(|it| it.uri.eq(&req.target.uri)) {
+                Some(v) => v,
+                None => return Err("Failed to find target for sourcekit_options".into())
+            };
+
+        log_str!(">>> yes this is equal");
+
+        let result = TextDocumentSourceKitOptionsResponse {
+            compiler_arguments: target.compiler_arguments.clone(),
+            working_directory: Some(self.root_path.clone()),
+            data: None
+        };
+
+        let response = JsonRpcResponse {
+            id: request.id,
+            jsonrpc: "2.0",
+            result: to_value(result)?
+        };
+        Ok(response)
     }
 }
 

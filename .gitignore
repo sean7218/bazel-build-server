@@ -5,6 +5,7 @@ bazel-bin
 bazel-bin
 bazel-example
 bazel-testlogs
+bazel-out
 .index-db
 .indexstore
 
