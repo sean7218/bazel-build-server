@@ -12,7 +12,11 @@ use crate::log_str;
 /// params:
 ///   - target: full name of the target (example: //Libraries/Utils:UtilsLib)
 ///   - current_dir: the directory where the bazel WORKSPACE is
-pub fn aquery(target: &str, current_dir: &PathBuf) -> Vec<BazelTarget> {
+pub fn aquery(
+    target: &str,
+    current_dir: &PathBuf,
+    sdk: &str,
+) -> Vec<BazelTarget> {
     let mnemonic = format!("mnemonic(\"SwiftCompile\", deps({}))", target);
     let output = Command::new("bazel")
         .args(&["aquery", &mnemonic, "--output=jsonproto"])
@@ -63,12 +67,34 @@ pub fn aquery(target: &str, current_dir: &PathBuf) -> Vec<BazelTarget> {
         let mut compiler_arguments: Vec<String> = vec![];
         for arg in action.arguments {
             if arg.contains("-Xwrapped-swift") {
-                continue; // skip
-            } else if arg.contains("__BAZEL_XCODE_SDKROOT__") {
-                let _arg = arg.replace(
-                    "__BAZEL_XCODE_SDKROOT__",
-                    "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk"
-                );
+                continue;
+            } else if arg.ends_with("worker") {
+                continue;
+            } else if arg.starts_with("swiftc") {
+                continue;
+            } else if arg.starts_with("-I") {
+                let tail = arg[2..].to_string(); 
+                let include = current_dir
+                    .join(tail)
+                    .to_string_lossy()
+                    .into_owned();
+                let _arg = format!("-I{}", include);
+                compiler_arguments.push(_arg);
+            } else if arg.starts_with("bazel-out") {
+                let _arg = current_dir
+                    .join(arg)
+                    .to_string_lossy()
+                    .into_owned();
+                compiler_arguments.push(_arg);
+            } else if arg.ends_with(".swift") {
+                let _arg = current_dir
+                    .join(arg)
+                    .to_string_lossy()
+                    .into_owned();
+                compiler_arguments.push(_arg);
+            }
+            else if arg.contains("__BAZEL_XCODE_SDKROOT__") {
+                let _arg = arg.replace("__BAZEL_XCODE_SDKROOT__", sdk);
                 compiler_arguments.push(_arg);
             } else {
                 compiler_arguments.push(arg);
@@ -92,9 +118,6 @@ pub fn aquery(target: &str, current_dir: &PathBuf) -> Vec<BazelTarget> {
         bazel_targets.push(bazel_target);
     }
 
-    // let targets = serde_json::to_value(&bazel_targets).expect("");
-    // let str = to_string_pretty(&targets).expect("");
-    // println!("bazel_targets: {}", str);
     return bazel_targets
 }
 

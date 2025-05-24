@@ -165,7 +165,7 @@ impl RequestHandler {
     fn workspace_build_targets(&mut self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
         let dir = &self.root_path;
         let target = &self.config.target;
-        let targets = aquery::aquery(&target, &dir);
+        let targets = aquery::aquery(&target, &dir, &self.config.sdk);
 
         let mut build_targets: Vec<BuildTarget> = vec![];
 
@@ -224,7 +224,7 @@ impl RequestHandler {
                 None => return Err("Failed to find target for sourcekit_options".into())
             };
 
-        log_str!(">>> yes this is equal");
+        log_str!("✨ Found target for sourcekit_options.");
 
         let result = TextDocumentSourceKitOptionsResponse {
             compiler_arguments: target.compiler_arguments.clone(),
