@@ -21,7 +21,7 @@ pub struct BuildTarget {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct BuildTargetIdentifier {
-    pub uri: String,
+    pub uri: Url,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

@@ -11,10 +11,10 @@ use build_server_config::BuildServerConfig;
 use json_rpc::{
     JsonRpcNotification, JsonRpcRequest, JsonRpcResponse, read_request, send, send_response,
 };
-use messages::initialize_build_request::{
+use messages::{build_target_sources_request::{BuildTargetSourcesRequest, BuildTargetSourcesResponse, SourceItem, SourceItemKind, SourcesItem}, initialize_build_request::{
     BuildServerCapabilities, CompileProvider, InitializeBuildRequest, InitializeBuildResponse,
     SourceKitInitializeBuildResponseData,
-};
+}};
 use serde_json::{self, from_value, to_value};
 use std::{
     io::{self, BufReader, StdoutLock}, path::PathBuf
@@ -23,22 +23,6 @@ use support_types::{
     build_server_config, build_target::{BuildTarget, BuildTargetCapabilities, BuildTargetIdentifier}, methods::RequestMethod
 };
 use url::Url;
-
-fn handle_initialize_request(
-    reader: &mut BufReader<io::StdinLock<'static>>,
-    stdout: &mut StdoutLock<'static>,
-) -> Result<RequestHandler> {
-    match read_request(reader) {
-        Ok(request) => {
-            let request_handler = RequestHandler::initialize(&request)?;
-            let response = request_handler.build_initialize(&request);
-            let value = to_value(&response)?;
-            send(&value, stdout);
-            return Ok(request_handler);
-        }
-        Err(e) => return Err(e)
-    }
-}
 
 fn main() -> Result<()> {
     let stdin = io::stdin();
@@ -73,12 +57,12 @@ fn main() -> Result<()> {
                 log_str!("[success] 🤩 oh yay: build server initialized");
             }
             RequestMethod::WorkspaceBuildTargets => {
-                let response = request_handler.workspace_build_targets(request);
+                let response = request_handler.workspace_build_targets(request)?;
                 send_response(&response, &mut stdout);
                 log_str!("↩️ {:#?}", response);
             }
             RequestMethod::BuildTargetSources => {
-                let response = request_handler.build_target_sources(request);
+                let response = request_handler.build_target_sources(request)?;
                 send_response(&response, &mut stdout);
                 log_str!("↩️ {:#?}", response);
             }
@@ -112,6 +96,22 @@ fn main() -> Result<()> {
     }
 }
 
+fn handle_initialize_request(
+    reader: &mut BufReader<io::StdinLock<'static>>,
+    stdout: &mut StdoutLock<'static>,
+) -> Result<RequestHandler> {
+    match read_request(reader) {
+        Ok(request) => {
+            let request_handler = RequestHandler::initialize(&request)?;
+            let response = request_handler.build_initialize(&request)?;
+            let value = to_value(&response)?;
+            send(&value, stdout);
+            return Ok(request_handler);
+        }
+        Err(e) => return Err(e)
+    }
+}
+
 #[allow(dead_code)]
 struct RequestHandler {
     config: BuildServerConfig,
@@ -126,16 +126,14 @@ impl RequestHandler {
         let config = BuildServerConfig::parse(&build_request.root_uri)
             .ok_or(Error::from("Failed to parse BuildServerConfig"))?;
 
-        let root_url = Url::parse(&build_request.root_uri)?;
-
-        let root_path = root_url
+        let root_path = build_request.root_uri
             .to_file_path()
             .map_err(|_| "Failed to convert root_uri to file path")?;
 
         Ok(RequestHandler { config, root_path, targets: vec![] })
     }
 
-    fn build_initialize(&self, request: &JsonRpcRequest) -> JsonRpcResponse {
+    fn build_initialize(&self, request: &JsonRpcRequest) -> Result<JsonRpcResponse> {
         let root_path = self.root_path.clone();
         let index_database_path = root_path.join(".index-db").to_string_lossy().into_owned();
         let index_store_path = root_path.join(".indexstore").to_string_lossy().into_owned();
@@ -167,59 +165,63 @@ impl RequestHandler {
                 source_kit_options_provider: Some(true),
             },
         );
-        let value = to_value(result).expect("Failed to serialize InitializeBuildResponse.");
-        JsonRpcResponse::new(request.id.clone(), value)
+        let value = to_value(result)?;
+        let response = JsonRpcResponse::new(request.id.clone(), value);
+        Ok(response)
     }
 
-    fn workspace_build_targets(&mut self, request: JsonRpcRequest) -> JsonRpcResponse {
+    fn workspace_build_targets(&mut self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
         let dir = &self.root_path;
         let target = &self.config.target;
         let targets = aquery::aquery(&target, &dir);
+
         let mut build_targets: Vec<BuildTarget> = vec![];
+
         for target in targets {
             let build_target: BuildTarget = target.clone().into();
             build_targets.push(build_target);
             self.targets.push(target);
         }
 
-        return JsonRpcResponse {
+        let response = JsonRpcResponse {
             id: request.id,
             jsonrpc: "2.0",
             result: serde_json::json!({
-                "targets": serde_json::to_value(build_targets).expect("")
+                "targets": serde_json::to_value(build_targets)?
             })
         };
+
+        Ok(response)
     }
 
-    fn build_target_sources(&self, request: JsonRpcRequest) -> JsonRpcResponse {
-        return JsonRpcResponse {
+
+    fn build_target_sources(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
+        let source_request: BuildTargetSourcesRequest = serde_json::from_value(request.params)?;
+        let mut items: Vec<SourcesItem> = vec![];
+
+        for target in source_request.targets {
+            let bazel_target = match self.targets
+                .iter()
+                .find(|t| t.uri.eq(&target.uri)) {
+                    Some(v) => v,
+                    None => { continue; }
+                };
+
+            let sources: Vec<SourceItem> = bazel_target.input_files
+                .iter()
+                .map(SourceItem::from_url)
+                .collect();
+
+            items.push(SourcesItem { target, sources });
+        }
+    
+        let result = BuildTargetSourcesResponse { items };
+        let resp = JsonRpcResponse {
             id: request.id,
             jsonrpc: "2.0",
-            result: serde_json::json!({
-                "items": [
-                {
-                    "target": { "uri": "file:///Users/sean7218/bazel/buildserver/example/Sources/Utils:Utils" },
-                    "sources": [
-                    {
-                        "kind": 1,
-                        "generated": false,
-                        "uri": "file:///Users/sean7218/bazel/buildserver/example/Sources/Utils/AwesomeUtils.swift"
-                    }
-                    ]
-                },
-                {
-                    "target": { "uri": "file:///Users/sean7218/bazel/buildserver/example/Sources/Components:Components" },
-                    "sources": [
-                    {
-                        "kind": 1,
-                        "generated": false,
-                        "uri": "file:///Users/sean7218/bazel/buildserver/example/Sources/Components/Button.swift"
-                    }
-                    ]
-                }
-                ]
-            })
-        }
+            result: serde_json::to_value(result)?
+        };
+        Ok(resp)
     }
 }
 
@@ -443,7 +445,7 @@ impl From<BazelTarget> for BuildTarget {
     fn from(value: BazelTarget) -> Self {
         BuildTarget {
             id: BuildTargetIdentifier {
-                uri: value.uri.to_string(),
+                uri: value.uri,
             },
             display_name: Some(value.label),
             base_directory: None,

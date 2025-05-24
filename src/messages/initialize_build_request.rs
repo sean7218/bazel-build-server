@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, to_value};
+use url::Url;
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -15,7 +16,7 @@ pub struct InitializeBuildRequest {
     pub bsp_version: String,
 
     /// The rootUri of the workspace
-    pub root_uri: String,
+    pub root_uri: Url,
 
     /// The capabilities of the client
     pub capabilities: BuildClientCapabilities,

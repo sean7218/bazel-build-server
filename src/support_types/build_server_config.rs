@@ -17,15 +17,7 @@ pub struct BuildServerConfig {
 }
 
 impl BuildServerConfig {
-    pub fn parse(root_uri: &str) -> Option<BuildServerConfig> {
-        let root_uri = match Url::parse(root_uri) {
-            Ok(v) => v,
-            Err(e) => {
-                log_debug!(&e);
-                return None;
-            }
-        };
-
+    pub fn parse(root_uri: &Url) -> Option<BuildServerConfig> {
         let root_path = match root_uri.to_file_path() {
             Ok(v) => v,
             Err(()) => {

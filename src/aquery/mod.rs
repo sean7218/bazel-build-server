@@ -6,6 +6,8 @@ use serde_json::from_slice;
 use url::Url;
 use std::{collections::HashMap, path::PathBuf, process::Command};
 
+use crate::log_str;
+
 /// Outputs list of targets, each target should have set of input files
 /// params:
 ///   - target: full name of the target (example: //Libraries/Utils:UtilsLib)
@@ -35,16 +37,33 @@ pub fn aquery(target: &str, current_dir: &PathBuf) -> Vec<BazelTarget> {
         fragments.insert(fragment.id, fragment);
     }
 
+    let is_swift = |url: &Url| -> bool {
+        url.as_str().ends_with(".swift")
+    };
+    let to_url = |s: &String| -> Option<Url> {
+        let path = current_dir.join(s);
+        match Url::from_file_path(path) {
+            Ok(v) => return Some(v),
+            Err(e) => {
+                log_str!("{:#?}", &e);
+                return None
+            }
+        }
+    };
+
     // construct all input files
     let mut bazel_targets: Vec<BazelTarget> = vec![];
     for action in query_result.actions {
-        let input_files = build_input_files(&artifacts, &files, &fragments, &action);
+        let input_files: Vec<Url> = build_input_files(&artifacts, &files, &fragments, &action)
+            .iter()
+            .filter_map(to_url)
+            .filter(is_swift)
+            .collect();
 
         let mut compiler_arguments: Vec<String> = vec![];
         for arg in action.arguments {
-            // println!("{}", arg);
             if arg.contains("-Xwrapped-swift") {
-                // skip
+                continue; // skip
             } else if arg.contains("__BAZEL_XCODE_SDKROOT__") {
                 let _arg = arg.replace(
                     "__BAZEL_XCODE_SDKROOT__",
@@ -55,9 +74,11 @@ pub fn aquery(target: &str, current_dir: &PathBuf) -> Vec<BazelTarget> {
                 compiler_arguments.push(arg);
             }
         }
-        // println!("args: {:?}", compiler_arguments);
 
-        let target = query_result.targets.iter().find(|t| t.id == 1).unwrap();
+        let target = query_result.targets
+            .iter()
+            .find(|t| t.id == action.target_id)
+            .unwrap();
 
         let uri = bazel_to_uri(&current_dir, &target.label).unwrap();
 
@@ -82,7 +103,7 @@ pub struct BazelTarget {
     pub id: u8,
     pub uri: Url,
     pub label: String,
-    pub input_files: Vec<String>,
+    pub input_files: Vec<Url>,
     pub compiler_arguments: Vec<String>,
 }
 
