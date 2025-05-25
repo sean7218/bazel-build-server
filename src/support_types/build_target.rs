@@ -8,12 +8,14 @@ use url::Url;
 pub struct BuildTarget {
     pub id: BuildTargetIdentifier,
     pub display_name: Option<String>,
-    pub base_directory: Option<Url>, /// file uri
-    pub tags: Vec<String>, /// tags can be ["application", "test", "library"]
+    pub base_directory: Option<Url>,
+    /// file uri
+    pub tags: Vec<String>,
+    /// tags can be ["application", "test", "library"]
     pub language_ids: Vec<String>,
     pub dependencies: Vec<BuildTargetIdentifier>,
     pub capabilities: BuildTargetCapabilities,
-    /// if data_kind = "sourceKit" then `data` field must contain a 
+    /// if data_kind = "sourceKit" then `data` field must contain a
     /// SourceKitBuildTarget object.
     pub data_kind: Option<String>,
     pub data: Option<Value>,
@@ -46,4 +48,3 @@ pub struct SourceKitBuildTarget {
     /// If no toolchain is given, SourceKit-LSP will pick a toolchain to use for this target.
     pub toolchain: Url,
 }
-

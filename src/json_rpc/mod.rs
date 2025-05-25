@@ -34,15 +34,15 @@ impl JsonRpcResponse {
 #[allow(dead_code)]
 pub struct JsonRpcNotification {
     pub jsonrpc: &'static str,
-    pub method: &'static str,
+    pub method: String,
     pub params: Value,
 }
 
 impl JsonRpcNotification {
-    pub fn new(method: &'static str, params: Value) -> Self {
+    pub fn new(method: String, params: Value) -> Self {
         JsonRpcNotification {
             jsonrpc: "2.0",
-            method,
+            method: method,
             params,
         }
     }
