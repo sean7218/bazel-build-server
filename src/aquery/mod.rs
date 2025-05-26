@@ -123,7 +123,7 @@ pub fn aquery(
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct BazelTarget {
-    pub id: u8,
+    pub id: u32,
     pub uri: Url,
     pub label: String,
     pub input_files: Vec<Url>,
@@ -131,9 +131,9 @@ pub struct BazelTarget {
 }
 
 pub fn build_input_files(
-    artifacts: &HashMap<u8, Artifact>,
-    files: &HashMap<u8, DepSetOfFiles>,
-    fragments: &HashMap<u8, PathFragment>,
+    artifacts: &HashMap<u32, Artifact>,
+    files: &HashMap<u32, DepSetOfFiles>,
+    fragments: &HashMap<u32, PathFragment>,
     action: &Action,
 ) -> Vec<String> {
     let mut input_files: Vec<String> = vec![];
@@ -143,7 +143,7 @@ pub fn build_input_files(
 
         // println!("artifact_ids: {:?}", artifact_ids);
 
-        let mut path_ids: Vec<u8> = vec![];
+        let mut path_ids: Vec<u32> = vec![];
         for id in artifact_ids {
             let artifact = artifacts.get(&id).unwrap();
             path_ids.push(artifact.path_fragment_id);
@@ -171,12 +171,12 @@ pub fn build_input_files(
 ///    },
 ///  ]
 ///  return artifact_ids
-pub fn build_artifact_ids(file_set: &DepSetOfFiles, files: &HashMap<u8, DepSetOfFiles>) -> Vec<u8> {
+pub fn build_artifact_ids(file_set: &DepSetOfFiles, files: &HashMap<u32, DepSetOfFiles>) -> Vec<u32> {
     let direct_ids = file_set.direct_artifact_ids.clone();
     let transitive_ids = file_set.transitive_dep_set_ids.clone();
 
     // take care the direct files
-    let mut artifact_ids: Vec<u8> = vec![];
+    let mut artifact_ids: Vec<u32> = vec![];
     if let Some(mut direct_ids) = direct_ids {
         artifact_ids.append(&mut direct_ids);
     }
@@ -198,7 +198,7 @@ pub fn build_artifact_ids(file_set: &DepSetOfFiles, files: &HashMap<u8, DepSetOf
 ///    { "id": 2, "label": "Components", "parentId": 3 },
 ///    { "id": 3, "label": "Sources", "parentId": None },
 /// ]
-pub fn build_file_path(fragments: &HashMap<u8, PathFragment>, leaf: &PathFragment) -> String {
+pub fn build_file_path(fragments: &HashMap<u32, PathFragment>, leaf: &PathFragment) -> String {
     let mut file_path = String::new();
     let mut current = Some(leaf);
     while let Some(fragment) = current {
