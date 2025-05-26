@@ -1,4 +1,7 @@
-# SourceKit Build Server
+# Bazel Build Server
+
+![Screen Recording 2025-05-26 at 9 10 28 AM](https://github.com/user-attachments/assets/a5d7e248-9f5a-4149-bfe3-065a592d5fba)
+
 
 ## Getting Started
 
