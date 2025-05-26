@@ -2,8 +2,10 @@
 
 ## Getting Started
 
-1. creating a buildServer.json at the root of your project such as. The target will be used by `aquery` to 
-get all the compiler arguments and targets. the sdk is what will be replaced for `__BAZEL_XCODE_SDKROOT__`
+1. Creating a buildServer.json at the root of your project shown below. 
+    - The `argv` need to point at the buildserver executable
+    - The `target` will be used by `aquery` to get all the compiler arguments and targets. 
+    - The `sdk` is what will be replaced for `__BAZEL_XCODE_SDKROOT__`
 
 ```json
 {
@@ -19,21 +21,45 @@ get all the compiler arguments and targets. the sdk is what will be replaced for
 }
 ```
 
-2. compile the build server by running, the executable will be in `./target/debug/buildserver`
+2. Compile the build server by running, the executable will be in `Users/sean7218/bazel-build-server/target/debug/buildserver`, 
+and change the `argv` in the buildServer.json file as well. 
 
-```
+```bash
 cargo build
 ```
 
-3. compile your project based on the target specified in the `buildServer.json`
+3. Compile your project based on the target specified in the `buildServer.json`
 
-4. Logging is stored in `~/.sourcekit-bsp/bsp.log`, it is recommended to open it and see any issues.
+```bash
+bazel build //Sources/Components:Components
+```
 
-5. open your project in vscode or neovim, you should be see logs both in sourcekit-lsp and bsp.log
+4. Open your project in vscode or neovim, you should be see logs both in sourcekit-lsp and bsp.log
+
+5. Once the server is started Logging is stored in `~/.sourcekit-bsp/bsp.log`, it is recommended to open it and see any issues.
 
 ## Debugging
 
 todo!
+
+## Index-Store
+
+The default index store is stored at the root `project-root/.indexstore`, you can specify your bazel rule to output to that location.
+This might be helpful to increase sourcekit-lsp performance. 
+
+```python
+swift_library(
+    name = "Components",
+    srcs = ["Button.swift"],
+    module_name = "Components",
+    visibility = ["//visibility:public"],
+    deps = ["//Sources/Utils:Utils"],
+    copts = [
+        "-index-store-path",
+        "./.indexstore",
+    ],
+)
+```
 
 
 

@@ -81,17 +81,17 @@ pub fn aquery(
                 let _arg = format!("-I{}", include);
                 compiler_arguments.push(_arg);
             } else if arg.starts_with("bazel-out") {
-                let _arg = current_dir
-                    .join(arg)
-                    .to_string_lossy()
-                    .into_owned();
-                compiler_arguments.push(_arg);
+                // let _arg = current_dir
+                //     .join(arg)
+                //     .to_string_lossy()
+                //     .into_owned();
+                compiler_arguments.push(arg);
             } else if arg.ends_with(".swift") {
-                let _arg = current_dir
-                    .join(arg)
-                    .to_string_lossy()
-                    .into_owned();
-                compiler_arguments.push(_arg);
+                // let _arg = current_dir
+                //     .join(arg)
+                //     .to_string_lossy()
+                //     .into_owned();
+                compiler_arguments.push(arg);
             }
             else if arg.contains("__BAZEL_XCODE_SDKROOT__") {
                 let _arg = arg.replace("__BAZEL_XCODE_SDKROOT__", sdk);
