@@ -15,6 +15,8 @@ pub struct BuildServerConfig {
     pub languages: Vec<String>,
     pub target: String,
     pub sdk: String,
+    pub index_store_path: String,
+    pub index_database_path: String
 }
 
 impl BuildServerConfig {

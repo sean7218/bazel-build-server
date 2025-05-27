@@ -1,0 +1,2 @@
+build --features swift.index_while_building
+build --features swift.use_global_index_store

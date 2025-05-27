@@ -7,5 +7,7 @@
   "bspVersion": "2.0.0",
   "languages": ["swift"],
   "target": "//Sources/Components:Components",
-  "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+  "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+  "indexStorePath": "/Users/sean7218/bazel/buildserver/example/bazel-out/_global_index_store",
+  "indexDatabasePath": "/Users/sean7218/bazel/buildserver/example/.index-db"
 }

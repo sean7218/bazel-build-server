@@ -149,8 +149,8 @@ impl RequestHandler {
 
     fn build_initialize(&self, request: &JsonRpcRequest) -> Result<JsonRpcResponse> {
         let root_path = self.root_path.clone();
-        let index_database_path = root_path.join(".index-db").to_string_lossy().into_owned();
-        let index_store_path = root_path.join(".indexstore").to_string_lossy().into_owned();
+        let index_database_path = self.config.index_database_path.clone();
+        let index_store_path = self.config.index_store_path.clone();
 
         let result = InitializeBuildResponse::new(
             "bazel-build-server",

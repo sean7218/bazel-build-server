@@ -6,10 +6,7 @@ swift_library(
     module_name = "Components",
     visibility = ["//visibility:public"],
     deps = ["//Sources/Utils:Utils"],
-    copts = [
-        "-index-store-path",
-        "./.indexstore",
-    ],
+    copts = [],
 )
 
 
