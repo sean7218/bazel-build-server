@@ -1,0 +1,14 @@
+module(name = "example-app")
+
+bazel_dep(
+    name = "rules_swift",
+    version = "2.8.1",
+    repo_name = "build_bazel_rules_swift",
+)
+
+bazel_dep(
+    name = "rules_apple",
+    version = "3.22.0",
+    repo_name = "build_bazel_rules_apple"
+)
+

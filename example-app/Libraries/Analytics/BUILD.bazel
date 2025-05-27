@@ -1,0 +1,13 @@
+load("@build_bazel_rules_swift//swift:swift_library.bzl", "swift_library")
+
+swift_library(
+    name = "Analytics",
+    srcs = ["Analytics.swift"],
+    module_name = "Analytics",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//Libraries/NetworkStack:NetworkStack",
+        "//Libraries/Utils:Utils",
+    ]
+)
+
