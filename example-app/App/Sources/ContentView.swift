@@ -16,13 +16,14 @@ public struct ContentView: View {
         .padding()
     }
 
-    public func testing() {
+    public func testing() throws {
         let btn = BazelView()
         print(btn.body)
         let logger = Logger(level: .debug)
         print(logger.level == LogLeverl.debug)
-        let network = NetworkStack.init(host: "hello")
-        print(network.host)
+        let network = NetworkStack(host: "Hello")
+        try network.request(url: "www.google.com")
+        let level = LogLeverl.error
     }
 }
 

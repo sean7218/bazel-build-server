@@ -4,7 +4,7 @@ use query_result::{Action, Artifact, DepSetOfFiles, PathFragment, QueryResult};
 use serde::{Deserialize, Serialize};
 use serde_json::from_slice;
 use url::Url;
-use std::{collections::HashMap, path::PathBuf, process::Command};
+use std::{collections::{HashMap, HashSet}, hash::Hash, path::PathBuf, process::Command};
 
 use crate::log_str;
 
@@ -106,7 +106,11 @@ pub fn aquery(
             .find(|t| t.id == action.target_id)
             .unwrap();
 
-        let uri = bazel_to_uri(&current_dir, &target.label).unwrap();
+        let uri = bazel_to_uri(
+            &current_dir,
+            &target.label,
+            &target.id
+        ).unwrap();
 
         let bazel_target = BazelTarget {
             id: action.target_id,
@@ -118,7 +122,10 @@ pub fn aquery(
         bazel_targets.push(bazel_target);
     }
 
-    return bazel_targets
+    // dedup bazel_targets
+    let target_set: HashSet<BazelTarget> = bazel_targets.into_iter().collect();
+    let targets: Vec<BazelTarget> = target_set.into_iter().collect();
+    return targets
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -128,6 +135,21 @@ pub struct BazelTarget {
     pub label: String,
     pub input_files: Vec<Url>,
     pub compiler_arguments: Vec<String>,
+}
+
+impl PartialEq for BazelTarget {
+    fn eq(&self, other: &Self) -> bool {
+        self.uri.eq(&other.uri) && self.id.eq(&other.id)
+    }
+}
+
+impl Eq for BazelTarget {}
+
+impl Hash for BazelTarget {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.id.hash(state);
+        self.uri.hash(state);
+    }
 }
 
 pub fn build_input_files(
@@ -221,8 +243,13 @@ pub fn build_file_path(fragments: &HashMap<u32, PathFragment>, leaf: &PathFragme
 }
 
 /// Convert bazel target name to Uri-compatible encoding
-pub fn bazel_to_uri(base: &PathBuf, name: &String) -> Result<Url, ()> {
+pub fn bazel_to_uri(
+    base: &PathBuf,
+    name: &String,
+    id: &u32
+) -> Result<Url, ()> {
     let trimmed = name.trim_start_matches("//");
     let joined = base.join(trimmed);
-    return Url::from_file_path(joined)
+    let with_number = joined.join(id.to_string());
+    return Url::from_file_path(with_number)
 }

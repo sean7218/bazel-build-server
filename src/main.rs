@@ -109,6 +109,7 @@ fn handle_initialize_request(
         Ok(request) => {
             let request_handler = RequestHandler::initialize(&request)?;
             let response = request_handler.build_initialize(&request)?;
+            log_str!("↩️ {:#?}", response);
             let value = to_value(&response)?;
             send(&value, stdout);
             return Ok(request_handler);

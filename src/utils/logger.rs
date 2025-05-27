@@ -51,13 +51,6 @@ impl Logger {
         // let message = format!("{:#?}", obj);
         self.log(&message);
     }
-
-    #[allow(dead_code)]
-    pub fn pretty(&mut self, value: &Value) {
-        let message = to_string_pretty(value)
-            .expect("Failed to be pretty!");
-        self.log(&message);
-    }
 }
 
 #[macro_export]
@@ -74,13 +67,6 @@ macro_rules! log_str {
 macro_rules! log_debug {
     ($msg:expr) => {
         $crate::utils::logger::get_logger().lock().unwrap().debug($msg)
-    };
-}
-
-#[macro_export]
-macro_rules! log_pretty {
-    ($msg:expr) => {
-        $crate::utils::logger::get_logger().lock().unwrap().pretty($msg)
     };
 }
 
