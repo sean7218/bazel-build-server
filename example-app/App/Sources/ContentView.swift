@@ -18,7 +18,11 @@ public struct ContentView: View {
 
     public func testing() {
         let btn = BazelView()
+        print(btn.body)
         let logger = Logger(level: .debug)
+        print(logger.level == LogLeverl.debug)
+        let network = NetworkStack.init(host: "hello")
+        print(network.host)
     }
 }
 

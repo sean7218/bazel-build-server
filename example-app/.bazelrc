@@ -1,0 +1,3 @@
+build --ios_minimum_os=16.0
+build --ios_simulator_device="iPhone 16"
+build --platforms=@build_bazel_apple_support//platforms:ios_sim_arm64

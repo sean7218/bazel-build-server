@@ -12,3 +12,8 @@ bazel_dep(
     repo_name = "build_bazel_rules_apple"
 )
 
+bazel_dep(
+    name = "apple_support",
+    version = "1.17.1",
+    repo_name = "build_bazel_apple_support"
+)

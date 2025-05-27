@@ -11,3 +11,6 @@ bazel-out
 
 # macos
 .DS_Store
+
+# example-app
+bazel-example-app
