@@ -28,6 +28,7 @@ use messages::{
 use serde_json::{self, from_value, to_value};
 use std::{
     io::{self, BufReader, StdoutLock},
+    panic,
     path::PathBuf,
 };
 use support_types::{
@@ -36,7 +37,21 @@ use support_types::{
     methods::RequestMethod,
 };
 
-fn main() -> Result<()> {
+fn main() {
+    panic::set_hook(Box::new(|panic_info| {
+        if let Some(location) = panic_info.location() {
+            log_str!("bsp_server crashed: {:#?}", location);
+        } else {
+            log_str!("bsp_server crashed: unknown location");
+        }
+    }));
+
+    if let Err(error) = run() {
+        log_str!("bsp_server error: {:#?}", error);
+    }
+}
+
+fn run() -> Result<()> {
     let stdin = io::stdin();
     let stdout = io::stdout();
     let mut stdout = stdout.lock();
@@ -45,7 +60,7 @@ fn main() -> Result<()> {
     let mut request_handler = match handle_initialize_request(&mut reader, &mut stdout) {
         Ok(v) => v,
         Err(e) => {
-            log_str!("👻 handle_initialize_request failed. \n {:#?}", &e);
+            log_str!("👻 handle_initialize_request failed -> {:#?}", &e);
             return Ok(());
         }
     };
@@ -56,7 +71,7 @@ fn main() -> Result<()> {
         let request = match read_request(&mut reader) {
             Ok(v) => v,
             Err(e) => {
-                log_str!("👻 read_request(&mut reader) failed. \n {:#?}", &e);
+                log_str!("👻 read_request(&mut reader) failed -> {:#?}", &e);
                 return Ok(());
             }
         };
@@ -105,17 +120,16 @@ fn handle_initialize_request(
     reader: &mut BufReader<io::StdinLock<'static>>,
     stdout: &mut StdoutLock<'static>,
 ) -> Result<RequestHandler> {
-    match read_request(reader) {
-        Ok(request) => {
-            let request_handler = RequestHandler::initialize(&request)?;
-            let response = request_handler.build_initialize(&request)?;
-            log_str!("↩️ {:#?}", response);
-            let value = to_value(&response)?;
-            send(&value, stdout);
-            return Ok(request_handler);
-        }
-        Err(e) => return Err(e),
-    }
+    let request = read_request(reader)?;
+    let request_handler = RequestHandler::initialize(&request)?;
+
+    let response = request_handler.build_initialize(&request)?;
+    log_str!("↩️ {:#?}", response);
+
+    let value = to_value(&response)?;
+    send(&value, stdout);
+
+    Ok(request_handler)
 }
 
 struct RequestHandler {
@@ -132,8 +146,7 @@ impl RequestHandler {
     fn initialize(request: &JsonRpcRequest) -> Result<Self> {
         let build_request: InitializeBuildRequest = from_value(request.params.clone())?;
 
-        let config = BuildServerConfig::parse(&build_request.root_uri)
-            .ok_or(Error::from("Failed to parse BuildServerConfig"))?;
+        let config = BuildServerConfig::parse(&build_request.root_uri)?;
 
         let root_path = build_request
             .root_uri
@@ -148,7 +161,6 @@ impl RequestHandler {
     }
 
     fn build_initialize(&self, request: &JsonRpcRequest) -> Result<JsonRpcResponse> {
-        let root_path = self.root_path.clone();
         let index_database_path = self.config.index_database_path.clone();
         let index_store_path = self.config.index_store_path.clone();
 
@@ -187,7 +199,7 @@ impl RequestHandler {
     fn workspace_build_targets(&mut self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
         let dir = &self.root_path;
         let target = &self.config.target;
-        let targets = aquery::aquery(&target, &dir, &self.config.sdk);
+        let targets = aquery::aquery(&target, &dir, &self.config.sdk)?;
 
         let mut build_targets: Vec<BuildTarget> = vec![];
 
@@ -287,7 +299,7 @@ impl RequestHandler {
         let response = JsonRpcNotification::new(
             String::from(FileOptionsChangedNotification::METHOD),
             to_value(params)?,
-        ); 
+        );
 
         Ok(response)
     }

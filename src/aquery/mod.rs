@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::from_slice;
 use url::Url;
 use std::{collections::{HashMap, HashSet}, hash::Hash, path::PathBuf, process::Command};
+use crate::error::Result;
 
 use crate::log_str;
 
@@ -16,16 +17,14 @@ pub fn aquery(
     target: &str,
     current_dir: &PathBuf,
     sdk: &str,
-) -> Vec<BazelTarget> {
+) -> Result<Vec<BazelTarget>> {
     let mnemonic = format!("mnemonic(\"SwiftCompile\", deps({}))", target);
     let output = Command::new("bazel")
         .args(&["aquery", &mnemonic, "--output=jsonproto"])
         .current_dir(current_dir.clone())
-        .output()
-        .expect("Failed to start aquery process");
+        .output()?;
 
-    let query_result: QueryResult = from_slice(&output.stdout)
-        .expect("Failed to parse output");
+    let query_result: QueryResult = from_slice(&output.stdout)?;
 
     // convert array into hashmap to reduce time complexity
     let mut artifacts = HashMap::new();
@@ -104,13 +103,9 @@ pub fn aquery(
         let target = query_result.targets
             .iter()
             .find(|t| t.id == action.target_id)
-            .unwrap();
+            .ok_or("target_id not found")?;
 
-        let uri = bazel_to_uri(
-            &current_dir,
-            &target.label,
-            &target.id
-        ).unwrap();
+        let uri = bazel_to_uri(&current_dir, &target.label, &target.id)?;
 
         let bazel_target = BazelTarget {
             id: action.target_id,
@@ -125,7 +120,7 @@ pub fn aquery(
     // dedup bazel_targets
     let target_set: HashSet<BazelTarget> = bazel_targets.into_iter().collect();
     let targets: Vec<BazelTarget> = target_set.into_iter().collect();
-    return targets
+    Ok(targets)
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -247,9 +242,12 @@ pub fn bazel_to_uri(
     base: &PathBuf,
     name: &String,
     id: &u32
-) -> Result<Url, ()> {
+) -> Result<Url> {
     let trimmed = name.trim_start_matches("//");
-    let joined = base.join(trimmed);
-    let with_number = joined.join(id.to_string());
-    return Url::from_file_path(with_number)
+    let joined = base
+        .join(trimmed)
+        .join(id.to_string());
+    let url = Url::from_file_path(joined)
+        .map_err(|_| "failed to create uri for target".into());
+    return url;
 }
