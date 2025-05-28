@@ -46,6 +46,7 @@ fn main() {
         }
     }));
 
+    // capture any error here
     if let Err(error) = run() {
         log_str!("bsp_server error: {:#?}", error);
     }
@@ -274,7 +275,18 @@ impl RequestHandler {
     }
 
     // INFO: this endpoint is for legacy push-based model
-    fn legacy_register_for_changes(&self, request: JsonRpcRequest) -> Result<JsonRpcNotification> {
+    fn legacy_register_for_changes(&mut self, request: JsonRpcRequest) -> Result<JsonRpcNotification> {
+        // if bazel targets is empty, we know it is the initial request
+        if self.targets.is_empty() {
+            let targets = aquery::aquery(
+                &self.config.target,
+                &self.root_path,
+                &self.config.sdk
+            )?;
+
+            self.targets = targets;
+        }
+
         let req: RegisterForChanges = from_value(request.params)?;
 
         let mut options: Vec<String> = vec![];
