@@ -5,7 +5,7 @@ mod messages;
 mod support_types;
 mod utils;
 
-use crate::error::{Error, Result};
+use crate::error::Result;
 use aquery::BazelTarget;
 use build_server_config::BuildServerConfig;
 use json_rpc::{

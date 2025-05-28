@@ -4,7 +4,6 @@ use serde::{Deserialize, Serialize};
 use url::Url;
 
 use crate::error::Result;
-use crate::{log_debug, log_str};
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]

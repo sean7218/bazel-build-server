@@ -3,7 +3,6 @@ use std::{fmt::Debug, fs::OpenOptions};
 use std::fs::File;
 use std::io::Write;
 use chrono::Local;
-use serde_json::{to_string_pretty, Value};
 
 #[derive(Debug)]
 pub struct Logger {
@@ -45,12 +44,6 @@ impl Logger {
         let timestamp = Local::now().format("%Y-%m-%d %H:%M:%S");
         writeln!(self.file, "[{}] {}", timestamp, message).unwrap();
     }
-
-    pub fn debug<T: Debug>(&mut self, obj: &T) {
-        let message = format!("{:?}", obj);
-        // let message = format!("{:#?}", obj);
-        self.log(&message);
-    }
 }
 
 #[macro_export]
@@ -62,11 +55,3 @@ macro_rules! log_str {
         $crate::utils::logger::get_logger().lock().unwrap().log(&format!($fmt, $($arg)*))
     };
 }
-
-#[macro_export]
-macro_rules! log_debug {
-    ($msg:expr) => {
-        $crate::utils::logger::get_logger().lock().unwrap().debug($msg)
-    };
-}
-
