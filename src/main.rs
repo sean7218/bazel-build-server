@@ -103,14 +103,20 @@ fn run() -> Result<()> {
                 send_notification(&notification, &mut stdout);
                 log_str!("↩️ {:#?}", notification);
             }
+            RequestMethod::WorkspaceWaitForBuildSystemUpdates => {
+                let response = request_handler.wait_for_updates(request)?;
+                send_response(&response, &mut stdout);
+                log_str!("↩️ {:#?}", response);
+            }
             RequestMethod::BuildTargetPrepare => {
-                let _ = request_handler.build_target_repare(request)?;
+                let response = request_handler.build_target_repare(request)?;
+                send_response(&response, &mut stdout);
+                log_str!("↩️ {:#?}", response);
             }
             RequestMethod::BuildTargetDidChange => {}
             RequestMethod::BuildShutDown => return Ok(()),
             RequestMethod::BuildExit => return Ok(()),
             RequestMethod::WindowShowMessage => {}
-            RequestMethod::WorkspaceWaitForBuildSystemUpdates => {}
             RequestMethod::Unknown => {
                 log_str!(&format!("🤷 Unkown request: {:#?}", request));
                 return Ok(());
@@ -254,10 +260,10 @@ impl RequestHandler {
     }
 
     fn wait_for_updates(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
-        Err("".into())
+        Ok(JsonRpcResponse::new(request.id, serde_json::Value::Null))
     }
 
-    fn build_target_repare(&self, request: JsonRpcRequest) -> Result<bool> {
+    fn build_target_repare(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
         let directory = self.root_path.clone();
         let target = self.config.target.clone();
         let output = Command::new("bazel")
@@ -266,7 +272,7 @@ impl RequestHandler {
             .output()?;
 
         log_str!("🟢 target/prepare {:#?}", output);
-        Ok(true)
+        Ok(JsonRpcResponse::new(request.id, serde_json::Value::Null))
     }
 
     fn sourcekit_options(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {

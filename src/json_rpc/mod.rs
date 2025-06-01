@@ -1,12 +1,12 @@
 use crate::{error::Result};
 use serde::{Deserialize, Serialize};
 use serde_json::{to_value, Number, Value};
-use std::io::{self, BufRead, BufReader, Read, Write};
+use std::{io::{self, BufRead, BufReader, Read, Write}};
 
 #[derive(Debug, Deserialize, Serialize)]
 #[allow(dead_code)]
 pub struct JsonRpcRequest {
-    pub id: Option<Number>,
+    pub id: Option<String>,
     pub jsonrpc: String,
     pub method: String,
     pub params: Value,
@@ -17,11 +17,11 @@ pub struct JsonRpcRequest {
 pub struct JsonRpcResponse {
     pub jsonrpc: &'static str,
     pub result: Value,
-    pub id: Option<Number>,
+    pub id: Option<String>,
 }
 
 impl JsonRpcResponse {
-    pub fn new(id: Option<Number>, result: Value) -> Self {
+    pub fn new(id: Option<String>, result: Value) -> Self {
         JsonRpcResponse {
             jsonrpc: "2.0",
             result,
