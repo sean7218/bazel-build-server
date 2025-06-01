@@ -29,7 +29,7 @@ use serde_json::{self, from_value, to_value};
 use std::{
     io::{self, BufReader, StdoutLock},
     panic,
-    path::PathBuf,
+    path::PathBuf, process::Command,
 };
 use support_types::{
     build_server_config,
@@ -103,7 +103,9 @@ fn run() -> Result<()> {
                 send_notification(&notification, &mut stdout);
                 log_str!("↩️ {:#?}", notification);
             }
-            RequestMethod::BuildTargetPrepare => {}
+            RequestMethod::BuildTargetPrepare => {
+                let _ = request_handler.build_target_repare(request)?;
+            }
             RequestMethod::BuildTargetDidChange => {}
             RequestMethod::BuildShutDown => return Ok(()),
             RequestMethod::BuildExit => return Ok(()),
@@ -249,6 +251,22 @@ impl RequestHandler {
             result: serde_json::to_value(result)?,
         };
         Ok(resp)
+    }
+
+    fn wait_for_updates(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
+        Err("".into())
+    }
+
+    fn build_target_repare(&self, request: JsonRpcRequest) -> Result<bool> {
+        let directory = self.root_path.clone();
+        let target = self.config.target.clone();
+        let output = Command::new("bazel")
+            .args(&["build", &target])
+            .current_dir(directory)
+            .output()?;
+
+        log_str!("🟢 target/prepare {:#?}", output);
+        Ok(true)
     }
 
     fn sourcekit_options(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {

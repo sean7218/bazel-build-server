@@ -1,11 +1,16 @@
 #![allow(dead_code)]
 mod query_result;
+use crate::error::Result;
 use query_result::{Action, Artifact, DepSetOfFiles, PathFragment, QueryResult};
 use serde::{Deserialize, Serialize};
 use serde_json::from_slice;
+use std::{
+    collections::{HashMap, HashSet},
+    hash::Hash,
+    path::PathBuf,
+    process::Command,
+};
 use url::Url;
-use std::{collections::{HashMap, HashSet}, hash::Hash, path::PathBuf, process::Command};
-use crate::error::Result;
 
 use crate::log_str;
 
@@ -13,11 +18,7 @@ use crate::log_str;
 /// params:
 ///   - target: full name of the target (example: //Libraries/Utils:UtilsLib)
 ///   - current_dir: the directory where the bazel WORKSPACE is
-pub fn aquery(
-    target: &str,
-    current_dir: &PathBuf,
-    sdk: &str,
-) -> Result<Vec<BazelTarget>> {
+pub fn aquery(target: &str, current_dir: &PathBuf, sdk: &str) -> Result<Vec<BazelTarget>> {
     let mnemonic = format!("mnemonic(\"SwiftCompile\", deps({}))", target);
     let output = Command::new("bazel")
         .args(&["aquery", &mnemonic, "--output=jsonproto"])
@@ -40,16 +41,14 @@ pub fn aquery(
         fragments.insert(fragment.id, fragment);
     }
 
-    let is_swift = |url: &Url| -> bool {
-        url.as_str().ends_with(".swift")
-    };
+    let is_swift = |url: &Url| -> bool { url.as_str().ends_with(".swift") };
     let to_url = |s: &String| -> Option<Url> {
         let path = current_dir.join(s);
         match Url::from_file_path(path) {
             Ok(v) => return Some(v),
             Err(e) => {
                 log_str!("{:#?}", &e);
-                return None
+                return None;
             }
         }
     };
@@ -64,43 +63,73 @@ pub fn aquery(
             .collect();
 
         let mut compiler_arguments: Vec<String> = vec![];
-        for arg in action.arguments {
-            if arg.contains("-Xwrapped-swift") {
-                continue;
-            } else if arg.ends_with("worker") {
-                continue;
-            } else if arg.starts_with("swiftc") {
-                continue;
-            } else if arg.starts_with("-I") {
-                let tail = arg[2..].to_string(); 
-                let include = current_dir
-                    .join(tail)
-                    .to_string_lossy()
-                    .into_owned();
-                let _arg = format!("-I{}", include);
-                compiler_arguments.push(_arg);
-            } else if arg.starts_with("bazel-out") {
-                // let _arg = current_dir
-                //     .join(arg)
-                //     .to_string_lossy()
-                //     .into_owned();
-                compiler_arguments.push(arg);
-            } else if arg.ends_with(".swift") {
-                // let _arg = current_dir
-                //     .join(arg)
-                //     .to_string_lossy()
-                //     .into_owned();
-                compiler_arguments.push(arg);
+
+        let mut index: usize = 0;
+        let count = action.arguments.iter().count();
+        while index < count {
+            let arg = action.arguments.get(index).unwrap().clone();
+
+            if arg.contains("-Xfrontend") {
+                if let Some(next) = action.arguments.get(index + 1) {
+                    if next.contains("-const-gather-protocols-file") {
+                        index += 2;
+                        continue;
+                    }
+                }
             }
-            else if arg.contains("__BAZEL_XCODE_SDKROOT__") {
+
+            if arg.contains("-Xfrontend") {
+                if let Some(next) = action.arguments.get(index + 1) {
+                    if next.contains("const_protocols_to_gather.json") {
+                        index += 2;
+                        continue;
+                    }
+                }
+            }
+
+            if arg.contains("__BAZEL_XCODE_SDKROOT__") {
                 let _arg = arg.replace("__BAZEL_XCODE_SDKROOT__", sdk);
                 compiler_arguments.push(_arg);
-            } else {
-                compiler_arguments.push(arg);
+                index += 1;
+                continue;
             }
+
+            if arg.contains("-Xwrapped-swift")
+                || arg.ends_with("worker")
+                || arg.starts_with("swiftc")
+            {
+                index += 1;
+                continue;
+            }
+
+            // if arg.starts_with("-I") {
+            //     let tail = arg[2..].to_string();
+            //     let include = current_dir
+            //         .join(tail)
+            //         .to_string_lossy()
+            //         .into_owned();
+            //     let _arg = format!("-I{}", include);
+            //     compiler_arguments.push(_arg);
+            // } else if arg.starts_with("bazel-out") {
+            //     let _arg = current_dir
+            //         .join(arg)
+            //         .to_string_lossy()
+            //         .into_owned();
+            //     compiler_arguments.push(arg);
+            // } else if arg.ends_with(".swift") {
+            //     let _arg = current_dir
+            //         .join(arg)
+            //         .to_string_lossy()
+            //         .into_owned();
+            //     compiler_arguments.push(arg);
+            // }
+
+            compiler_arguments.push(arg);
+            index += 1;
         }
 
-        let target = query_result.targets
+        let target = query_result
+            .targets
             .iter()
             .find(|t| t.id == action.target_id)
             .ok_or("target_id not found")?;
@@ -188,7 +217,10 @@ pub fn build_input_files(
 ///    },
 ///  ]
 ///  return artifact_ids
-pub fn build_artifact_ids(file_set: &DepSetOfFiles, files: &HashMap<u32, DepSetOfFiles>) -> Vec<u32> {
+pub fn build_artifact_ids(
+    file_set: &DepSetOfFiles,
+    files: &HashMap<u32, DepSetOfFiles>,
+) -> Vec<u32> {
     let direct_ids = file_set.direct_artifact_ids.clone();
     let transitive_ids = file_set.transitive_dep_set_ids.clone();
 
@@ -238,16 +270,9 @@ pub fn build_file_path(fragments: &HashMap<u32, PathFragment>, leaf: &PathFragme
 }
 
 /// Convert bazel target name to Uri-compatible encoding
-pub fn bazel_to_uri(
-    base: &PathBuf,
-    name: &String,
-    id: &u32
-) -> Result<Url> {
+pub fn bazel_to_uri(base: &PathBuf, name: &String, id: &u32) -> Result<Url> {
     let trimmed = name.trim_start_matches("//");
-    let joined = base
-        .join(trimmed)
-        .join(id.to_string());
-    let url = Url::from_file_path(joined)
-        .map_err(|_| "failed to create uri for target".into());
+    let joined = base.join(trimmed).join(id.to_string());
+    let url = Url::from_file_path(joined).map_err(|_| "failed to create uri for target".into());
     return url;
 }
