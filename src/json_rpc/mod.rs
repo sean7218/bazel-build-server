@@ -1,7 +1,7 @@
-use crate::{error::Result};
+use crate::error::Result;
 use serde::{Deserialize, Serialize};
-use serde_json::{to_value, Number, Value};
-use std::{io::{self, BufRead, BufReader, Read, Write}};
+use serde_json::{Value, to_value};
+use std::io::{self, BufRead, BufReader, Read, Write};
 
 #[derive(Debug, Deserialize, Serialize)]
 #[allow(dead_code)]
@@ -42,7 +42,7 @@ impl JsonRpcNotification {
     pub fn new(method: String, params: Value) -> Self {
         JsonRpcNotification {
             jsonrpc: "2.0",
-            method: method,
+            method,
             params,
         }
     }
@@ -53,7 +53,10 @@ pub fn send_response(response: &JsonRpcResponse, stdout: &mut std::io::StdoutLoc
     send(&value, stdout);
 }
 
-pub fn send_notification(response: &JsonRpcNotification, stdout: &mut std::io::StdoutLock<'static>) {
+pub fn send_notification(
+    response: &JsonRpcNotification,
+    stdout: &mut std::io::StdoutLock<'static>,
+) {
     let value = to_value(&response).unwrap();
     send(&value, stdout);
 }
@@ -101,7 +104,7 @@ pub fn read_request(reader: &mut BufReader<io::StdinLock<'static>>) -> Result<Js
 
     let content_length = match content_length {
         Some(len) => len,
-        None => return Err("Missing Content-Length header".into())
+        None => return Err("Missing Content-Length header".into()),
     };
 
     let mut body: Vec<u8> = vec![0; content_length];

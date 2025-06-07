@@ -29,7 +29,8 @@ use serde_json::{self, from_value, to_value};
 use std::{
     io::{self, BufReader, StdoutLock},
     panic,
-    path::PathBuf, process::Command,
+    path::PathBuf,
+    process::Command,
 };
 use support_types::{
     build_server_config,
@@ -184,10 +185,11 @@ impl RequestHandler {
                 test_provider: None,
                 run_provider: None,
                 debug_provider: None,
-                inverse_sources_provider: Some(true),
-                dependency_sources_provider: Some(true),
-                resources_provider: Some(true),
-                output_paths_provider: Some(true),
+                inverse_sources_provider: Some(false),
+                dependency_sources_provider: Some(false),
+                resources_provider: Some(false),
+                // bazel doesn't support `-index-unit-output-path
+                output_paths_provider: Some(false), 
                 build_target_changed_provider: Some(true),
                 can_reload: Some(false),
             },
@@ -195,7 +197,7 @@ impl RequestHandler {
             SourceKitInitializeBuildResponseData {
                 index_database_path: Some(index_database_path),
                 index_store_path: Some(index_store_path),
-                output_paths_provider: Some(true),
+                output_paths_provider: Some(false),
                 prepare_provider: Some(true),
                 source_kit_options_provider: Some(true),
             },
@@ -247,7 +249,11 @@ impl RequestHandler {
                 .map(SourceItem::from_url)
                 .collect();
 
-            items.push(SourcesItem { target, sources });
+            items.push(SourcesItem {
+                target,
+                sources,
+                roots: None,
+            });
         }
 
         let result = BuildTargetSourcesResponse { items };
@@ -299,14 +305,13 @@ impl RequestHandler {
     }
 
     // INFO: this endpoint is for legacy push-based model
-    fn legacy_register_for_changes(&mut self, request: JsonRpcRequest) -> Result<JsonRpcNotification> {
+    fn legacy_register_for_changes(
+        &mut self,
+        request: JsonRpcRequest,
+    ) -> Result<JsonRpcNotification> {
         // if bazel targets is empty, we know it is the initial request
         if self.targets.is_empty() {
-            let targets = aquery::aquery(
-                &self.config.target,
-                &self.root_path,
-                &self.config.sdk
-            )?;
+            let targets = aquery::aquery(&self.config.target, &self.root_path, &self.config.sdk)?;
 
             self.targets = targets;
         }
