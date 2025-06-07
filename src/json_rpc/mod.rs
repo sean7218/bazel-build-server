@@ -6,7 +6,7 @@ use std::io::{self, BufRead, BufReader, Read, Write};
 #[derive(Debug, Deserialize, Serialize)]
 #[allow(dead_code)]
 pub struct JsonRpcRequest {
-    pub id: Option<String>,
+    pub id: Option<u32>,
     pub jsonrpc: String,
     pub method: String,
     pub params: Value,
@@ -17,11 +17,11 @@ pub struct JsonRpcRequest {
 pub struct JsonRpcResponse {
     pub jsonrpc: &'static str,
     pub result: Value,
-    pub id: Option<String>,
+    pub id: Option<u32>,
 }
 
 impl JsonRpcResponse {
-    pub fn new(id: Option<String>, result: Value) -> Self {
+    pub fn new(id: Option<u32>, result: Value) -> Self {
         JsonRpcResponse {
             jsonrpc: "2.0",
             result,
