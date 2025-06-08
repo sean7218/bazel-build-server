@@ -9,32 +9,37 @@
     - The `argv` need to point at the buildserver executable
     - The `target` will be used by `aquery` to get all the compiler arguments and targets. 
     - The `sdk` is what will be replaced for `__BAZEL_XCODE_SDKROOT__`
+    - The `indexStorePath` is the location where all indexstore files are.
+    - The `indexDatabasePath` is the location for index.db output
 
 ```json
 {
-  "name": "bazel-build-server",
+  "name": "example-app",
   "argv": [
-    "/Users/sean7218/bazel-build-server/target/debug/buildserver"
+    "/Users/sean7218/bazel/buildserver/target/debug/buildserver"
   ],
   "version": "1.0.0",  
   "bspVersion": "2.0.0",
   "languages": ["swift"],
-  "target": "//Sources/Components:Components",
-  "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+  "target": "//App:App",
+  "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk",
+  "indexStorePath": "/Users/sean7218/bazel/buildserver/example-app/bazel-out/_global_index_store",
+  "indexDatabasePath": "/Users/sean7218/bazel/buildserver/example-app/.index-db"
 }
 ```
 
-2. Compile the build server by running, the executable will be in `Users/sean7218/bazel-build-server/target/debug/buildserver`, 
+2. Compile the build server by running `cargo build`, and the executable will be in `bazel-build-server/target/debug/buildserver`, 
 and change the `argv` in the buildServer.json file as well. 
 
 ```bash
 cargo build
 ```
 
-3. Compile your project based on the target specified in the `buildServer.json`
+3. Before compile your project with bazel, you need to set the global index in `.bazelrc` file, then compile your project based on the target specified in the `buildServer.json` such as `bazel build //App:App`
 
 ```bash
-bazel build //Sources/Components:Components
+build --features swift.index_while_building
+build --features swift.use_global_index_store
 ```
 
 4. Open your project in vscode or neovim, you should be see logs both in sourcekit-lsp and bsp.log
@@ -44,27 +49,4 @@ bazel build //Sources/Components:Components
 ## Debugging
 
 todo!
-
-## Index-Store
-
-The default index store is stored at the root `project-root/.indexstore`, you can specify your bazel rule to output to that location.
-This might be helpful to increase sourcekit-lsp performance. 
-
-```python
-swift_library(
-    name = "Components",
-    srcs = ["Button.swift"],
-    module_name = "Components",
-    visibility = ["//visibility:public"],
-    deps = ["//Sources/Utils:Utils"],
-    copts = [
-        "-index-store-path",
-        "./.indexstore",
-    ],
-)
-```
-
-
-
-
 
