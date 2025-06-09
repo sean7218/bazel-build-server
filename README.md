@@ -1,5 +1,7 @@
 # Bazel Build Server
 
+Bazel implemention for [build server protocol](https://build-server-protocol.github.io/) and mainly working with [sourcekit-lsp](https://github.com/swiftlang/sourcekit-lsp). 
+
 ![Screen Recording 2025-05-26 at 9 10 28 AM](https://github.com/user-attachments/assets/a5d7e248-9f5a-4149-bfe3-065a592d5fba)
 
 ## Requirements
