@@ -31,7 +31,8 @@ Bazel implemention for [build server protocol](https://build-server-protocol.git
   "target": "//App:App",
   "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk",
   "indexStorePath": "/Users/sean7218/bazel/buildserver/example-app/bazel-out/_global_index_store",
-  "indexDatabasePath": "/Users/sean7218/bazel/buildserver/example-app/.index-db"
+  "indexDatabasePath": "/Users/sean7218/bazel/buildserver/example-app/.index-db",
+  "bazelOut": null
 }
 ```
 

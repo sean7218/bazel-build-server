@@ -18,7 +18,12 @@ use crate::log_str;
 /// params:
 ///   - target: full name of the target (example: //Libraries/Utils:UtilsLib)
 ///   - current_dir: the directory where the bazel WORKSPACE is
-pub fn aquery(target: &str, current_dir: &PathBuf, sdk: &str) -> Result<Vec<BazelTarget>> {
+pub fn aquery(
+    target: &str,
+    current_dir: &PathBuf,
+    sdk: &str,
+    bazel_out: Option<String>
+) -> Result<Vec<BazelTarget>> {
     let mnemonic = format!("mnemonic(\"SwiftCompile\", deps({}))", target);
     let output = Command::new("bazel")
         .args(&["aquery", &mnemonic, "--output=jsonproto"])
@@ -102,27 +107,14 @@ pub fn aquery(target: &str, current_dir: &PathBuf, sdk: &str) -> Result<Vec<Baze
                 continue;
             }
 
-            // if arg.starts_with("-I") {
-            //     let tail = arg[2..].to_string();
-            //     let include = current_dir
-            //         .join(tail)
-            //         .to_string_lossy()
-            //         .into_owned();
-            //     let _arg = format!("-I{}", include);
-            //     compiler_arguments.push(_arg);
-            // } else if arg.starts_with("bazel-out") {
-            //     let _arg = current_dir
-            //         .join(arg)
-            //         .to_string_lossy()
-            //         .into_owned();
-            //     compiler_arguments.push(arg);
-            // } else if arg.ends_with(".swift") {
-            //     let _arg = current_dir
-            //         .join(arg)
-            //         .to_string_lossy()
-            //         .into_owned();
-            //     compiler_arguments.push(arg);
-            // }
+            if let Some(bazel_out) = bazel_out.to_owned() {
+                if arg.starts_with("bazel-out") {
+                    let _arg = arg.replace("bazel-out", &bazel_out);
+                    compiler_arguments.push(_arg);
+                    index += 1;
+                    continue
+                }
+            }
 
             compiler_arguments.push(arg);
             index += 1;

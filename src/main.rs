@@ -210,7 +210,12 @@ impl RequestHandler {
     fn workspace_build_targets(&mut self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
         let dir = &self.root_path;
         let target = &self.config.target;
-        let targets = aquery::aquery(&target, &dir, &self.config.sdk)?;
+        let targets = aquery::aquery(
+            &target,
+            &dir,
+            &self.config.sdk,
+            self.config.bazel_out.clone()
+        )?;
 
         let mut build_targets: Vec<BuildTarget> = vec![];
 
@@ -311,7 +316,12 @@ impl RequestHandler {
     ) -> Result<JsonRpcNotification> {
         // if bazel targets is empty, we know it is the initial request
         if self.targets.is_empty() {
-            let targets = aquery::aquery(&self.config.target, &self.root_path, &self.config.sdk)?;
+            let targets = aquery::aquery(
+                &self.config.target,
+                &self.root_path,
+                &self.config.sdk,
+                self.config.bazel_out.clone()
+            )?;
 
             self.targets = targets;
         }
