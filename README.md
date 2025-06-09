@@ -2,6 +2,11 @@
 
 ![Screen Recording 2025-05-26 at 9 10 28 AM](https://github.com/user-attachments/assets/a5d7e248-9f5a-4149-bfe3-065a592d5fba)
 
+## Requirements
+
+- Xcode 16.3 
+- Swift toolchain 6.1.0
+- Enable global_index_store in .bazelrc
 
 ## Getting Started
 
@@ -38,8 +43,13 @@ cargo build
 3. Before compile your project with bazel, you need to set the global index in `.bazelrc` file, then compile your project based on the target specified in the `buildServer.json` such as `bazel build //App:App`
 
 ```bash
-build --features swift.index_while_building
+# either this
 build --features swift.use_global_index_store
+build --features swift.index_while_building
+# or 
+build --features swift.use_global_index_store
+build --swiftcopt=-index-store-path
+build --swiftcopt=$(OUTPUT_BASE)/indexstore
 ```
 
 4. Open your project in vscode or neovim, you should be see logs both in sourcekit-lsp and bsp.log
