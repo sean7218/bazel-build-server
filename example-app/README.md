@@ -8,15 +8,9 @@
 
 ```json
 {
-  "name": "example-app",
   "argv": [
     "/PATH_TO_YOUR_BAZEL_BUILD_SERVER_REPO/target/debug/buildserver"
   ],
-  "version": "1.0.0",  
-  "bspVersion": "2.0.0",
-  "languages": ["swift"],
-  "target": "//App:App",
-  "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk"
 }
 
 ```
