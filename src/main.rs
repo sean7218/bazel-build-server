@@ -214,6 +214,7 @@ impl RequestHandler {
             &target,
             &dir,
             &self.config.sdk,
+            self.config.aquery_args.clone(),
             self.config.bazel_out.clone()
         )?;
 
@@ -320,6 +321,7 @@ impl RequestHandler {
                 &self.config.target,
                 &self.root_path,
                 &self.config.sdk,
+                self.config.aquery_args.clone(),
                 self.config.bazel_out.clone()
             )?;
 

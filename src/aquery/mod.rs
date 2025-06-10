@@ -22,11 +22,21 @@ pub fn aquery(
     target: &str,
     current_dir: &PathBuf,
     sdk: &str,
+    aquery_args: Vec<String>,
     bazel_out: Option<String>
 ) -> Result<Vec<BazelTarget>> {
+    let mut command_args: Vec<String> = vec![];
     let mnemonic = format!("mnemonic(\"SwiftCompile\", deps({}))", target);
+
+    command_args.push(String::from("aquery"));
+    command_args.push(mnemonic);
+    command_args.push(String::from("--output=jsonproto"));
+    command_args.extend(aquery_args);
+
+    log_str!("✨ aquery command: {:#?}", &command_args);
+
     let output = Command::new("bazel")
-        .args(&["aquery", &mnemonic, "--output=jsonproto"])
+        .args(command_args)
         .current_dir(current_dir.clone())
         .output()?;
 

@@ -17,7 +17,8 @@ pub struct BuildServerConfig {
     pub sdk: String,
     pub index_store_path: String,
     pub index_database_path: String,
-    pub bazel_out: Option<String>
+    pub bazel_out: Option<String>,
+    pub aquery_args: Vec<String>
 }
 
 impl BuildServerConfig {
