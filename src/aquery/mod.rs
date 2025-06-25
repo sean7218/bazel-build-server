@@ -118,8 +118,8 @@ pub fn aquery(
             }
 
             if let Some(bazel_out) = bazel_out.to_owned() {
-                if arg.starts_with("bazel-out") {
-                    let _arg = arg.replace("bazel-out", &bazel_out);
+                if arg.contains("bazel-out/") {
+                    let _arg = arg.replace("bazel-out/", &bazel_out);
                     compiler_arguments.push(_arg);
                     index += 1;
                     continue
