@@ -215,7 +215,8 @@ impl RequestHandler {
             &dir,
             &self.config.sdk,
             self.config.aquery_args.clone(),
-            self.config.bazel_out.clone()
+            self.config.bazel_out.clone(),
+            self.config.external_path.clone()
         )?;
 
         let mut build_targets: Vec<BuildTarget> = vec![];
@@ -322,7 +323,8 @@ impl RequestHandler {
                 &self.root_path,
                 &self.config.sdk,
                 self.config.aquery_args.clone(),
-                self.config.bazel_out.clone()
+                self.config.bazel_out.clone(),
+                self.config.external_path.clone()
             )?;
 
             self.targets = targets;

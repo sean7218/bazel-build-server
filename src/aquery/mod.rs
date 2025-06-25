@@ -23,7 +23,8 @@ pub fn aquery(
     current_dir: &PathBuf,
     sdk: &str,
     aquery_args: Vec<String>,
-    bazel_out: Option<String>
+    bazel_out: Option<String>,
+    external_path: Option<String>
 ) -> Result<Vec<BazelTarget>> {
     let mut command_args: Vec<String> = vec![];
     let mnemonic = format!("mnemonic(\"SwiftCompile\", deps({}))", target);
@@ -123,6 +124,15 @@ pub fn aquery(
                     compiler_arguments.push(_arg);
                     index += 1;
                     continue
+                }
+            }
+
+            if let Some(external_path) = external_path.to_owned() {
+                if arg.starts_with("external/") {
+                    let _arg = arg.replace("external/", &external_path);
+                    compiler_arguments.push(_arg);
+                    index += 1;
+                    continue;
                 }
             }
 
