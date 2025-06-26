@@ -216,7 +216,9 @@ impl RequestHandler {
             &self.config.sdk,
             self.config.aquery_args.clone(),
             self.config.bazel_out.clone(),
-            self.config.external_path.clone()
+            self.config.external_path.clone(),
+            self.config.extra_includes.clone(),
+            self.config.extra_frameworks.clone(),
         )?;
 
         let mut build_targets: Vec<BuildTarget> = vec![];
@@ -324,7 +326,9 @@ impl RequestHandler {
                 &self.config.sdk,
                 self.config.aquery_args.clone(),
                 self.config.bazel_out.clone(),
-                self.config.external_path.clone()
+                self.config.external_path.clone(),
+                self.config.extra_includes.clone(),
+                self.config.extra_frameworks.clone()
             )?;
 
             self.targets = targets;

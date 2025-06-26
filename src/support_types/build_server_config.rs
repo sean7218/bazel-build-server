@@ -19,7 +19,9 @@ pub struct BuildServerConfig {
     pub index_database_path: String,
     pub bazel_out: Option<String>,
     pub external_path: Option<String>,
-    pub aquery_args: Vec<String>
+    pub aquery_args: Vec<String>,
+    pub extra_includes: Vec<String>,
+    pub extra_frameworks: Vec<String>
 }
 
 impl BuildServerConfig {
