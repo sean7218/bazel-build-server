@@ -11,6 +11,7 @@
   "indexStorePath": "/Users/sean7218/bazel/buildserver/example-app/bazel-out/_global_index_store",
   "indexDatabasePath": "/Users/sean7218/bazel/buildserver/example-app/.index-db",
   "bazelOut": null,
+  "externalPath": null,
   "aqueryArgs": []
 }
 
