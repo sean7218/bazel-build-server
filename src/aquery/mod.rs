@@ -24,7 +24,9 @@ pub fn aquery(
     sdk: &str,
     aquery_args: Vec<String>,
     bazel_out: Option<String>,
-    external_path: Option<String>
+    external_path: Option<String>,
+    extra_includes: Vec<String>,
+    extra_frameworks: Vec<String>
 ) -> Result<Vec<BazelTarget>> {
     let mut command_args: Vec<String> = vec![];
     let mnemonic = format!("mnemonic(\"SwiftCompile\", deps({}))", target);
@@ -147,6 +149,16 @@ pub fn aquery(
             .ok_or("target_id not found")?;
 
         let uri = bazel_to_uri(&current_dir, &target.label, &target.id)?;
+
+        for include in &extra_includes {
+            let arg = format!("-I{}", include);
+            compiler_arguments.push(arg);
+        }
+
+        for fmwk in &extra_frameworks {
+            let arg = format!("-F{}", fmwk);
+            compiler_arguments.push(arg);
+        }
 
         let bazel_target = BazelTarget {
             id: action.target_id,
