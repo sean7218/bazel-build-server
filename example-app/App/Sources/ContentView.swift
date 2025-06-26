@@ -4,6 +4,8 @@ import Foundation
 import NetworkStack
 import SwiftUI
 import Utils
+import SwiftNonEmpty
+import JOSESwift
 
 public struct ContentView: View {
     public var body: some View {
@@ -24,6 +26,7 @@ public struct ContentView: View {
         let network = NetworkStack(host: "Hello")
         try network.request(url: "www.google.com")
         let level = LogLeverl.error
+        let s = NonEmpty<[String]>(["One"])
     }
 }
 

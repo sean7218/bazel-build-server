@@ -1,0 +1,13 @@
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_framework")
+
+swift_library(
+  name = "JOSESwift",
+  srcs = glob([
+    "JOSESwift/Sources/**/*.swift"
+  ]),
+  alwayslink = True,
+  module_name = "JOSESwift",
+  visibility = ["//visibility:public"]
+)
+
