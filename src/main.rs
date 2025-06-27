@@ -8,6 +8,7 @@ mod utils;
 use crate::error::Result;
 use aquery::BazelTarget;
 use build_server_config::BuildServerConfig;
+use error::BSPError;
 use json_rpc::{
     JsonRpcNotification, JsonRpcRequest, JsonRpcResponse, read_request, send, send_notification,
     send_response,
@@ -189,7 +190,7 @@ impl RequestHandler {
                 dependency_sources_provider: Some(false),
                 resources_provider: Some(false),
                 // bazel doesn't support `-index-unit-output-path
-                output_paths_provider: Some(false), 
+                output_paths_provider: Some(false),
                 build_target_changed_provider: Some(true),
                 can_reload: Some(false),
             },
@@ -215,14 +216,12 @@ impl RequestHandler {
             &self.config.execution_root,
             &self.config.aquery_args,
             &self.config.extra_includes,
-            &self.config.extra_frameworks
+            &self.config.extra_frameworks,
         )?;
 
         let build_targets: Vec<BuildTarget> = targets
             .iter()
-            .map(|it| -> BuildTarget {
-                it.to_owned().into()
-            })
+            .map(|it| -> BuildTarget { it.to_owned().into() })
             .collect();
 
         let response = JsonRpcResponse {
@@ -237,18 +236,27 @@ impl RequestHandler {
     }
 
     fn build_target_sources(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
-        let source_request: BuildTargetSourcesRequest = serde_json::from_value(request.params)?;
+        let sources_req = serde_json::from_value::<BuildTargetSourcesRequest>(request.params)?;
+
         let mut items: Vec<SourcesItem> = vec![];
 
-        for target in source_request.targets {
-            let bazel_target = match self.targets.iter().find(|t| t.uri.eq(&target.uri)) {
-                Some(v) => v,
-                None => {
-                    continue;
-                }
-            };
+        for target in sources_req.targets {
+            let bazel_target: Result<&BazelTarget> = self
+                .targets
+                .iter()
+                .find(|it| it.uri.eq(&target.uri))
+                .ok_or_else(|| {
+                    let reason = format!(
+                        r#"
+                    BuildTargetSourcesRequest failed due to parsed bazel target not found 
+                    with {:#?} from aquery result. Check if target is part of top level 
+                    target deps. "#,
+                        target.uri
+                    );
+                    return BSPError::TargetNotFound(reason);
+                });
 
-            let sources: Vec<SourceItem> = bazel_target
+            let sources: Vec<SourceItem> = bazel_target?
                 .input_files
                 .iter()
                 .map(SourceItem::from_url)
@@ -324,7 +332,7 @@ impl RequestHandler {
                 &self.config.execution_root,
                 &self.config.aquery_args,
                 &self.config.extra_includes,
-                &self.config.extra_frameworks
+                &self.config.extra_frameworks,
             )?;
 
             self.targets = targets;
