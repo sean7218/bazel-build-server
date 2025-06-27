@@ -215,10 +215,9 @@ impl RequestHandler {
             &dir,
             &self.config.sdk,
             self.config.aquery_args.clone(),
-            self.config.bazel_out.clone(),
-            self.config.external_path.clone(),
             self.config.extra_includes.clone(),
             self.config.extra_frameworks.clone(),
+            self.config.execution_root.clone(),
         )?;
 
         let mut build_targets: Vec<BuildTarget> = vec![];
@@ -299,9 +298,10 @@ impl RequestHandler {
 
         log_str!("✨ Found target for sourcekit_options.");
 
+        let working_directory = PathBuf::from(self.config.execution_root.clone());
         let result = TextDocumentSourceKitOptionsResponse {
             compiler_arguments: target.compiler_arguments.clone(),
-            working_directory: Some(self.root_path.clone()),
+            working_directory: Some(working_directory),
             data: None,
         };
 
@@ -325,10 +325,9 @@ impl RequestHandler {
                 &self.root_path,
                 &self.config.sdk,
                 self.config.aquery_args.clone(),
-                self.config.bazel_out.clone(),
-                self.config.external_path.clone(),
                 self.config.extra_includes.clone(),
-                self.config.extra_frameworks.clone()
+                self.config.extra_frameworks.clone(),
+                self.config.execution_root.clone()
             )?;
 
             self.targets = targets;

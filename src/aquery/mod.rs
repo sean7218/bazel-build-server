@@ -23,10 +23,9 @@ pub fn aquery(
     current_dir: &PathBuf,
     sdk: &str,
     aquery_args: Vec<String>,
-    bazel_out: Option<String>,
-    external_path: Option<String>,
     extra_includes: Vec<String>,
-    extra_frameworks: Vec<String>
+    extra_frameworks: Vec<String>,
+    execution_root: String
 ) -> Result<Vec<BazelTarget>> {
     let mut command_args: Vec<String> = vec![];
     let mnemonic = format!("mnemonic(\"SwiftCompile\", deps({}))", target);
@@ -120,22 +119,20 @@ pub fn aquery(
                 continue;
             }
 
-            if let Some(bazel_out) = bazel_out.to_owned() {
-                if arg.contains("bazel-out/") {
-                    let _arg = arg.replace("bazel-out/", &bazel_out);
-                    compiler_arguments.push(_arg);
-                    index += 1;
-                    continue
-                }
+            if arg.contains("bazel-out/") {
+                let prefix = format!("{}/bazel-out/", execution_root);
+                let _arg = arg.replace("bazel-out/", &prefix);
+                compiler_arguments.push(_arg);
+                index += 1;
+                continue
             }
 
-            if let Some(external_path) = external_path.to_owned() {
-                if arg.starts_with("external/") {
-                    let _arg = arg.replace("external/", &external_path);
-                    compiler_arguments.push(_arg);
-                    index += 1;
-                    continue;
-                }
+            if arg.contains("external/") {
+                let prefix = format!("{}/external/", execution_root);
+                let _arg = arg.replace("external/", &prefix);
+                compiler_arguments.push(_arg);
+                index += 1;
+                continue;
             }
 
             compiler_arguments.push(arg);
@@ -150,11 +147,13 @@ pub fn aquery(
 
         let uri = bazel_to_uri(&current_dir, &target.label, &target.id)?;
 
+        // adding addtion include paths for swiftmodules
         for include in &extra_includes {
             let arg = format!("-I{}", include);
             compiler_arguments.push(arg);
         }
 
+        // adding extra framework search paths
         for fmwk in &extra_frameworks {
             let arg = format!("-F{}", fmwk);
             compiler_arguments.push(arg);

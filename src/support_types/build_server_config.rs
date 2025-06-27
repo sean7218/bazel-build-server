@@ -17,11 +17,10 @@ pub struct BuildServerConfig {
     pub sdk: String,
     pub index_store_path: String,
     pub index_database_path: String,
-    pub bazel_out: Option<String>,
-    pub external_path: Option<String>,
+    pub execution_root: String,
     pub aquery_args: Vec<String>,
     pub extra_includes: Vec<String>,
-    pub extra_frameworks: Vec<String>
+    pub extra_frameworks: Vec<String>,
 }
 
 impl BuildServerConfig {
