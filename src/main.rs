@@ -208,25 +208,22 @@ impl RequestHandler {
     }
 
     fn workspace_build_targets(&mut self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
-        let dir = &self.root_path;
-        let target = &self.config.target;
         let targets = aquery::aquery(
-            &target,
-            &dir,
+            &self.config.target,
+            &self.root_path,
             &self.config.sdk,
-            self.config.aquery_args.clone(),
-            self.config.extra_includes.clone(),
-            self.config.extra_frameworks.clone(),
-            self.config.execution_root.clone(),
+            &self.config.execution_root,
+            &self.config.aquery_args,
+            &self.config.extra_includes,
+            &self.config.extra_frameworks
         )?;
 
-        let mut build_targets: Vec<BuildTarget> = vec![];
-
-        for target in targets {
-            let build_target: BuildTarget = target.clone().into();
-            build_targets.push(build_target);
-            self.targets.push(target);
-        }
+        let build_targets: Vec<BuildTarget> = targets
+            .iter()
+            .map(|it| -> BuildTarget {
+                it.to_owned().into()
+            })
+            .collect();
 
         let response = JsonRpcResponse {
             id: request.id,
@@ -324,10 +321,10 @@ impl RequestHandler {
                 &self.config.target,
                 &self.root_path,
                 &self.config.sdk,
-                self.config.aquery_args.clone(),
-                self.config.extra_includes.clone(),
-                self.config.extra_frameworks.clone(),
-                self.config.execution_root.clone()
+                &self.config.execution_root,
+                &self.config.aquery_args,
+                &self.config.extra_includes,
+                &self.config.extra_frameworks
             )?;
 
             self.targets = targets;

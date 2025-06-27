@@ -22,10 +22,10 @@ pub fn aquery(
     target: &str,
     current_dir: &PathBuf,
     sdk: &str,
-    aquery_args: Vec<String>,
-    extra_includes: Vec<String>,
-    extra_frameworks: Vec<String>,
-    execution_root: String
+    execution_root: &str,
+    aquery_args: &[String],
+    extra_includes: &[String],
+    extra_frameworks: &[String],
 ) -> Result<Vec<BazelTarget>> {
     let mut command_args: Vec<String> = vec![];
     let mnemonic = format!("mnemonic(\"SwiftCompile\", deps({}))", target);
@@ -33,7 +33,7 @@ pub fn aquery(
     command_args.push(String::from("aquery"));
     command_args.push(mnemonic);
     command_args.push(String::from("--output=jsonproto"));
-    command_args.extend(aquery_args);
+    command_args.extend(aquery_args.to_owned());
 
     log_str!("✨ aquery command: {:#?}", &command_args);
 
@@ -105,7 +105,7 @@ pub fn aquery(
             }
 
             if arg.contains("__BAZEL_XCODE_SDKROOT__") {
-                let _arg = arg.replace("__BAZEL_XCODE_SDKROOT__", sdk);
+                let _arg = arg.replace("__BAZEL_XCODE_SDKROOT__", &sdk);
                 compiler_arguments.push(_arg);
                 index += 1;
                 continue;
@@ -148,13 +148,13 @@ pub fn aquery(
         let uri = bazel_to_uri(&current_dir, &target.label, &target.id)?;
 
         // adding addtion include paths for swiftmodules
-        for include in &extra_includes {
+        for include in extra_includes {
             let arg = format!("-I{}", include);
             compiler_arguments.push(arg);
         }
 
         // adding extra framework search paths
-        for fmwk in &extra_frameworks {
+        for fmwk in extra_frameworks {
             let arg = format!("-F{}", fmwk);
             compiler_arguments.push(arg);
         }
