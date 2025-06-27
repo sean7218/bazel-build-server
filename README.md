@@ -9,6 +9,7 @@ Bazel implemention for [build server protocol](https://build-server-protocol.git
 - Xcode 16.3
 - Swift toolchain 6.1.0
 - Enable global_index_store in .bazelrc
+- Disable `build --features=swift.use_explicit_swift_module_map`
 
 ## Getting Started
 
@@ -19,13 +20,13 @@ Bazel implemention for [build server protocol](https://build-server-protocol.git
    - The `indexStorePath` is the location where all indexstore files are.
    - The `indexDatabasePath` is the location for index.db output
    - The `aqueryArgs` are additional arguments you can supply to the bazel aquery command
-   - The `bazelOut` is useful for mapping `bazel-out/` to some other other symlink prefix
-   - The `externalPath` is useful for mapping paths that start with `external/` to some other path
+   - The `extraIncludes` are adding to the compiler arguments with option `-I` for addtional swiftmodule search paths
+   - The `extraFrameworks` are adding to the copmiler arguments with option `-F` for framework search apth
 
 ```json
 {
   "name": "example-app",
-  "argv": ["/Users/sean7218/bazel/buildserver/target/debug/buildserver"],
+  "argv": ["/Users/sean7218/bazel-build-server/target/debug/buildserver"],
   "version": "1.0.0",
   "bspVersion": "2.0.0",
   "languages": ["swift"],
@@ -33,8 +34,9 @@ Bazel implemention for [build server protocol](https://build-server-protocol.git
   "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk",
   "indexStorePath": "/Users/sean7218/bazel/buildserver/example-app/bazel-out/_global_index_store",
   "indexDatabasePath": "/Users/sean7218/bazel/buildserver/example-app/.index-db",
-  "bazelOut": null,
-  "aqueryArgs": []
+  "aqueryArgs": [],
+  "extraIncludes": [],
+  "extraFrameworks": []
 }
 ```
 
@@ -63,4 +65,14 @@ build --swiftcopt=$(OUTPUT_BASE)/indexstore
 
 ## Debugging
 
-todo!
+Here are some of the common errors:
+
+1. `standard library failed to load`
+  -  this means your path to sdk is wrong
+
+2. `execution_root not found`
+  - when build server first start, it will run `bazel info execution_root` 
+  if the command fails, the build server will shutdown.
+
+3. `👻 handle_initialize_request failed -> JsonError`
+  - this usually means your buildServer.json is malformatted
