@@ -232,6 +232,8 @@ impl RequestHandler {
             }),
         };
 
+        // assign targets to self.targets for future requests
+        self.targets = targets;
         Ok(response)
     }
 
@@ -241,22 +243,19 @@ impl RequestHandler {
         let mut items: Vec<SourcesItem> = vec![];
 
         for target in sources_req.targets {
-            let bazel_target: Result<&BazelTarget> = self
+            let bazel_target: &BazelTarget = self
                 .targets
                 .iter()
-                .find(|it| it.uri.eq(&target.uri))
+                .find(|it| { it.uri.eq(&target.uri) })
                 .ok_or_else(|| {
                     let reason = format!(
-                        r#"
-                    BuildTargetSourcesRequest failed due to parsed bazel target not found 
-                    with {:#?} from aquery result. Check if target is part of top level 
-                    target deps. "#,
-                        target.uri
+                        "BuildTargetSourcesRequest failed due to parsed bazel target not found with {:#?} from aquery result. Check if target is part of top level target deps. ",
+                        target.uri.to_string()
                     );
                     return BSPError::TargetNotFound(reason);
-                });
+                })?;
 
-            let sources: Vec<SourceItem> = bazel_target?
+            let sources: Vec<SourceItem> = bazel_target
                 .input_files
                 .iter()
                 .map(SourceItem::from_url)
@@ -296,12 +295,18 @@ impl RequestHandler {
 
     fn sourcekit_options(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
         let req: TextDocumentSourceKitOptionsRequest = from_value(request.params)?;
-        let target = match self.targets.iter().find(|it| it.uri.eq(&req.target.uri)) {
-            Some(v) => v,
-            None => return Err("Failed to find target for sourcekit_options".into()),
-        };
+        let target = self.targets
+            .iter()
+            .find(|it| it.uri.eq(&req.target.uri))
+            .ok_or_else(|| {
+                let reason = format!(
+                    "Failed to find target for sourcekit_options: {:#?}",
+                    req.target.uri
+                );
+                return BSPError::TargetNotFound(reason);
+            })?;
 
-        log_str!("✨ Found target for sourcekit_options.");
+        log_str!("✨ Found target for sourcekit_options. {}", target.uri.to_string());
 
         let working_directory = PathBuf::from(self.config.execution_root.clone());
         let result = TextDocumentSourceKitOptionsResponse {

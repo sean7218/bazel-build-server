@@ -6,6 +6,7 @@ swift_library(
     srcs = [
         "Sources/ContentView.swift",
         "Sources/ExampleApp.swift",
+        "Sources/ExampleApp+String.swift",
     ],
     module_name = "Sources",
     tags = ["manual"],
