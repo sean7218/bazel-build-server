@@ -183,9 +183,6 @@ impl RequestHandler {
             .ok_or_else(|| BSPError::ExecutionRootNotFound(execroot_string.clone()))?;
 
         let execroot_path = PathBuf::from(&execroot_stripped);
-        log_str!("execroot_path:{:#?}", execroot_path);
-        log_str!("execroot_path.is_dir():{:#?}", execroot_path.is_dir());
-        log_str!("execroot_path.is_file():{:#?}", execroot_path.is_file());
 
         if execroot_path.is_dir() {
             log_str!("🟢 bazel info execution_root: {}", execroot_string.clone());
