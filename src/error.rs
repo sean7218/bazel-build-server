@@ -5,6 +5,7 @@ pub type Result<T> = core::result::Result<T, Error>;
 pub enum BSPError {
     Custom(String),
     TargetNotFound(String),
+    ExecutionRootNotFound(String),
     JsonError(serde_json::Error),
     IoError(std::io::Error)
 }
@@ -14,6 +15,9 @@ impl std::fmt::Display for BSPError {
         match self {
             BSPError::Custom(e) => {
                 write!(f, "BSPError::Custom -> Reason: {}\n", e)
+            }
+            BSPError::ExecutionRootNotFound(e) => {
+                write!(f, "BSPError::ExecutionRootNotFound -> Reason: {}\n", e)
             }
             BSPError::TargetNotFound(e) => {
                 write!(f, "BSPError::TargetNotFound -> Reason: {}\n", e)

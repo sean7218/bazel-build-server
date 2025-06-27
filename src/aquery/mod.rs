@@ -21,8 +21,8 @@ use crate::log_str;
 pub fn aquery(
     target: &str,
     current_dir: &PathBuf,
+    execroot_path: &PathBuf,
     sdk: &str,
-    execution_root: &str,
     aquery_args: &[String],
     extra_includes: &[String],
     extra_frameworks: &[String],
@@ -120,7 +120,7 @@ pub fn aquery(
             }
 
             if arg.contains("bazel-out/") {
-                let prefix = format!("{}/bazel-out/", execution_root);
+                let prefix = format!("{}/bazel-out/", execroot_path.to_string_lossy());
                 let _arg = arg.replace("bazel-out/", &prefix);
                 compiler_arguments.push(_arg);
                 index += 1;
@@ -128,7 +128,7 @@ pub fn aquery(
             }
 
             if arg.contains("external/") {
-                let prefix = format!("{}/external/", execution_root);
+                let prefix = format!("{}/external/", execroot_path.to_string_lossy());
                 let _arg = arg.replace("external/", &prefix);
                 compiler_arguments.push(_arg);
                 index += 1;
