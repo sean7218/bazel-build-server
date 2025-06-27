@@ -146,6 +146,7 @@ fn handle_initialize_request(
 struct RequestHandler {
     config: BuildServerConfig,
     root_path: PathBuf,
+    execroot_path: PathBuf,
     targets: Vec<BazelTarget>,
 }
 
@@ -164,9 +165,35 @@ impl RequestHandler {
             .to_file_path()
             .map_err(|_| "Failed to convert root_uri to file path")?;
 
+        let command_args: Vec<String> = vec![
+            String::from("info"), 
+            String::from("execution_root")
+        ];
+        let output = Command::new("bazel")
+            .args(command_args)
+            .current_dir(&root_path)
+            .output()?;
+
+        let execroot_string = String
+            ::from_utf8_lossy(&output.stdout)
+            .into_owned();
+
+        let execroot_stripped = execroot_string
+            .strip_suffix("\n")
+            .ok_or_else(|| BSPError::ExecutionRootNotFound(execroot_string.clone()))?;
+
+        let execroot_path = PathBuf::from(&execroot_stripped);
+
+        if execroot_path.is_dir() {
+            log_str!("🟢 bazel info execution_root: {}", execroot_string.clone());
+        } else {
+            return Err(BSPError::ExecutionRootNotFound(execroot_string).into());
+        }
+
         Ok(RequestHandler {
             config,
             root_path,
+            execroot_path,
             targets: vec![],
         })
     }
@@ -212,8 +239,8 @@ impl RequestHandler {
         let targets = aquery::aquery(
             &self.config.target,
             &self.root_path,
+            &self.execroot_path,
             &self.config.sdk,
-            &self.config.execution_root,
             &self.config.aquery_args,
             &self.config.extra_includes,
             &self.config.extra_frameworks,
@@ -333,8 +360,8 @@ impl RequestHandler {
             let targets = aquery::aquery(
                 &self.config.target,
                 &self.root_path,
+                &self.execroot_path,
                 &self.config.sdk,
-                &self.config.execution_root,
                 &self.config.aquery_args,
                 &self.config.extra_includes,
                 &self.config.extra_frameworks,
