@@ -8,10 +8,11 @@
   "languages": ["swift"],
   "target": "//App:App",
   "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk",
-  "indexStorePath": "/Users/sean7218/bazel/buildserver/example-app/bazel-out/_global_index_store",
-  "indexDatabasePath": "/Users/sean7218/bazel/buildserver/example-app/.index-db",
-  "bazelOut": null,
-  "externalPath": null,
-  "aqueryArgs": []
+  "executionRoot": "/private/var/tmp/_bazel_sean7218/de1adce366c93f44811e0318830112cc/execroot/_main",
+  "indexStorePath": "/private/var/tmp/_bazel_sean7218/de1adce366c93f44811e0318830112cc/execroot/_main/bazel-out/_global_index_store",
+  "indexDatabasePath": "/private/var/tmp/_bazel_sean7218/de1adce366c93f44811e0318830112cc/execroot/_main/.index-db",
+  "aqueryArgs": [],
+  "extraIncludes": [],
+  "extraFrameworks": []
 }
 
