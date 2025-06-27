@@ -335,10 +335,9 @@ impl RequestHandler {
 
         log_str!("✨ Found target for sourcekit_options. {}", target.uri.to_string());
 
-        let working_directory = PathBuf::from(self.config.execution_root.clone());
         let result = TextDocumentSourceKitOptionsResponse {
             compiler_arguments: target.compiler_arguments.clone(),
-            working_directory: Some(working_directory),
+            working_directory: Some(self.root_path.clone()),
             data: None,
         };
 
