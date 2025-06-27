@@ -27,6 +27,7 @@ public struct ContentView: View {
         try network.request(url: "www.google.com")
         let level = LogLeverl.error
         let s = NonEmpty<[String]>(["One"])
+        String.example()
     }
 }
 

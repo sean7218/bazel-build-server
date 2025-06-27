@@ -8,6 +8,7 @@ mod utils;
 use crate::error::Result;
 use aquery::BazelTarget;
 use build_server_config::BuildServerConfig;
+use error::BSPError;
 use json_rpc::{
     JsonRpcNotification, JsonRpcRequest, JsonRpcResponse, read_request, send, send_notification,
     send_response,
@@ -189,7 +190,7 @@ impl RequestHandler {
                 dependency_sources_provider: Some(false),
                 resources_provider: Some(false),
                 // bazel doesn't support `-index-unit-output-path
-                output_paths_provider: Some(false), 
+                output_paths_provider: Some(false),
                 build_target_changed_provider: Some(true),
                 can_reload: Some(false),
             },
@@ -208,25 +209,20 @@ impl RequestHandler {
     }
 
     fn workspace_build_targets(&mut self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
-        let dir = &self.root_path;
-        let target = &self.config.target;
         let targets = aquery::aquery(
-            &target,
-            &dir,
+            &self.config.target,
+            &self.root_path,
             &self.config.sdk,
-            self.config.aquery_args.clone(),
-            self.config.extra_includes.clone(),
-            self.config.extra_frameworks.clone(),
-            self.config.execution_root.clone(),
+            &self.config.execution_root,
+            &self.config.aquery_args,
+            &self.config.extra_includes,
+            &self.config.extra_frameworks,
         )?;
 
-        let mut build_targets: Vec<BuildTarget> = vec![];
-
-        for target in targets {
-            let build_target: BuildTarget = target.clone().into();
-            build_targets.push(build_target);
-            self.targets.push(target);
-        }
+        let build_targets: Vec<BuildTarget> = targets
+            .iter()
+            .map(|it| -> BuildTarget { it.to_owned().into() })
+            .collect();
 
         let response = JsonRpcResponse {
             id: request.id,
@@ -236,20 +232,28 @@ impl RequestHandler {
             }),
         };
 
+        // assign targets to self.targets for future requests
+        self.targets = targets;
         Ok(response)
     }
 
     fn build_target_sources(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
-        let source_request: BuildTargetSourcesRequest = serde_json::from_value(request.params)?;
+        let sources_req = serde_json::from_value::<BuildTargetSourcesRequest>(request.params)?;
+
         let mut items: Vec<SourcesItem> = vec![];
 
-        for target in source_request.targets {
-            let bazel_target = match self.targets.iter().find(|t| t.uri.eq(&target.uri)) {
-                Some(v) => v,
-                None => {
-                    continue;
-                }
-            };
+        for target in sources_req.targets {
+            let bazel_target: &BazelTarget = self
+                .targets
+                .iter()
+                .find(|it| { it.uri.eq(&target.uri) })
+                .ok_or_else(|| {
+                    let reason = format!(
+                        "BuildTargetSourcesRequest failed due to parsed bazel target not found with {:#?} from aquery result. Check if target is part of top level target deps. ",
+                        target.uri.to_string()
+                    );
+                    return BSPError::TargetNotFound(reason);
+                })?;
 
             let sources: Vec<SourceItem> = bazel_target
                 .input_files
@@ -291,12 +295,18 @@ impl RequestHandler {
 
     fn sourcekit_options(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
         let req: TextDocumentSourceKitOptionsRequest = from_value(request.params)?;
-        let target = match self.targets.iter().find(|it| it.uri.eq(&req.target.uri)) {
-            Some(v) => v,
-            None => return Err("Failed to find target for sourcekit_options".into()),
-        };
+        let target = self.targets
+            .iter()
+            .find(|it| it.uri.eq(&req.target.uri))
+            .ok_or_else(|| {
+                let reason = format!(
+                    "Failed to find target for sourcekit_options: {:#?}",
+                    req.target.uri
+                );
+                return BSPError::TargetNotFound(reason);
+            })?;
 
-        log_str!("✨ Found target for sourcekit_options.");
+        log_str!("✨ Found target for sourcekit_options. {}", target.uri.to_string());
 
         let working_directory = PathBuf::from(self.config.execution_root.clone());
         let result = TextDocumentSourceKitOptionsResponse {
@@ -324,10 +334,10 @@ impl RequestHandler {
                 &self.config.target,
                 &self.root_path,
                 &self.config.sdk,
-                self.config.aquery_args.clone(),
-                self.config.extra_includes.clone(),
-                self.config.extra_frameworks.clone(),
-                self.config.execution_root.clone()
+                &self.config.execution_root,
+                &self.config.aquery_args,
+                &self.config.extra_includes,
+                &self.config.extra_frameworks,
             )?;
 
             self.targets = targets;
