@@ -110,14 +110,27 @@ fn run() -> Result<()> {
                 send_response(&response, &mut stdout);
                 log_str!("↩️ {:#?}", response);
             }
+            RequestMethod::WorkspaceDidChangeWatchedFiles => {
+                let notification = request_handler.did_change_watched_files(request)?;
+                send_notification(&notification, &mut stdout);
+                log_str!("↩️ {:#?}", notification);
+            }
             RequestMethod::BuildTargetPrepare => {
                 let response = request_handler.build_target_repare(request)?;
                 send_response(&response, &mut stdout);
                 log_str!("↩️ {:#?}", response);
             }
             RequestMethod::BuildTargetDidChange => {}
-            RequestMethod::BuildShutDown => return Ok(()),
-            RequestMethod::BuildExit => return Ok(()),
+            RequestMethod::BuildShutDown => {
+                let response = request_handler.build_shut_down(request)?;
+                send_response(&response, &mut stdout);
+                log_str!("↩️ {:#?}", response);
+            }
+            RequestMethod::BuildExit => {
+                let response = request_handler.build_exit(request)?;
+                send_notification(&response, &mut stdout);
+                log_str!("↩️ {:#?}", response);
+            }
             RequestMethod::WindowShowMessage => {}
             RequestMethod::Unknown => {
                 log_str!(&format!("🤷 Unkown request: {:#?}", request));
@@ -264,6 +277,22 @@ impl RequestHandler {
         Ok(response)
     }
 
+    // fn wait_for_build_system_updates(&mut self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
+    //     Ok(JsonRpcResponse::new(request.id, serde_json::Value::Null))
+    // }
+
+    /// Notification sent from SourceKit-LSP to the build system to indicate that files within the project have been modified.
+    ///
+    /// public typealias OnWatchedFilesDidChangeNotification = LanguageServerProtocol.DidChangeWatchedFilesNotification
+    ///
+    /// Notification from the client when changes to watched files are detected.
+    ///
+    /// - Parameter changes: The set of file changes.
+    /// - method: String = "workspace/didChangeWatchedFiles"
+    fn did_change_watched_files(&mut self, notification: JsonRpcRequest) -> Result<JsonRpcNotification> {
+        Ok(JsonRpcNotification::new(notification.method, serde_json::Value::Null))
+    }
+
     fn build_target_sources(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
         let sources_req = serde_json::from_value::<BuildTargetSourcesRequest>(request.params)?;
 
@@ -308,6 +337,14 @@ impl RequestHandler {
         Ok(JsonRpcResponse::new(request.id, serde_json::Value::Null))
     }
 
+    fn build_shut_down(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
+        Ok(JsonRpcResponse::new(request.id, serde_json::Value::Null))
+    }
+
+    fn build_exit(&self, request: JsonRpcRequest) -> Result<JsonRpcNotification> {
+        Ok(JsonRpcNotification::new(request.method, serde_json::Value::Null))
+    }
+
     fn build_target_repare(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
         let directory = self.root_path.clone();
         let target = self.config.target.clone();
@@ -350,10 +387,7 @@ impl RequestHandler {
     }
 
     // INFO: this endpoint is for legacy push-based model
-    fn legacy_register_for_changes(
-        &mut self,
-        request: JsonRpcRequest,
-    ) -> Result<JsonRpcNotification> {
+    fn legacy_register_for_changes(&mut self, request: JsonRpcRequest) -> Result<JsonRpcNotification> {
         // if bazel targets is empty, we know it is the initial request
         if self.targets.is_empty() {
             let targets = aquery::aquery(
