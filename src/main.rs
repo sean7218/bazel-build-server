@@ -277,9 +277,15 @@ impl RequestHandler {
         Ok(response)
     }
 
-    // fn wait_for_build_system_updates(&mut self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
-    //     Ok(JsonRpcResponse::new(request.id, serde_json::Value::Null))
-    // }
+    /// This request is a no-op and doesn't have any effects.
+    /// If the build system is currently updating the build graph, 
+    /// this request should return after those updates have finished processing.
+    ///
+    /// method: workspace/waitForBuildSystemUpdates
+    #[allow(dead_code)]
+    fn wait_for_build_system_updates(&mut self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
+        Ok(JsonRpcResponse::new(request.id, serde_json::Value::Null))
+    }
 
     /// Notification sent from SourceKit-LSP to the build system to indicate that files within the project have been modified.
     ///
@@ -345,6 +351,16 @@ impl RequestHandler {
         Ok(JsonRpcNotification::new(request.method, serde_json::Value::Null))
     }
 
+    /// The prepare build target request is sent from the client to the server to prepare the given list of build targets for editor functionality.
+    ///
+    /// To do so, the build server should perform any work that is necessary to typecheck the files in the given target. 
+    /// This includes, but is not limited to: Building Swift modules for all dependencies and running code generation scripts.
+    /// Compared to a full build, the build server may skip actions that are not necessary for type checking, 
+    /// such as object file generation but the exact steps necessary are dependent on the build system. 
+    /// SwiftPM implements this step using the swift build --experimental-prepare-for-indexing command.
+    ///
+    /// The server communicates during the initialize handshake whether this method is supported or not by setting prepareProvider: true in SourceKitInitializeBuildResponseData.
+    /// TODO: Change the actual top target to requested target
     fn build_target_repare(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
         let directory = self.root_path.clone();
         let target = self.config.target.clone();

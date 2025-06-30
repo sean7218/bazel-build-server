@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use url::Url;
 
+/// https://github.com/swiftlang/sourcekit-lsp/blob/main/Sources/BuildServerProtocol/SupportTypes/BuildTarget.swift#L26
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BuildTarget {
