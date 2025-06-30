@@ -364,8 +364,17 @@ impl RequestHandler {
     fn build_target_repare(&self, request: JsonRpcRequest) -> Result<JsonRpcResponse> {
         let directory = self.root_path.clone();
         let target = self.config.target.clone();
+        
+        let mut command_args: Vec<String> = vec![
+            String::from("build"),
+            target.clone(),
+        ];
+        command_args.extend(self.config.aquery_args.clone());
+        
+        log_str!("🟢 Running bazel command: bazel {:?} in directory: {:?}", command_args, directory);
+        
         let output = Command::new("bazel")
-            .args(&["build", &target])
+            .args(&command_args)
             .current_dir(directory)
             .output()?;
 
