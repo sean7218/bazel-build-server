@@ -134,9 +134,11 @@ pub fn aquery(
             }
 
             // All the unit files should be stored in `bazel-out/_global_index_store`
+            // by removing this flag, it will fix the `failed to create temporary file` by
+            // sourcekit-lsp
             if arg.contains("-index-store-path") {
                 if let Some(next) = action.arguments.get(index + 1) {
-                    if !next.contains("indexstore") {
+                    if next.contains("indexstore") {
                         index += 2;
                         continue;
                     }
