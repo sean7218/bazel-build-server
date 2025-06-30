@@ -58,7 +58,11 @@ pub fn aquery(
         fragments.insert(fragment.id, fragment);
     }
 
-    let is_swift = |url: &Url| -> bool { url.as_str().ends_with(".swift") };
+    /// TODO: add support for objective-c
+    let is_swift = |url: &Url| -> bool {
+        url.as_str().ends_with(".swift")
+    };
+
     let to_url = |s: &String| -> Option<Url> {
         let path = current_dir.join(s);
         match Url::from_file_path(path) {
@@ -86,6 +90,7 @@ pub fn aquery(
         while index < count {
             let arg = action.arguments.get(index).unwrap().clone();
 
+            /// TODO: maybe add this back
             if arg.contains("-Xfrontend") {
                 if let Some(next) = action.arguments.get(index + 1) {
                     if next.contains("-const-gather-protocols-file") {
@@ -95,6 +100,7 @@ pub fn aquery(
                 }
             }
 
+            /// TODO: maybe add this back
             if arg.contains("-Xfrontend") {
                 if let Some(next) = action.arguments.get(index + 1) {
                     if next.contains("const_protocols_to_gather.json") {
@@ -111,6 +117,7 @@ pub fn aquery(
                 continue;
             }
 
+            /// Compiler arguments shouldn't include swiftc executable
             if arg.contains("-Xwrapped-swift")
                 || arg.ends_with("worker")
                 || arg.starts_with("swiftc")
@@ -119,6 +126,24 @@ pub fn aquery(
                 continue;
             }
 
+            /// https://github.com/swiftlang/sourcekit-lsp/blob/main/Sources/SemanticIndex/UpdateIndexStoreTaskDescription.swift#L361
+            /// batch mode is not compatible with -index-file
+            if arg.contains("-enable-batch-mode") {
+                index += 1;
+                continue;
+            }
+
+            /// All the unit files should be stored in `bazel-out/_global_index_store`
+            if arg.contains("-index-store-path") {
+                if let Some(next) = action.arguments.get(index + 1) {
+                    if !next.contains("indexstore") {
+                        index += 2;
+                        continue;
+                    }
+                }
+            }
+
+            /// reset to execution_root for bazel-out/ folder
             if arg.contains("bazel-out/") {
                 let prefix = format!("{}/bazel-out/", execroot_path.to_string_lossy());
                 let _arg = arg.replace("bazel-out/", &prefix);
@@ -127,6 +152,7 @@ pub fn aquery(
                 continue
             }
 
+            /// reset to execution_root for external/ folder
             if arg.contains("external/") {
                 let prefix = format!("{}/external/", execroot_path.to_string_lossy());
                 let _arg = arg.replace("external/", &prefix);
