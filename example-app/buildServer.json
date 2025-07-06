@@ -1,14 +1,14 @@
 {
-  "name": "example-app",
-  "argv": ["../bazel-sourcekit-bsp"],
+  "name": "bazel-sourcekit-bsp",
+  "argv": ["bazel-build-server/.build/debug/bazel-sourcekit-bsp"],
   "version": "1.0.0",
   "bspVersion": "2.0.0",
   "languages": ["swift"],
   "target": "//App:App",
   "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk",
-  "indexStorePath": "./bazel-out/_global_index_store",
-  "indexDatabasePath": ".index-db",
+  "indexStorePath": "bazel-build-server/bazel-out/_global_index_store",
+  "indexDatabasePath": "bazel-build-server/example-app/.index-db",
   "aqueryArgs": ["--config=vscode"],
-  "logPath": "~/Desktop/bsp.log",
+  "logPath": "bazel-build-server/example-app/bsp.log",
   "truncateLogOnStartup": true
 }

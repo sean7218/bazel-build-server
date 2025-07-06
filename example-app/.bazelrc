@@ -1,5 +1,7 @@
 build --ios_minimum_os=16.0
 build --ios_simulator_device="iPhone 16"
+
+# Custom configuration for VSCode — this can be passed via aqueryArgs in buildServer.json
 build:vscode --features swift.index_while_building
 build:vscode --features swift.use_global_index_store
 build:vscode --features "-swift.use_explicit_swift_module_map"
