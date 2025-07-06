@@ -120,6 +120,11 @@ public class RequestHandler {
         )
 
         let data = SourceKitInitializeBuildResponseData(
+            indexDatabasePath: config.indexDatabasePath,
+            indexStorePath: config.indexStorePath,
+            outputPathsProvider: false,
+            prepareProvider: true,
+            sourceKitOptionsProvider: true,
             defaultSettings: config.defaultSettings ?? []
         )
 

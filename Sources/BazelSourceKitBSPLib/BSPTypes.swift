@@ -1,3 +1,4 @@
+import CoreFoundation
 import Foundation
 
 // MARK: - JSON Encoding Extensions
@@ -129,14 +130,40 @@ public struct DebugProvider: Codable {
 }
 
 public struct SourceKitInitializeBuildResponseData: Codable {
-    public let defaultSettings: [String]
+    public let indexDatabasePath: String?
+    public let indexStorePath: String?
+    public let outputPathsProvider: Bool?
+    public let prepareProvider: Bool?
+    public let sourceKitOptionsProvider: Bool?
 
-    public init(defaultSettings: [String]) {
+    // Legacy support for old format
+    public let defaultSettings: [String]?
+
+    public init(
+        indexDatabasePath: String? = nil,
+        indexStorePath: String? = nil,
+        outputPathsProvider: Bool? = nil,
+        prepareProvider: Bool? = nil,
+        sourceKitOptionsProvider: Bool? = nil,
+        defaultSettings: [String]? = nil
+    ) {
+        self.indexDatabasePath = indexDatabasePath
+        self.indexStorePath = indexStorePath
+        self.outputPathsProvider = outputPathsProvider
+        self.prepareProvider = prepareProvider
+        self.sourceKitOptionsProvider = sourceKitOptionsProvider
         self.defaultSettings = defaultSettings
     }
 }
 
 // MARK: - Build Target Types
+
+/// Normalizes a Bazel target label for display purposes
+/// Removes Bazel's internal encoding characters like +_ from external repository names
+private func normalizeDisplayName(_ label: String) -> String {
+    // Remove the +_ encoding that Bazel uses for external repository names
+    return label.replacingOccurrences(of: "+_", with: "_")
+}
 
 public struct BuildTarget: Codable {
     public let id: BuildTargetIdentifier
@@ -152,7 +179,7 @@ public struct BuildTarget: Codable {
     public static func from(bazelTarget: BazelTarget) -> BuildTarget {
         return BuildTarget(
             id: BuildTargetIdentifier(uri: bazelTarget.uri),
-            displayName: bazelTarget.label,
+            displayName: normalizeDisplayName(bazelTarget.label),
             baseDirectory: nil,
             tags: bazelTarget.tags,
             capabilities: BuildTargetCapabilities(
@@ -539,10 +566,13 @@ public extension JSONValue {
         switch object {
         case is NSNull:
             return .null
-        case let bool as Bool:
-            return .bool(bool)
         case let number as NSNumber:
-            return .number(number.doubleValue)
+            // Check if it's a boolean NSNumber (CFBoolean)
+            if CFGetTypeID(number) == CFBooleanGetTypeID() {
+                return .bool(number.boolValue)
+            } else {
+                return .number(number.doubleValue)
+            }
         case let string as String:
             return .string(string)
         case let array as [Any]:

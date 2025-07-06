@@ -205,7 +205,7 @@ public enum JSONRPCId: Codable, Hashable {
         } else if let number = try? container.decode(Int.self) {
             self = .number(number)
         } else {
-            throw DecodingError.typeMismatch(JSONRPCId.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid JSON-RPC ID"))
+            throw DecodingError.typeMismatch(JSONRPCId.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid JSON-RPC ID: expected string, number, or null"))
         }
     }
 
