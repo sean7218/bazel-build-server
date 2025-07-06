@@ -127,7 +127,7 @@ public class RequestHandler {
         )
 
         let data = SourceKitInitializeBuildResponseData(
-            defaultSettings: config.defaultSettings
+            defaultSettings: config.defaultSettings ?? []
         )
 
         let response = InitializeBuildResponse(
@@ -169,7 +169,7 @@ public class RequestHandler {
         var items: [SourcesItem] = []
 
         for target in buildTargetSourcesRequest.targets {
-            if let bazelTarget = targets.first(where: { $0.label == target.uri }) {
+            if let bazelTarget = targets.first(where: { $0.uri == target.uri }) {
                 let sources = try getSourcesForTarget(bazelTarget)
                 let item = SourcesItem(
                     target: target,
@@ -195,10 +195,10 @@ public class RequestHandler {
         }
 
         let sourceKitRequest = try TextDocumentSourceKitOptionsRequest.from(jsonValue: params)
-        let options = try getSourceKitOptions(for: sourceKitRequest.textDocument.uri)
+        let options = try getSourceKitOptions(for: sourceKitRequest.textDocument.uri, target: sourceKitRequest.target)
 
         let response = TextDocumentSourceKitOptionsResponse(
-            options: options,
+            compilerArguments: options,
             workingDirectory: rootPath.path
         )
 
@@ -220,8 +220,8 @@ public class RequestHandler {
         let notification = FileOptionsChangedNotification(
             uri: registerRequest.uri,
             updatedOptions: Options(
-                workingDirectory: rootPath.path,
-                flags: config.defaultSettings
+                options: config.defaultSettings ?? [],
+                workingDirectory: rootPath.path
             )
         )
 
@@ -254,7 +254,24 @@ public class RequestHandler {
     private func buildTargetPrepare(request: JSONRPCRequest) throws -> JSONRPCResponse {
         logger.debug("🎯 Preparing build target...")
 
-        // For now, just return success
+        // Build the target using Bazel
+        var commandArgs = ["build", config.target]
+        commandArgs.append(contentsOf: config.aqueryArgs)
+
+        logger.info("🔨 Running bazel build: bazel \(commandArgs.joined(separator: " "))")
+
+        do {
+            let output = try shellOut(
+                to: "bazel",
+                arguments: commandArgs,
+                at: rootPath.path
+            )
+            logger.debug("✅ Build output: \(output)")
+        } catch {
+            logger.warning("⚠️ Build failed but continuing: \(error)")
+            // Don't fail the BSP request even if build fails
+        }
+
         return JSONRPCResponse(
             id: request.id,
             result: .null
@@ -293,44 +310,41 @@ public class RequestHandler {
     }
 
     private func loadTargets() throws {
-        logger.debug("🎯 Loading Bazel targets...")
+        logger.debug("🎯 Loading Bazel targets using aquery...")
 
-        let output = try shellOut(
-            to: "bazel",
-            arguments: ["query", "//...", "--output=package"],
-            at: rootPath.path
+        targets = try executeAquery(
+            target: config.target,
+            rootPath: rootPath,
+            execrootPath: execrootPath,
+            sdk: config.sdk,
+            aqueryArgs: config.aqueryArgs,
+            extraIncludes: config.extraIncludes ?? [],
+            extraFrameworks: config.extraFrameworks ?? [],
+            logger: logger
         )
-
-        let packages = output.components(separatedBy: .newlines)
-            .filter { !$0.isEmpty }
-
-        for package in packages {
-            let target = BazelTarget(
-                label: "//\(package):*",
-                kind: "swift_library", // Default, should be determined properly
-                tags: []
-            )
-            targets.append(target)
-        }
 
         logger.info("📦 Loaded \(targets.count) targets")
     }
 
     private func getSourcesForTarget(_ target: BazelTarget) throws -> [SourceItem] {
-        // This is a simplified implementation
-        // In practice, you'd query Bazel for actual source files
-        return [
+        // Convert input files to SourceItem objects
+        return target.inputFiles.map { filePath in
             SourceItem(
-                uri: "\(rootPath.absoluteString)/\(target.label)",
+                uri: filePath,
                 kind: .file,
                 generated: false
-            ),
-        ]
+            )
+        }
     }
 
-    private func getSourceKitOptions(for _: String) throws -> [String] {
-        // Return the default settings from config
-        return config.defaultSettings
+    private func getSourceKitOptions(for _: String, target: BuildTargetIdentifier) throws -> [String] {
+        // Find the corresponding BazelTarget
+        if let bazelTarget = targets.first(where: { $0.uri == target.uri }) {
+            return bazelTarget.compilerArguments
+        }
+
+        // Return the default settings from config if target not found
+        return config.defaultSettings ?? []
     }
 }
 

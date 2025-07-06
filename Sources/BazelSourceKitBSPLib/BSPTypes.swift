@@ -141,7 +141,7 @@ public struct BuildTarget: Codable {
 
     public static func from(bazelTarget: BazelTarget) -> BuildTarget {
         return BuildTarget(
-            id: BuildTargetIdentifier(uri: bazelTarget.label),
+            id: BuildTargetIdentifier(uri: bazelTarget.uri),
             displayName: bazelTarget.label,
             baseDirectory: nil,
             tags: bazelTarget.tags,
@@ -238,25 +238,53 @@ public struct SourcesItem: Codable {
 
 public struct SourceItem: Codable {
     public let uri: String
-    public let kind: SourceItemKind
+    public let kind: Int
     public let generated: Bool
+    public let dataKind: String
+    public let data: SourceKitSourceItemData
 
-    public init(uri: String, kind: SourceItemKind, generated: Bool) {
+    public init(uri: String, kind: SourceItemKind, generated: Bool = false) {
         self.uri = uri
-        self.kind = kind
+        self.kind = kind.rawValue
         self.generated = generated
+        dataKind = "sourceKit"
+        data = SourceKitSourceItemData(
+            language: nil,
+            kind: .source,
+            outputPath: nil
+        )
     }
 }
 
-public enum SourceItemKind: String, Codable {
-    case file
-    case directory
+public enum SourceItemKind: Int, Codable {
+    case file = 1
+    case directory = 2
+}
+
+public struct SourceKitSourceItemData: Codable {
+    public let language: String?
+    public let kind: SourceKitSourceItemKind?
+    public let outputPath: String?
+
+    public init(language: String? = nil, kind: SourceKitSourceItemKind? = nil, outputPath: String? = nil) {
+        self.language = language
+        self.kind = kind
+        self.outputPath = outputPath
+    }
+}
+
+public enum SourceKitSourceItemKind: String, Codable {
+    case source
+    case header
+    case doccCatalog
 }
 
 // MARK: - SourceKit Options
 
 public struct TextDocumentSourceKitOptionsRequest: Codable {
     public let textDocument: TextDocumentIdentifier
+    public let target: BuildTargetIdentifier
+    public let language: String
 
     public static func from(jsonValue: JSONValue) throws -> TextDocumentSourceKitOptionsRequest {
         let data = try jsonValue.toData()
@@ -273,12 +301,14 @@ public struct TextDocumentIdentifier: Codable {
 }
 
 public struct TextDocumentSourceKitOptionsResponse: Codable {
-    public let options: [String]
-    public let workingDirectory: String
+    public let compilerArguments: [String]
+    public let workingDirectory: String?
+    public let data: JSONValue?
 
-    public init(options: [String], workingDirectory: String) {
-        self.options = options
+    public init(compilerArguments: [String], workingDirectory: String? = nil, data: JSONValue? = nil) {
+        self.compilerArguments = compilerArguments
         self.workingDirectory = workingDirectory
+        self.data = data
     }
 
     public func toJSONValue() throws -> JSONValue {
@@ -315,50 +345,175 @@ public struct FileOptionsChangedNotification: Codable {
 }
 
 public struct Options: Codable {
-    public let workingDirectory: String
-    public let flags: [String]
+    public let options: [String]
+    public let workingDirectory: String?
 
-    public init(workingDirectory: String, flags: [String]) {
+    public init(options: [String], workingDirectory: String? = nil) {
+        self.options = options
         self.workingDirectory = workingDirectory
-        self.flags = flags
     }
 }
 
 // MARK: - Bazel Target Types
 
-public struct BazelTarget: Codable {
+public struct BazelTarget: Codable, Hashable {
+    public let id: UInt32
+    public let uri: String
     public let label: String
     public let kind: String
     public let tags: [String]
+    public let inputFiles: [String]
+    public let compilerArguments: [String]
 
-    public init(label: String, kind: String, tags: [String]) {
+    public init(
+        id: UInt32,
+        uri: String,
+        label: String,
+        kind: String,
+        tags: [String],
+        inputFiles: [String],
+        compilerArguments: [String]
+    ) {
+        self.id = id
+        self.uri = uri
         self.label = label
         self.kind = kind
         self.tags = tags
+        self.inputFiles = inputFiles
+        self.compilerArguments = compilerArguments
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(label)
+    }
+
+    public static func == (lhs: BazelTarget, rhs: BazelTarget) -> Bool {
+        return lhs.id == rhs.id && lhs.label == rhs.label
     }
 }
 
 // MARK: - Build Server Config
 
 public struct BuildServerConfig: Codable {
-    public let defaultSettings: [String]
-    public let targets: [String]?
+    public let name: String
+    public let argv: [String]
+    public let version: String
+    public let bspVersion: String
+    public let languages: [String]
+    public let target: String
+    public let sdk: String
+    public let indexStorePath: String
+    public let indexDatabasePath: String
+    public let aqueryArgs: [String]
+    public let extraIncludes: [String]?
+    public let extraFrameworks: [String]?
 
-    public init(defaultSettings: [String], targets: [String]? = nil) {
-        self.defaultSettings = defaultSettings
-        self.targets = targets
+    // Legacy support for old format
+    public let defaultSettings: [String]?
+
+    public init(
+        name: String,
+        argv: [String],
+        version: String,
+        bspVersion: String,
+        languages: [String],
+        target: String,
+        sdk: String,
+        indexStorePath: String,
+        indexDatabasePath: String,
+        aqueryArgs: [String],
+        extraIncludes: [String]? = nil,
+        extraFrameworks: [String]? = nil
+    ) {
+        self.name = name
+        self.argv = argv
+        self.version = version
+        self.bspVersion = bspVersion
+        self.languages = languages
+        self.target = target
+        self.sdk = sdk
+        self.indexStorePath = indexStorePath
+        self.indexDatabasePath = indexDatabasePath
+        self.aqueryArgs = aqueryArgs
+        self.extraIncludes = extraIncludes
+        self.extraFrameworks = extraFrameworks
+        defaultSettings = nil
     }
 
-    public static func parse(rootUri _: String) throws -> BuildServerConfig {
-        // For now, return a default config
-        // In practice, this would read from a buildServer.json file
-        return BuildServerConfig(
-            defaultSettings: [
-                "-I", ".",
-                "-I", "bazel-out",
-                "-swift-version", "5",
-            ]
-        )
+    public static func parse(rootUri: String) throws -> BuildServerConfig {
+        guard let rootURL = URL(string: rootUri) else {
+            throw BSPError.configError("Invalid root URI: \(rootUri)")
+        }
+
+        let configPath = rootURL.appendingPathComponent("buildServer.json")
+
+        guard let configData = try? Data(contentsOf: configPath) else {
+            throw BSPError.configError("Could not read buildServer.json from: \(configPath.path)")
+        }
+
+        do {
+            let config = try JSONDecoder().decode(BuildServerConfig.self, from: configData)
+            return config
+        } catch {
+            throw BSPError.jsonError(error)
+        }
+    }
+}
+
+// MARK: - Additional Response Types
+
+public struct WaitForBuildSystemUpdatesResponse: Codable {
+    public init() {}
+
+    public func toJSONValue() throws -> JSONValue {
+        return .null
+    }
+}
+
+public struct BuildTargetPrepareResponse: Codable {
+    public init() {}
+
+    public func toJSONValue() throws -> JSONValue {
+        return .null
+    }
+}
+
+public struct BuildShutdownResponse: Codable {
+    public init() {}
+
+    public func toJSONValue() throws -> JSONValue {
+        return .null
+    }
+}
+
+public struct DidChangeWatchedFilesNotification: Codable {
+    public let method: String
+    public let params: JSONValue?
+
+    public init(params: JSONValue? = nil) {
+        method = "workspace/didChangeWatchedFiles"
+        self.params = params
+    }
+
+    public func toJSONValue() throws -> JSONValue {
+        let data = try JSONEncoder().encode(self)
+        return try JSONValue.from(data: data)
+    }
+}
+
+public struct BuildExitNotification: Codable {
+    public let method: String
+    public let params: JSONValue?
+
+    public init(params: JSONValue? = nil) {
+        method = "build/exit"
+        self.params = params
+    }
+
+    public func toJSONValue() throws -> JSONValue {
+        let data = try JSONEncoder().encode(self)
+        return try JSONValue.from(data: data)
     }
 }
 

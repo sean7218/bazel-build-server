@@ -11,7 +11,7 @@ struct BazelSourceKitBSP: ParsableCommand {
         version: "1.0.0"
     )
 
-    mutating func run() throws {
+    func run() throws {
         setupLogging()
         setupErrorHandling()
 
@@ -26,7 +26,7 @@ struct BazelSourceKitBSP: ParsableCommand {
         }
     }
 
-    private mutating func setupLogging() {
+    private func setupLogging() {
         LoggingSystem.bootstrap { label in
             StreamLogHandler.standardOutput(label: label, logLevel: .debug)
         }
