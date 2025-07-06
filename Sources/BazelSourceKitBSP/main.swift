@@ -14,9 +14,10 @@ struct BazelSourceKitBSP: ParsableCommand {
     func run() throws {
         setupErrorHandling()
 
-        let defaultLogPath = "~/.sourcekit-bsp/bsp.log"
-        let expandedLogPath = NSString(string: defaultLogPath).expandingTildeInPath
-        let logURL = URL(fileURLWithPath: expandedLogPath)
+        let logURL = FileManager
+            .default
+            .homeDirectoryForCurrentUser
+            .appending(path: ".bazel-sourcekit-bsp/bsp.log")
 
         // Bootstrap logging to use file handler from the start
         LoggingSystem.bootstrap { label in
