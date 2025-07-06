@@ -1,16 +1,40 @@
-/target
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
 
-# bazel 
-bazel-bin
+# Xcode
+*.xcodeproj
+*.xcworkspace
+*.playground
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Swift
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Bazel
 bazel-bin
 bazel-example
 bazel-testlogs
 bazel-out
 .index-db
 .indexstore
-
-# macos
-.DS_Store
-
-# example-app
 bazel-example-app
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# Legacy (Rust)
+/target
+
+# VSCode
+.vscode/
