@@ -1,0 +1,6 @@
+build --ios_minimum_os=16.0
+build --ios_simulator_device="iPhone 16"
+# build --platforms=build_bazel_apple_support//platforms:ios_sim_arm64
+build --features swift.index_while_building
+build --features swift.use_global_index_store
+# build --features swift.use_explicit_swift_module_map

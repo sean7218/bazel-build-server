@@ -1,0 +1,12 @@
+{
+  "name": "example-app",
+  "argv": ["../bazel-sourcekit-bsp"],
+  "version": "1.0.0",
+  "bspVersion": "2.0.0",
+  "languages": ["swift"],
+  "target": "//App:App",
+  "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk",
+  "indexStorePath": "./bazel-out/_global_index_store",
+  "indexDatabasePath": ".index-db",
+  "aqueryArgs": []
+}
