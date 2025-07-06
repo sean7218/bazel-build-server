@@ -98,6 +98,8 @@ public struct FileLogHandler: LogHandler, @unchecked Sendable {
 
         if let data = logMessage.data(using: .utf8) {
             fileHandle.write(data)
+            // Ensure logs are flushed to disk immediately
+            fileHandle.synchronizeFile()
         }
     }
 

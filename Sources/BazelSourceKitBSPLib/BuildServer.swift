@@ -16,21 +16,17 @@ public class BuildServer {
 
     /// Handle the initial build/initialize request
     public func handleInitialization() throws -> RequestHandler {
-        logger.debug("📥 Reading initialization request...")
-
         let request = try readRequest()
 
         guard request.method == "build/initialize" else {
             throw JSONRPCError.invalidRequest("Expected build/initialize, got \(request.method)")
         }
 
-        logger.debug("🔧 Processing initialization request...")
         let requestHandler = try RequestHandler.initialize(request: request, logger: logger)
 
         let response = try requestHandler.buildInitialize(request: request)
         try sendResponse(response)
 
-        logger.debug("✅ Initialization complete")
         return requestHandler
     }
 
@@ -42,7 +38,6 @@ public class BuildServer {
         }
 
         let headerString = String(data: headerData, encoding: .utf8) ?? ""
-        logger.trace("📨 Header: \(headerString)")
 
         let contentLengthPrefix = "Content-Length: "
         guard headerString.hasPrefix(contentLengthPrefix) else {
@@ -60,7 +55,9 @@ public class BuildServer {
         // Read JSON content
         let jsonData = try readBytes(count: contentLength)
 
-        logger.trace("📨 JSON: \(String(data: jsonData, encoding: .utf8) ?? "invalid UTF-8")")
+        let jsonString = String(data: jsonData, encoding: .utf8) ?? "invalid UTF-8"
+        let prettyJsonString = prettyPrintJSON(jsonString)
+        logger.info("📨 Incoming request:\n\(prettyJsonString)")
 
         // Parse JSON
         do {
@@ -120,18 +117,34 @@ public class BuildServer {
     }
 
     private func sendJSON<T: Codable>(_ object: T) throws {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.sortedKeys]
-
-        let jsonData = try encoder.encode(object)
+        let jsonData = try JSONEncoder.bspEncoder.encode(object)
         let jsonString = String(data: jsonData, encoding: .utf8) ?? ""
 
-        logger.trace("📤 Sending: \(jsonString)")
+        // Pretty print for logging
+        let prettyJsonString = prettyPrintJSON(jsonString)
+        logger.info("📤 Outgoing response:\n\(prettyJsonString)")
 
         let message = "Content-Length: \(jsonData.count)\r\n\r\n\(jsonString)"
         let messageData = message.data(using: .utf8) ?? Data()
 
         stdout.write(messageData)
+    }
+
+    /// Pretty print JSON string for logging
+    private func prettyPrintJSON(_ jsonString: String) -> String {
+        guard let data = jsonString.data(using: .utf8) else {
+            return jsonString
+        }
+
+        do {
+            let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+            let prettyData = try encoder.encode(JSONValue.from(object: jsonObject))
+            return String(data: prettyData, encoding: .utf8) ?? jsonString
+        } catch {
+            return jsonString
+        }
     }
 }
 

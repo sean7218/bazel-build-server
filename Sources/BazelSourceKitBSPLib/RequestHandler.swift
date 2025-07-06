@@ -20,8 +20,6 @@ public class RequestHandler {
 
     /// Initialize the request handler from a build/initialize request
     public static func initialize(request: JSONRPCRequest, logger: Logger) throws -> RequestHandler {
-        logger.debug("🔧 Initializing RequestHandler...")
-
         guard let params = request.params else {
             throw JSONRPCError.invalidRequest("Missing initialization parameters")
         }
@@ -46,17 +44,15 @@ public class RequestHandler {
         // Load targets
         try handler.loadTargets()
 
-        logger.info("✅ RequestHandler initialized with \(handler.targets.count) targets")
+        // TODO: - Log loaded targets for verification
+
         return handler
     }
 
     /// Handle a BSP request and return appropriate response
     public func handleRequest(_ request: JSONRPCRequest) throws -> BuildServerResponse {
-        logger.debug("🔍 Handling request: \(request.method)")
-
         switch request.method {
         case "build/initialized":
-            logger.info("🤩 Build server initialized!")
             return .none
 
         case "workspace/buildTargets":
@@ -102,15 +98,12 @@ public class RequestHandler {
             return .none
 
         default:
-            logger.warning("🤷 Unknown request method: \(request.method)")
             return .none
         }
     }
 
     /// Handle build/initialize request
     public func buildInitialize(request: JSONRPCRequest) throws -> JSONRPCResponse {
-        logger.debug("🏗️ Building initialize response...")
-
         let capabilities = BuildServerCapabilities(
             compileProvider: CompileProvider(languageIds: ["swift"]),
             testProvider: nil,
@@ -147,8 +140,6 @@ public class RequestHandler {
     // MARK: - BSP Method Implementations
 
     private func workspaceBuildTargets(request: JSONRPCRequest) throws -> JSONRPCResponse {
-        logger.debug("📋 Getting workspace build targets...")
-
         let buildTargets = targets.map { BuildTarget.from(bazelTarget: $0) }
         let response = WorkspaceBuildTargetsResponse(targets: buildTargets)
 
@@ -159,8 +150,6 @@ public class RequestHandler {
     }
 
     private func buildTargetSources(request: JSONRPCRequest) throws -> JSONRPCResponse {
-        logger.debug("📁 Getting build target sources...")
-
         guard let params = request.params else {
             throw JSONRPCError.invalidRequest("Missing parameters")
         }
@@ -188,8 +177,6 @@ public class RequestHandler {
     }
 
     private func sourceKitOptions(request: JSONRPCRequest) throws -> JSONRPCResponse {
-        logger.debug("⚙️ Getting SourceKit options...")
-
         guard let params = request.params else {
             throw JSONRPCError.invalidRequest("Missing parameters")
         }
@@ -209,18 +196,40 @@ public class RequestHandler {
     }
 
     private func registerForChanges(request: JSONRPCRequest) throws -> JSONRPCNotification {
-        logger.debug("🔔 Registering for changes...")
-
         guard let params = request.params else {
             throw JSONRPCError.invalidRequest("Missing parameters")
         }
 
         let registerRequest = try RegisterForChanges.from(jsonValue: params)
 
+        // If targets haven't been loaded yet, load them now
+        if targets.isEmpty {
+            try loadTargets()
+        }
+
+        // Find compiler arguments for the specific file
+        var options: [String] = []
+        for target in targets {
+            for inputFile in target.inputFiles {
+                if inputFile == registerRequest.uri {
+                    options = target.compilerArguments
+                    break
+                }
+            }
+            if !options.isEmpty {
+                break
+            }
+        }
+
+        // If no specific options found, use default settings
+        if options.isEmpty {
+            options = config.defaultSettings ?? []
+        }
+
         let notification = FileOptionsChangedNotification(
             uri: registerRequest.uri,
             updatedOptions: Options(
-                options: config.defaultSettings ?? [],
+                options: options,
                 workingDirectory: rootPath.path
             )
         )
@@ -232,8 +241,6 @@ public class RequestHandler {
     }
 
     private func waitForBuildSystemUpdates(request: JSONRPCRequest) throws -> JSONRPCResponse {
-        logger.debug("⏳ Waiting for build system updates...")
-
         // For now, just return immediately
         return JSONRPCResponse(
             id: request.id,
@@ -242,8 +249,6 @@ public class RequestHandler {
     }
 
     private func didChangeWatchedFiles(request _: JSONRPCRequest) throws -> JSONRPCNotification {
-        logger.debug("📝 Files changed notification...")
-
         // For now, just acknowledge
         return JSONRPCNotification(
             method: "buildTarget/didChange",
@@ -252,23 +257,17 @@ public class RequestHandler {
     }
 
     private func buildTargetPrepare(request: JSONRPCRequest) throws -> JSONRPCResponse {
-        logger.debug("🎯 Preparing build target...")
-
         // Build the target using Bazel
         var commandArgs = ["build", config.target]
         commandArgs.append(contentsOf: config.aqueryArgs)
 
-        logger.info("🔨 Running bazel build: bazel \(commandArgs.joined(separator: " "))")
-
         do {
-            let output = try shellOut(
+            _ = try shellOut(
                 to: "bazel",
                 arguments: commandArgs,
                 at: rootPath.path
             )
-            logger.debug("✅ Build output: \(output)")
         } catch {
-            logger.warning("⚠️ Build failed but continuing: \(error)")
             // Don't fail the BSP request even if build fails
         }
 
@@ -279,8 +278,6 @@ public class RequestHandler {
     }
 
     private func buildShutdown(request: JSONRPCRequest) throws -> JSONRPCResponse {
-        logger.info("🔌 Shutting down...")
-
         return JSONRPCResponse(
             id: request.id,
             result: .null
@@ -288,8 +285,6 @@ public class RequestHandler {
     }
 
     private func buildExit(request _: JSONRPCRequest) throws -> JSONRPCNotification {
-        logger.info("👋 Exiting...")
-
         return JSONRPCNotification(
             method: "build/exit",
             params: .null
@@ -310,8 +305,6 @@ public class RequestHandler {
     }
 
     private func loadTargets() throws {
-        logger.debug("🎯 Loading Bazel targets using aquery...")
-
         targets = try executeAquery(
             target: config.target,
             rootPath: rootPath,
@@ -322,8 +315,6 @@ public class RequestHandler {
             extraFrameworks: config.extraFrameworks ?? [],
             logger: logger
         )
-
-        logger.info("📦 Loaded \(targets.count) targets")
     }
 
     private func getSourcesForTarget(_ target: BazelTarget) throws -> [SourceItem] {

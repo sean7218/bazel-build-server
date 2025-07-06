@@ -71,9 +71,7 @@ public func executeAquery(
     extraFrameworks: [String],
     logger: Logger
 ) throws -> [BazelTarget] {
-    logger.debug("✨ Executing aquery for target: \(target)")
-
-    let mnemonic = "mnemonic(\"SwiftCompile\", deps(\(target)))"
+    let mnemonic = "'mnemonic(\"SwiftCompile\", deps(\(target)))'"
 
     var commandArgs: [String] = [
         "aquery",
@@ -82,7 +80,7 @@ public func executeAquery(
     ]
     commandArgs.append(contentsOf: aqueryArgs)
 
-    logger.debug("🔍 aquery command: bazel \(commandArgs.joined(separator: " "))")
+    logger.debug("bazel \(commandArgs.joined(separator: " "))")
 
     let output = try shellOut(
         to: "bazel",
@@ -140,7 +138,8 @@ private func processBazelTargets(
             files: files,
             fragments: fragments,
             action: action,
-            rootPath: rootPath
+            rootPath: rootPath,
+            logger: logger
         )
 
         let compilerArguments = try processCompilerArguments(
@@ -148,7 +147,8 @@ private func processBazelTargets(
             execrootPath: execrootPath,
             sdk: sdk,
             extraIncludes: extraIncludes,
-            extraFrameworks: extraFrameworks
+            extraFrameworks: extraFrameworks,
+            logger: logger
         )
 
         guard let target = queryResult.targets.first(where: { $0.id == action.targetId }) else {
@@ -173,8 +173,6 @@ private func processBazelTargets(
 
     // Deduplicate targets
     let uniqueTargets = Array(Set(bazelTargets))
-    logger.info("📦 Processed \(uniqueTargets.count) unique targets")
-
     return uniqueTargets
 }
 
@@ -184,9 +182,12 @@ private func buildInputFiles(
     files: [UInt32: DepSetOfFiles],
     fragments: [UInt32: PathFragment],
     action: Action,
-    rootPath: URL
+    rootPath: URL,
+    logger _: Logger
 ) throws -> [String] {
     var inputFiles: [String] = []
+    var validPaths: [String] = []
+    var invalidPaths: [String] = []
 
     for depSetId in action.inputDepSetIds {
         let artifactIds = buildArtifactIds(fileSet: files[depSetId], files: files)
@@ -199,7 +200,15 @@ private func buildInputFiles(
             // Convert to URL and filter for Swift files
             let fullPath = rootPath.appendingPathComponent(filePath)
             if fullPath.pathExtension == "swift" {
-                inputFiles.append(fullPath.absoluteString)
+                // Check if file exists
+                let fileExists = FileManager.default.fileExists(atPath: fullPath.path)
+
+                if fileExists {
+                    inputFiles.append(fullPath.absoluteString)
+                    validPaths.append(fullPath.path)
+                } else {
+                    invalidPaths.append(fullPath.path)
+                }
             }
         }
     }
@@ -247,9 +256,12 @@ private func processCompilerArguments(
     execrootPath: URL,
     sdk: String,
     extraIncludes: [String],
-    extraFrameworks: [String]
+    extraFrameworks: [String],
+    logger _: Logger
 ) throws -> [String] {
     var compilerArguments: [String] = []
+    var validArgPaths: [String] = []
+    var invalidArgPaths: [String] = []
 
     var index = 0
     let count = action.arguments.count
@@ -289,6 +301,7 @@ private func processCompilerArguments(
         // Replace SDK placeholder
         if arg.contains("__BAZEL_XCODE_SDKROOT__") {
             let transformedArg = arg.replacingOccurrences(of: "__BAZEL_XCODE_SDKROOT__", with: sdk)
+            validateArgumentPath(arg: transformedArg, validPaths: &validArgPaths, invalidPaths: &invalidArgPaths)
             compilerArguments.append(transformedArg)
             index += 1
             continue
@@ -298,6 +311,7 @@ private func processCompilerArguments(
         if arg.contains("bazel-out/") {
             let prefix = "\(execrootPath.path)/bazel-out/"
             let transformedArg = arg.replacingOccurrences(of: "bazel-out/", with: prefix)
+            validateArgumentPath(arg: transformedArg, validPaths: &validArgPaths, invalidPaths: &invalidArgPaths)
             compilerArguments.append(transformedArg)
             index += 1
             continue
@@ -307,26 +321,57 @@ private func processCompilerArguments(
         if arg.contains("external/") {
             let prefix = "\(execrootPath.path)/external/"
             let transformedArg = arg.replacingOccurrences(of: "external/", with: prefix)
+            validateArgumentPath(arg: transformedArg, validPaths: &validArgPaths, invalidPaths: &invalidArgPaths)
             compilerArguments.append(transformedArg)
             index += 1
             continue
         }
 
+        validateArgumentPath(arg: arg, validPaths: &validArgPaths, invalidPaths: &invalidArgPaths)
         compilerArguments.append(arg)
         index += 1
     }
 
     // Add extra includes
     for include in extraIncludes {
-        compilerArguments.append("-I\(include)")
+        let includeArg = "-I\(include)"
+        validateArgumentPath(arg: includeArg, validPaths: &validArgPaths, invalidPaths: &invalidArgPaths)
+        compilerArguments.append(includeArg)
     }
 
     // Add extra frameworks
     for framework in extraFrameworks {
-        compilerArguments.append("-F\(framework)")
+        let frameworkArg = "-F\(framework)"
+        validateArgumentPath(arg: frameworkArg, validPaths: &validArgPaths, invalidPaths: &invalidArgPaths)
+        compilerArguments.append(frameworkArg)
     }
 
     return compilerArguments
+}
+
+/// Validates paths in compiler arguments
+private func validateArgumentPath(arg: String, validPaths: inout [String], invalidPaths: inout [String]) {
+    // Check if argument looks like a file path (contains / and doesn't start with -)
+    if arg.contains("/") && !arg.hasPrefix("-") {
+        let fileExists = FileManager.default.fileExists(atPath: arg)
+        if fileExists {
+            validPaths.append(arg)
+        } else {
+            invalidPaths.append(arg)
+        }
+    }
+    // Check for -I and -F flag paths
+    else if arg.hasPrefix("-I") || arg.hasPrefix("-F") {
+        let pathPart = String(arg.dropFirst(2))
+        if !pathPart.isEmpty {
+            let fileExists = FileManager.default.fileExists(atPath: pathPart)
+            if fileExists {
+                validPaths.append(pathPart)
+            } else {
+                invalidPaths.append(pathPart)
+            }
+        }
+    }
 }
 
 /// Converts Bazel label to URI

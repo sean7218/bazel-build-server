@@ -1,5 +1,15 @@
 import Foundation
 
+// MARK: - JSON Encoding Extensions
+
+extension JSONEncoder {
+    static var bspEncoder: JSONEncoder {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
+        return encoder
+    }
+}
+
 // MARK: - BSP Protocol Types
 
 /// Build/Initialize Request
@@ -38,7 +48,7 @@ public struct InitializeBuildResponse: Codable {
     public let data: SourceKitInitializeBuildResponseData?
 
     public func toJSONValue() throws -> JSONValue {
-        let data = try JSONEncoder().encode(self)
+        let data = try JSONEncoder.bspEncoder.encode(self)
         return try JSONValue.from(data: data)
     }
 }
@@ -195,7 +205,7 @@ public struct WorkspaceBuildTargetsResponse: Codable {
     }
 
     public func toJSONValue() throws -> JSONValue {
-        let data = try JSONEncoder().encode(self)
+        let data = try JSONEncoder.bspEncoder.encode(self)
         return try JSONValue.from(data: data)
     }
 }
@@ -219,7 +229,7 @@ public struct BuildTargetSourcesResponse: Codable {
     }
 
     public func toJSONValue() throws -> JSONValue {
-        let data = try JSONEncoder().encode(self)
+        let data = try JSONEncoder.bspEncoder.encode(self)
         return try JSONValue.from(data: data)
     }
 }
@@ -312,7 +322,7 @@ public struct TextDocumentSourceKitOptionsResponse: Codable {
     }
 
     public func toJSONValue() throws -> JSONValue {
-        let data = try JSONEncoder().encode(self)
+        let data = try JSONEncoder.bspEncoder.encode(self)
         return try JSONValue.from(data: data)
     }
 }
@@ -339,7 +349,7 @@ public struct FileOptionsChangedNotification: Codable {
     }
 
     public func toJSONValue() throws -> JSONValue {
-        let data = try JSONEncoder().encode(self)
+        let data = try JSONEncoder.bspEncoder.encode(self)
         return try JSONValue.from(data: data)
     }
 }
@@ -408,8 +418,6 @@ public struct BuildServerConfig: Codable {
     public let aqueryArgs: [String]
     public let extraIncludes: [String]?
     public let extraFrameworks: [String]?
-    public let logPath: String?
-    public let truncateLogOnStartup: Bool?
 
     // Legacy support for old format
     public let defaultSettings: [String]?
@@ -426,9 +434,7 @@ public struct BuildServerConfig: Codable {
         indexDatabasePath: String,
         aqueryArgs: [String],
         extraIncludes: [String]? = nil,
-        extraFrameworks: [String]? = nil,
-        logPath: String? = nil,
-        truncateLogOnStartup: Bool? = nil
+        extraFrameworks: [String]? = nil
     ) {
         self.name = name
         self.argv = argv
@@ -442,8 +448,6 @@ public struct BuildServerConfig: Codable {
         self.aqueryArgs = aqueryArgs
         self.extraIncludes = extraIncludes
         self.extraFrameworks = extraFrameworks
-        self.logPath = logPath
-        self.truncateLogOnStartup = truncateLogOnStartup
         defaultSettings = nil
     }
 
@@ -503,7 +507,7 @@ public struct DidChangeWatchedFilesNotification: Codable {
     }
 
     public func toJSONValue() throws -> JSONValue {
-        let data = try JSONEncoder().encode(self)
+        let data = try JSONEncoder.bspEncoder.encode(self)
         return try JSONValue.from(data: data)
     }
 }
@@ -518,7 +522,7 @@ public struct BuildExitNotification: Codable {
     }
 
     public func toJSONValue() throws -> JSONValue {
-        let data = try JSONEncoder().encode(self)
+        let data = try JSONEncoder.bspEncoder.encode(self)
         return try JSONValue.from(data: data)
     }
 }
@@ -553,6 +557,6 @@ public extension JSONValue {
     }
 
     func toData() throws -> Data {
-        return try JSONEncoder().encode(self)
+        return try JSONEncoder.bspEncoder.encode(self)
     }
 }
