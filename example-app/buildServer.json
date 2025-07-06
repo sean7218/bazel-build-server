@@ -8,5 +8,7 @@
   "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk",
   "indexStorePath": "./bazel-out/_global_index_store",
   "indexDatabasePath": ".index-db",
-  "aqueryArgs": []
+  "aqueryArgs": ["--config=vscode"],
+  "logPath": "~/Desktop/bsp.log",
+  "truncateLogOnStartup": true
 }

@@ -408,6 +408,8 @@ public struct BuildServerConfig: Codable {
     public let aqueryArgs: [String]
     public let extraIncludes: [String]?
     public let extraFrameworks: [String]?
+    public let logPath: String?
+    public let truncateLogOnStartup: Bool?
 
     // Legacy support for old format
     public let defaultSettings: [String]?
@@ -424,7 +426,9 @@ public struct BuildServerConfig: Codable {
         indexDatabasePath: String,
         aqueryArgs: [String],
         extraIncludes: [String]? = nil,
-        extraFrameworks: [String]? = nil
+        extraFrameworks: [String]? = nil,
+        logPath: String? = nil,
+        truncateLogOnStartup: Bool? = nil
     ) {
         self.name = name
         self.argv = argv
@@ -438,6 +442,8 @@ public struct BuildServerConfig: Codable {
         self.aqueryArgs = aqueryArgs
         self.extraIncludes = extraIncludes
         self.extraFrameworks = extraFrameworks
+        self.logPath = logPath
+        self.truncateLogOnStartup = truncateLogOnStartup
         defaultSettings = nil
     }
 
