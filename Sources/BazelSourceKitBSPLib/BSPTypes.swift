@@ -160,13 +160,6 @@ public struct SourceKitInitializeBuildResponseData: Codable {
 
 // MARK: - Build Target Types
 
-/// Normalizes a Bazel target label for display purposes
-/// Removes Bazel's internal encoding characters like +_ from external repository names
-private func normalizeDisplayName(_ label: String) -> String {
-    // Remove the +_ encoding that Bazel uses for external repository names
-    return label.replacingOccurrences(of: "+_", with: "_")
-}
-
 public struct BuildTarget: Codable {
     public let id: BuildTargetIdentifier
     public let displayName: String?
@@ -181,7 +174,7 @@ public struct BuildTarget: Codable {
     package static func from(bazelTarget: BazelTarget) -> BuildTarget {
         return BuildTarget(
             id: BuildTargetIdentifier(uri: bazelTarget.uri),
-            displayName: normalizeDisplayName(bazelTarget.label),
+            displayName: bazelTarget.label,
             baseDirectory: nil,
             tags: bazelTarget.tags,
             capabilities: BuildTargetCapabilities(
@@ -451,7 +444,7 @@ public struct BuildServerConfig: Codable {
         guard let configData = try? Data(contentsOf: configPath) else {
             throw BSPError.configError("Could not read buildServer.json from: \(configPath.path)")
         }
-        
+
         guard !configData.isEmpty else {
             throw BSPError.custom("buildServer.json is empty")
         }
