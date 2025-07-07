@@ -22,7 +22,7 @@ package struct ShellCommand {
 
         task.standardOutput = outputPipe
         task.standardError = errorPipe
-        task.arguments = self.args
+        task.arguments = [executable] + self.args
         task.executableURL = URL(fileURLWithPath: "/usr/bin/env")
         task.currentDirectoryURL = URL(fileURLWithPath: currentDir)
 

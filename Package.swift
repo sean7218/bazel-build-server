@@ -40,13 +40,13 @@ let package = Package(
                 .product(name: "NIOHTTP1", package: "swift-nio"),
                 .product(name: "NIOFoundationCompat", package: "swift-nio"),
                 .product(name: "SystemPackage", package: "swift-system"),
-                "BazelActionQuery",
+                "ActionQuery",
                 "BSPError",
                 "ShellCommand"
             ]
         ),
         .target(
-            name: "BazelActionQuery",
+            name: "ActionQuery",
             dependencies: [
                 "BSPError",
                 "ShellCommand"
@@ -54,5 +54,7 @@ let package = Package(
         ),
         .target(name: "BSPError"),
         .target(name: "ShellCommand"),
+        .testTarget(name: "ActionQueryTests", dependencies: ["ActionQuery"]),
+        .testTarget(name: "ShellCommandTests", dependencies: ["ShellCommand"]),
     ]
 )

@@ -1,4 +1,4 @@
-import BazelActionQuery
+import ActionQuery
 import BSPError
 import CoreFoundation
 import Foundation

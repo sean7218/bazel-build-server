@@ -1,4 +1,4 @@
-import BazelActionQuery
+import ActionQuery
 import Foundation
 import Logging
 import ShellCommand

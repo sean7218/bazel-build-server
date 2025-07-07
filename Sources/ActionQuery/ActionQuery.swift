@@ -49,7 +49,7 @@ package struct ActionQuery: Sendable {
     }
 
     /// Parses Bazel aquery JSON proto output
-    private func parseQueryResult(output: String) throws -> QueryResult {
+    func parseQueryResult(output: String) throws -> QueryResult {
         guard let data = output.data(using: .utf8) else {
             throw BSPError.bazelError("Failed to convert aquery output to UTF-8 data")
         }
@@ -63,7 +63,7 @@ package struct ActionQuery: Sendable {
     }
 
     /// Processes the query result into BazelTarget objects
-    private func processBazelTargets(
+    func processBazelTargets(
         queryResult: QueryResult,
         rootPath: URL,
         execrootPath: URL,
@@ -161,7 +161,7 @@ package struct ActionQuery: Sendable {
     }
 
     /// Recursively builds artifact IDs from dep sets
-    private func buildArtifactIds(fileSet: DepSetOfFiles?, files: [UInt32: DepSetOfFiles])
+    func buildArtifactIds(fileSet: DepSetOfFiles?, files: [UInt32: DepSetOfFiles])
         -> [UInt32]
     {
         guard let fileSet = fileSet else { return [] }
@@ -185,7 +185,7 @@ package struct ActionQuery: Sendable {
     }
 
     /// Builds file path from fragments
-    private func buildFilePath(fragments: [UInt32: PathFragment], leafId: UInt32) -> String {
+    func buildFilePath(fragments: [UInt32: PathFragment], leafId: UInt32) -> String {
         guard let leaf = fragments[leafId] else { return "" }
 
         if let parentId = leaf.parentId {
@@ -197,7 +197,7 @@ package struct ActionQuery: Sendable {
     }
 
     /// Processes compiler arguments with transformations
-    private func processCompilerArguments(
+    func processCompilerArguments(
         action: Action,
         execrootPath: URL,
         sdk: String,
