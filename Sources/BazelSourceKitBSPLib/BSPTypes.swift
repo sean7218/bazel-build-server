@@ -451,6 +451,10 @@ public struct BuildServerConfig: Codable {
         guard let configData = try? Data(contentsOf: configPath) else {
             throw BSPError.configError("Could not read buildServer.json from: \(configPath.path)")
         }
+        
+        guard !configData.isEmpty else {
+            throw BSPError.custom("buildServer.json is empty")
+        }
 
         do {
             let config = try JSONDecoder().decode(BuildServerConfig.self, from: configData)

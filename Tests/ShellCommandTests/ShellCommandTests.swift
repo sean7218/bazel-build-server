@@ -23,4 +23,24 @@ final class ShellCommandTests: XCTestCase {
         }
         XCTAssert(output.contains("execroot/_main"))
     }
+
+    func tesAqueryCommand() throws {
+        let currentDir = FileManager.default.currentDirectoryPath
+        let currentURL = URL(fileURLWithPath: currentDir)
+        let examplePath =
+            currentURL
+            .appendingPathComponent("example-app")
+            .path()
+
+        let command = ShellCommand(
+            executable: "bazel",
+            currentDir: examplePath,
+            args: ["aquery", "mnemonic(\"SwiftCompile\", deps(//App:App))"]
+        )
+        guard let output = command.run().output else {
+            XCTFail()
+            return
+        }
+        XCTAssert(output != "")
+    }
 }

@@ -28,9 +28,12 @@ package struct ShellCommand {
 
         do {
             try task.run()
+
+            // Read output BEFORE waiting - this prevents deadlock
+            let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+
             task.waitUntilExit()
 
-            let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
             let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
 
             let output = String(data: outputData, encoding: .utf8) ?? ""

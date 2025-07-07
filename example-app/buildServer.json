@@ -1,12 +1,12 @@
 {
   "name": "bazel-sourcekit-bsp",
-  "argv": ["/bazel-build-server/.build/debug/bazel-sourcekit-bsp"],
+  "argv": ["/Users/sean7218/bazel-build-server/.build/debug/bazel-sourcekit-bsp"],
   "version": "1.0.0",
   "bspVersion": "2.0.0",
   "languages": ["swift"],
   "target": "//App:App",
   "sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk",
-  "indexStorePath": "/bazel-build-server/example-app/bazel-out/_global_index_store",
-  "indexDatabasePath": "/bazel-build-server/example-app/.index-db",
-  "aqueryArgs": ["--config=vscode"]
+  "indexStorePath": "/Users/sean7218/bazel-build-server/example-app/bazel-out/_global_index_store",
+  "indexDatabasePath": "/Users/sean7218/bazel-build-server/example-app/.index-db",
+  "aqueryArgs": []
 }

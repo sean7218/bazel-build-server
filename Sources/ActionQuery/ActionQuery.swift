@@ -17,7 +17,7 @@ package struct ActionQuery: Sendable {
         extraIncludes: [String],
         extraFrameworks: [String],
     ) throws -> [BazelTarget] {
-        let mnemonic = "'mnemonic(\"SwiftCompile\", deps(\(target)))'"
+        let mnemonic = "mnemonic(\"SwiftCompile\", deps(\(target)))"
 
         var commandArgs: [String] = [
             "aquery",
@@ -26,12 +26,21 @@ package struct ActionQuery: Sendable {
         ]
         commandArgs.append(contentsOf: aqueryArgs)
 
-        guard let output = ShellCommand(
+        let (output, error, status) = ShellCommand(
             executable: "bazel",
             currentDir: rootPath.path(),
             args: commandArgs,
-        ).run().output else {
-            fatalError("Failed to run ActionQuery")
+        ).run() 
+
+        guard let output = output, output != "" else {
+            throw BSPError.custom(
+                """
+                ActionQuery output is empty string!
+                Error: \(String(describing: error))
+                Exit Code: \(status)
+                Current Directory: \(rootPath.path())
+                """
+            )
         }
 
         let queryResult = try parseQueryResult(output: output)
@@ -52,11 +61,16 @@ package struct ActionQuery: Sendable {
             throw BSPError.bazelError("Failed to convert aquery output to UTF-8 data")
         }
 
+        guard !data.isEmpty else {
+            throw BSPError.custom("QueryResult output is empty")
+        }
+    
         do {
             let decoder = JSONDecoder()
             return try decoder.decode(QueryResult.self, from: data)
         } catch {
-            throw BSPError.jsonError(error)
+            let jsonError = error.localizedDescription
+            throw BSPError.custom("jsonError: \(jsonError) \n \(data)")
         }
     }
 
@@ -144,7 +158,7 @@ package struct ActionQuery: Sendable {
                 let fullPath = rootPath.appendingPathComponent(filePath)
                 if fullPath.pathExtension == "swift" {
                     // Check if file exists
-                    let fileExists = FileManager.default.fileExists(atPath: fullPath.path)
+                    let fileExists = true // FileManager.default.fileExists(atPath: fullPath.path)
 
                     if fileExists {
                         inputFiles.append(fullPath.absoluteString)
@@ -331,6 +345,7 @@ package struct ActionQuery: Sendable {
         validPaths: inout [String],
         invalidPaths: inout [String]
     ) {
+        return;
         // Check if argument looks like a file path (contains / and doesn't start with -)
         if arg.contains("/") && !arg.hasPrefix("-") {
             let fileExists = FileManager.default.fileExists(atPath: arg)
