@@ -1,0 +1,601 @@
+action 'Compiling Swift module //Features/BazelView:BazelView'
+  Mnemonic: SwiftCompile
+  Target: //Features/BazelView:BazelView
+  Configuration: ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed
+  Execution platform: @@platforms//host:host
+  ActionKey: 4ebb388429cb0fd7148effc7cc50439942837789d1aec8c85b942010e9e198cf
+  Inputs: [Features/BazelView/BazelView.swift, bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker, bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/internal/_middlemen/external_Srules_Uswift+_Stools_Sworker_Sworker-runfiles, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView.output_file_map.json, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.swiftmodule, external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json]
+  Outputs: [bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView.macro-expansions (TreeArtifact), bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView.swiftdoc, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView.swiftsourceinfo, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView_objs/BazelView.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView_objs/BazelView.swift.swiftconstvalues]
+  Environment: [APPLE_SDK_PLATFORM=iPhoneSimulator, APPLE_SDK_VERSION_OVERRIDE=18.4, XCODE_VERSION_OVERRIDE=16.3.0.16E140]
+  Command Line: (exec bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker \
+    swiftc \
+    -target \
+    arm64-apple-ios15.0-simulator \
+    -sdk \
+    __BAZEL_XCODE_SDKROOT__ \
+    -debug-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    '-Xwrapped-swift=-bazel-target-label=@@//Features/BazelView:BazelView' \
+    -emit-object \
+    -output-file-map \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView.output_file_map.json \
+    -Xfrontend \
+    -no-clang-module-breadcrumbs \
+    -emit-module-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView.swiftmodule \
+    '-enforce-exclusivity=checked' \
+    -emit-const-values-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView_objs/BazelView.swift.swiftconstvalues \
+    -Xfrontend \
+    -const-gather-protocols-file \
+    -Xfrontend \
+    external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json \
+    -DDEBUG \
+    -Onone \
+    -Xfrontend \
+    -internalize-at-link \
+    -Xfrontend \
+    -no-serialize-debugging-options \
+    -enable-testing \
+    -disable-sandbox \
+    -gline-tables-only \
+    '-Xwrapped-swift=-file-prefix-pwd-is-dot' \
+    -module-cache-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache \
+    -Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils \
+    -Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack \
+    -Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics \
+    '-Xwrapped-swift=-macro-expansion-dir=bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView.macro-expansions' \
+    -Xcc \
+    -iquote. \
+    -Xcc \
+    -iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin \
+    -Xfrontend \
+    -color-diagnostics \
+    -enable-batch-mode \
+    -module-name \
+    BazelView \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=DEVELOPER_DIR' \
+    -enable-bare-slash-regex \
+    -Xfrontend \
+    -disable-clang-spi \
+    -enable-experimental-feature \
+    AccessLevelOnImport \
+    -parse-as-library \
+    -static \
+    -Xcc \
+    -O0 \
+    -Xcc \
+    '-DDEBUG=1' \
+    Features/BazelView/BazelView.swift)
+# Configuration: 27139f25077e48193b640d3ccc307560f330a8618f0f34531d7b3a866e1d6561
+# Execution platform: @@platforms//host:host
+  ExecutionInfo: {requires-darwin: '', requires-worker-protocol: json, supports-workers: 1, supports-xcode-requirements-set: ''}
+
+action 'Compiling Swift module //App:Sources'
+  Mnemonic: SwiftCompile
+  Target: //App:Sources
+  Configuration: ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed
+  Execution platform: @@platforms//host:host
+  ActionKey: 77b79c285f834a4abb827ac9b7f63fa78d283f1ff17a340b3b11e1b7d894ee77
+  Inputs: [App/Sources/ContentView.swift, App/Sources/ExampleApp+String.swift, App/Sources/ExampleApp.swift, bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker, bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/internal/_middlemen/external_Srules_Uswift+_Stools_Sworker_Sworker-runfiles, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources.output_file_map.json, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty.swiftmodule, external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json]
+  Outputs: [bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources.macro-expansions (TreeArtifact), bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources.swiftdoc, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources.swiftsourceinfo, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources_objs/Sources/ContentView.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources_objs/Sources/ContentView.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources_objs/Sources/ExampleApp+String.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources_objs/Sources/ExampleApp+String.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources_objs/Sources/ExampleApp.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources_objs/Sources/ExampleApp.swift.swiftconstvalues]
+  Environment: [APPLE_SDK_PLATFORM=iPhoneSimulator, APPLE_SDK_VERSION_OVERRIDE=18.4, XCODE_VERSION_OVERRIDE=16.3.0.16E140]
+  Command Line: (exec bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker \
+    swiftc \
+    -target \
+    arm64-apple-ios15.0-simulator \
+    -sdk \
+    __BAZEL_XCODE_SDKROOT__ \
+    -debug-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    '-Xwrapped-swift=-bazel-target-label=@@//App:Sources' \
+    -emit-object \
+    -output-file-map \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources.output_file_map.json \
+    -Xfrontend \
+    -no-clang-module-breadcrumbs \
+    -emit-module-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources.swiftmodule \
+    '-enforce-exclusivity=checked' \
+    -emit-const-values-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources_objs/Sources/ContentView.swift.swiftconstvalues \
+    -Xfrontend \
+    -const-gather-protocols-file \
+    -Xfrontend \
+    external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json \
+    -DDEBUG \
+    -Onone \
+    -Xfrontend \
+    -internalize-at-link \
+    -Xfrontend \
+    -no-serialize-debugging-options \
+    -enable-testing \
+    -disable-sandbox \
+    -gline-tables-only \
+    '-Xwrapped-swift=-file-prefix-pwd-is-dot' \
+    -module-cache-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache \
+    -Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils \
+    -Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack \
+    -Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics \
+    -Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView \
+    -Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty \
+    -Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift \
+    '-Xwrapped-swift=-macro-expansion-dir=bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources.macro-expansions' \
+    -Xcc \
+    -iquote. \
+    -Xcc \
+    -iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin \
+    -Xfrontend \
+    -color-diagnostics \
+    -enable-batch-mode \
+    -module-name \
+    Sources \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=DEVELOPER_DIR' \
+    -enable-bare-slash-regex \
+    -Xfrontend \
+    -disable-clang-spi \
+    -enable-experimental-feature \
+    AccessLevelOnImport \
+    -parse-as-library \
+    -static \
+    -Xcc \
+    -O0 \
+    -Xcc \
+    '-DDEBUG=1' \
+    App/Sources/ContentView.swift \
+    App/Sources/ExampleApp.swift \
+    App/Sources/ExampleApp+String.swift)
+# Configuration: 27139f25077e48193b640d3ccc307560f330a8618f0f34531d7b3a866e1d6561
+# Execution platform: @@platforms//host:host
+  ExecutionInfo: {requires-darwin: '', requires-worker-protocol: json, supports-workers: 1, supports-xcode-requirements-set: ''}
+
+action 'Compiling Swift module //Libraries/Utils:Utils'
+  Mnemonic: SwiftCompile
+  Target: //Libraries/Utils:Utils
+  Configuration: ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed
+  Execution platform: @@platforms//host:host
+  ActionKey: c5b73b9487a3febab55940addb37524e66ca2fe7a91326be6dcb77c09baa30d5
+  Inputs: [Libraries/Utils/Utils.swift, bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker, bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/internal/_middlemen/external_Srules_Uswift+_Stools_Sworker_Sworker-runfiles, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.output_file_map.json, external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json]
+  Outputs: [bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.macro-expansions (TreeArtifact), bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.swiftdoc, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.swiftsourceinfo, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils_objs/Utils.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils_objs/Utils.swift.swiftconstvalues]
+  Environment: [APPLE_SDK_PLATFORM=iPhoneSimulator, APPLE_SDK_VERSION_OVERRIDE=18.4, XCODE_VERSION_OVERRIDE=16.3.0.16E140]
+  Command Line: (exec bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker \
+    swiftc \
+    -target \
+    arm64-apple-ios15.0-simulator \
+    -sdk \
+    __BAZEL_XCODE_SDKROOT__ \
+    -debug-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    '-Xwrapped-swift=-bazel-target-label=@@//Libraries/Utils:Utils' \
+    -emit-object \
+    -output-file-map \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.output_file_map.json \
+    -Xfrontend \
+    -no-clang-module-breadcrumbs \
+    -emit-module-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.swiftmodule \
+    '-enforce-exclusivity=checked' \
+    -emit-const-values-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils_objs/Utils.swift.swiftconstvalues \
+    -Xfrontend \
+    -const-gather-protocols-file \
+    -Xfrontend \
+    external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json \
+    -DDEBUG \
+    -Onone \
+    -Xfrontend \
+    -internalize-at-link \
+    -Xfrontend \
+    -no-serialize-debugging-options \
+    -enable-testing \
+    -disable-sandbox \
+    -gline-tables-only \
+    '-Xwrapped-swift=-file-prefix-pwd-is-dot' \
+    -module-cache-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache \
+    '-Xwrapped-swift=-macro-expansion-dir=bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.macro-expansions' \
+    -Xcc \
+    -iquote. \
+    -Xcc \
+    -iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin \
+    -Xfrontend \
+    -color-diagnostics \
+    -enable-batch-mode \
+    -module-name \
+    Utils \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=DEVELOPER_DIR' \
+    -enable-bare-slash-regex \
+    -Xfrontend \
+    -disable-clang-spi \
+    -enable-experimental-feature \
+    AccessLevelOnImport \
+    -parse-as-library \
+    -static \
+    -Xcc \
+    -O0 \
+    -Xcc \
+    '-DDEBUG=1' \
+    Libraries/Utils/Utils.swift)
+# Configuration: 27139f25077e48193b640d3ccc307560f330a8618f0f34531d7b3a866e1d6561
+# Execution platform: @@platforms//host:host
+  ExecutionInfo: {requires-darwin: '', requires-worker-protocol: json, supports-workers: 1, supports-xcode-requirements-set: ''}
+
+action 'Compiling Swift module //Libraries/NetworkStack:NetworkStack'
+  Mnemonic: SwiftCompile
+  Target: //Libraries/NetworkStack:NetworkStack
+  Configuration: ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed
+  Execution platform: @@platforms//host:host
+  ActionKey: 67ba95b8fc2d95f7c9bce9af85a6e5b7d3c4d809b26ffb25488e4c0e48ebd9c5
+  Inputs: [Libraries/NetworkStack/NetworkStack.swift, bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker, bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/internal/_middlemen/external_Srules_Uswift+_Stools_Sworker_Sworker-runfiles, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.output_file_map.json, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.swiftmodule, external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json]
+  Outputs: [bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.macro-expansions (TreeArtifact), bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.swiftdoc, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.swiftsourceinfo, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack_objs/NetworkStack.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack_objs/NetworkStack.swift.swiftconstvalues]
+  Environment: [APPLE_SDK_PLATFORM=iPhoneSimulator, APPLE_SDK_VERSION_OVERRIDE=18.4, XCODE_VERSION_OVERRIDE=16.3.0.16E140]
+  Command Line: (exec bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker \
+    swiftc \
+    -target \
+    arm64-apple-ios15.0-simulator \
+    -sdk \
+    __BAZEL_XCODE_SDKROOT__ \
+    -debug-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    '-Xwrapped-swift=-bazel-target-label=@@//Libraries/NetworkStack:NetworkStack' \
+    -emit-object \
+    -output-file-map \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.output_file_map.json \
+    -Xfrontend \
+    -no-clang-module-breadcrumbs \
+    -emit-module-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.swiftmodule \
+    '-enforce-exclusivity=checked' \
+    -emit-const-values-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack_objs/NetworkStack.swift.swiftconstvalues \
+    -Xfrontend \
+    -const-gather-protocols-file \
+    -Xfrontend \
+    external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json \
+    -DDEBUG \
+    -Onone \
+    -Xfrontend \
+    -internalize-at-link \
+    -Xfrontend \
+    -no-serialize-debugging-options \
+    -enable-testing \
+    -disable-sandbox \
+    -gline-tables-only \
+    '-Xwrapped-swift=-file-prefix-pwd-is-dot' \
+    -module-cache-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache \
+    -Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils \
+    '-Xwrapped-swift=-macro-expansion-dir=bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.macro-expansions' \
+    -Xcc \
+    -iquote. \
+    -Xcc \
+    -iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin \
+    -Xfrontend \
+    -color-diagnostics \
+    -enable-batch-mode \
+    -module-name \
+    NetworkStack \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=DEVELOPER_DIR' \
+    -enable-bare-slash-regex \
+    -Xfrontend \
+    -disable-clang-spi \
+    -enable-experimental-feature \
+    AccessLevelOnImport \
+    -parse-as-library \
+    -static \
+    -Xcc \
+    -O0 \
+    -Xcc \
+    '-DDEBUG=1' \
+    Libraries/NetworkStack/NetworkStack.swift)
+# Configuration: 27139f25077e48193b640d3ccc307560f330a8618f0f34531d7b3a866e1d6561
+# Execution platform: @@platforms//host:host
+  ExecutionInfo: {requires-darwin: '', requires-worker-protocol: json, supports-workers: 1, supports-xcode-requirements-set: ''}
+
+action 'Compiling Swift module //Libraries/Analytics:Analytics'
+  Mnemonic: SwiftCompile
+  Target: //Libraries/Analytics:Analytics
+  Configuration: ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed
+  Execution platform: @@platforms//host:host
+  ActionKey: 897d09db627bf5b7e9ce42ce40bc51814d803bd5e47d9151dbbc3428e02aeddd
+  Inputs: [Libraries/Analytics/Analytics.swift, bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker, bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/internal/_middlemen/external_Srules_Uswift+_Stools_Sworker_Sworker-runfiles, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics.output_file_map.json, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.swiftmodule, external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json]
+  Outputs: [bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics.macro-expansions (TreeArtifact), bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics.swiftdoc, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics.swiftsourceinfo, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics_objs/Analytics.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics_objs/Analytics.swift.swiftconstvalues]
+  Environment: [APPLE_SDK_PLATFORM=iPhoneSimulator, APPLE_SDK_VERSION_OVERRIDE=18.4, XCODE_VERSION_OVERRIDE=16.3.0.16E140]
+  Command Line: (exec bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker \
+    swiftc \
+    -target \
+    arm64-apple-ios15.0-simulator \
+    -sdk \
+    __BAZEL_XCODE_SDKROOT__ \
+    -debug-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    '-Xwrapped-swift=-bazel-target-label=@@//Libraries/Analytics:Analytics' \
+    -emit-object \
+    -output-file-map \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics.output_file_map.json \
+    -Xfrontend \
+    -no-clang-module-breadcrumbs \
+    -emit-module-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics.swiftmodule \
+    '-enforce-exclusivity=checked' \
+    -emit-const-values-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics_objs/Analytics.swift.swiftconstvalues \
+    -Xfrontend \
+    -const-gather-protocols-file \
+    -Xfrontend \
+    external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json \
+    -DDEBUG \
+    -Onone \
+    -Xfrontend \
+    -internalize-at-link \
+    -Xfrontend \
+    -no-serialize-debugging-options \
+    -enable-testing \
+    -disable-sandbox \
+    -gline-tables-only \
+    '-Xwrapped-swift=-file-prefix-pwd-is-dot' \
+    -module-cache-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache \
+    -Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils \
+    -Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack \
+    '-Xwrapped-swift=-macro-expansion-dir=bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics.macro-expansions' \
+    -Xcc \
+    -iquote. \
+    -Xcc \
+    -iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin \
+    -Xfrontend \
+    -color-diagnostics \
+    -enable-batch-mode \
+    -module-name \
+    Analytics \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=DEVELOPER_DIR' \
+    -enable-bare-slash-regex \
+    -Xfrontend \
+    -disable-clang-spi \
+    -enable-experimental-feature \
+    AccessLevelOnImport \
+    -parse-as-library \
+    -static \
+    -Xcc \
+    -O0 \
+    -Xcc \
+    '-DDEBUG=1' \
+    Libraries/Analytics/Analytics.swift)
+# Configuration: 27139f25077e48193b640d3ccc307560f330a8618f0f34531d7b3a866e1d6561
+# Execution platform: @@platforms//host:host
+  ExecutionInfo: {requires-darwin: '', requires-worker-protocol: json, supports-workers: 1, supports-xcode-requirements-set: ''}
+
+action 'Compiling Swift module @@+_repo_rules2+SwiftNonEmpty//:SwiftNonEmpty'
+  Mnemonic: SwiftCompile
+  Target: @SwiftNonEmpty//:SwiftNonEmpty
+  Configuration: ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed
+  Execution platform: @@platforms//host:host
+  ActionKey: e3b0dc5f65ac67017a3039ce3bd283e8c3f7948dd026b8c31d9391c69c040b54
+  Inputs: [bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker, bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/internal/_middlemen/external_Srules_Uswift+_Stools_Sworker_Sworker-runfiles, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty.output_file_map.json, external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+Dictionary.swift, external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+ExpressibleByArrayLiteral.swift, external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+ExpressibleByDictionaryLiteral.swift, external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+RangeReplaceableCollection.swift, external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+SetAlgebra.swift, external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+String.swift, external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty.swift, external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json]
+  Outputs: [bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty.macro-expansions (TreeArtifact), bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty.swiftdoc, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty.swiftsourceinfo, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+Dictionary.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+Dictionary.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+ExpressibleByArrayLiteral.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+ExpressibleByArrayLiteral.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+ExpressibleByDictionaryLiteral.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+ExpressibleByDictionaryLiteral.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+RangeReplaceableCollection.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+RangeReplaceableCollection.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+SetAlgebra.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+SetAlgebra.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+String.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+String.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty.swift.swiftconstvalues]
+  Environment: [APPLE_SDK_PLATFORM=iPhoneSimulator, APPLE_SDK_VERSION_OVERRIDE=18.4, XCODE_VERSION_OVERRIDE=16.3.0.16E140]
+  Command Line: (exec bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker \
+    swiftc \
+    -target \
+    arm64-apple-ios15.0-simulator \
+    -sdk \
+    __BAZEL_XCODE_SDKROOT__ \
+    -debug-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    '-Xwrapped-swift=-bazel-target-label=@@+_repo_rules2+SwiftNonEmpty//:SwiftNonEmpty' \
+    -emit-object \
+    -output-file-map \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty.output_file_map.json \
+    -Xfrontend \
+    -no-clang-module-breadcrumbs \
+    -emit-module-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty.swiftmodule \
+    '-enforce-exclusivity=checked' \
+    -emit-const-values-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+Dictionary.swift.swiftconstvalues \
+    -Xfrontend \
+    -const-gather-protocols-file \
+    -Xfrontend \
+    external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json \
+    -DDEBUG \
+    -Onone \
+    -Xfrontend \
+    -internalize-at-link \
+    -Xfrontend \
+    -no-serialize-debugging-options \
+    -enable-testing \
+    -disable-sandbox \
+    -gline-tables-only \
+    '-Xwrapped-swift=-file-prefix-pwd-is-dot' \
+    -module-cache-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache \
+    '-Xwrapped-swift=-macro-expansion-dir=bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty.macro-expansions' \
+    -Xcc \
+    -iquote. \
+    -Xcc \
+    -iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin \
+    -Xfrontend \
+    -color-diagnostics \
+    -enable-batch-mode \
+    -module-name \
+    SwiftNonEmpty \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=DEVELOPER_DIR' \
+    -enable-bare-slash-regex \
+    -Xfrontend \
+    -disable-clang-spi \
+    -enable-experimental-feature \
+    AccessLevelOnImport \
+    -parse-as-library \
+    -static \
+    -Xcc \
+    -O0 \
+    -Xcc \
+    '-DDEBUG=1' \
+    external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+Dictionary.swift \
+    external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+ExpressibleByArrayLiteral.swift \
+    external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+ExpressibleByDictionaryLiteral.swift \
+    external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+RangeReplaceableCollection.swift \
+    external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+SetAlgebra.swift \
+    external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+String.swift \
+    external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty.swift)
+# Configuration: 27139f25077e48193b640d3ccc307560f330a8618f0f34531d7b3a866e1d6561
+# Execution platform: @@platforms//host:host
+  ExecutionInfo: {requires-darwin: '', requires-worker-protocol: json, supports-workers: 1, supports-xcode-requirements-set: ''}
+
+action 'Compiling Swift module @@+_repo_rules+JOSESwift//:JOSESwift'
+  Mnemonic: SwiftCompile
+  Target: @JOSESwift//:JOSESwift
+  Configuration: ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed
+  Execution platform: @@platforms//host:host
+  ActionKey: 7dc061c515eb499ff5bb0aac6c882ec4417355c1c898fb2a03effe4beb483e37
+  Inputs: [bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker, bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/internal/_middlemen/external_Srules_Uswift+_Stools_Sworker_Sworker-runfiles, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift.output_file_map.json, external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/ASN1DEREncoding.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/ASN1DERParsing.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/AlgorithmExtensions.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/Algorithms.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/DataConvertible.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/DataExtensions.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/Deserializer.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/JOSEHeader.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/JOSESwiftError.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/Payload.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/Serializer.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/AESCBC/AES.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/AESGCM/AESGCM.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/EC/EC.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/EC/ECDHKeyAgreement.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/HMAC/HMAC.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/PBES2/PBES2.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/RSA/RSA.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/Randomness/SecureRandom.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/SHA/Thumbprint.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/Compression/Compressor.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/Compression/DeflateWrapper.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/ContentEncryption/ContentEncryption.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/ContentEncryption/DefaultCrypto/AESCBC/AESCBCEncryption.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/ContentEncryption/DefaultCrypto/AESGCM/AESGCMEncryption.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/Decrypter.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/Encrypter.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/JWE.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/JWEHeader.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/AESKW/AESKeyWrappingMode.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/DirectEncryption/DirectEncryptionMode.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/EC/ECKeyEncryption.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/PBES2/PBES2KeyEncryptionMode.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/RSA/RSAKeyEncryptionMode.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/KeyManagementMode.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/DataECPrivateKey.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/DataECPublicKey.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/ECKeyCodable.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/ECKeyPair.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/ECKeys.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/SecKeyECPrivateKey.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/SecKeyECPublicKey.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWK.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWKExtensions.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWKParameters.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWKSet.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWKSetCodable.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/RSA/DataRSAPublicKey.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/RSA/RSAKeyCodable.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/RSA/RSAKeys.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/RSA/SecKeyRSAPublicKey.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/Symmetric/DataSymmetricKey.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/Symmetric/SymmetricKeyCodable.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/Symmetric/SymmetricKeys.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/EC/ECSigner.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/EC/ECVerifier.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/HMAC/HMACSigner.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/HMAC/HMACVerifier.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/RSA/RSASigner.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/RSA/RSAVerifier.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/JWS.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/JWSHeader.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/Signer.swift, external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/Verifier.swift, external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json]
+  Outputs: [bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift.macro-expansions (TreeArtifact), bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift.swiftdoc, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift.swiftmodule, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift.swiftsourceinfo, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/ASN1DEREncoding.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/ASN1DEREncoding.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/ASN1DERParsing.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/ASN1DERParsing.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/AlgorithmExtensions.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/AlgorithmExtensions.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/Algorithms.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/Algorithms.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/DataConvertible.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/DataConvertible.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/DataExtensions.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/DataExtensions.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/Deserializer.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/Deserializer.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/JOSEHeader.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/JOSEHeader.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/JOSESwiftError.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/JOSESwiftError.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/Payload.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/Payload.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/Serializer.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/Serializer.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/AESCBC/AES.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/AESCBC/AES.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/AESGCM/AESGCM.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/AESGCM/AESGCM.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/EC/EC.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/EC/EC.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/EC/ECDHKeyAgreement.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/EC/ECDHKeyAgreement.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/HMAC/HMAC.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/HMAC/HMAC.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/PBES2/PBES2.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/PBES2/PBES2.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/RSA/RSA.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/RSA/RSA.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/Randomness/SecureRandom.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/Randomness/SecureRandom.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/SHA/Thumbprint.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/CryptoPrimitives/SHA/Thumbprint.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/Compression/Compressor.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/Compression/Compressor.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/Compression/DeflateWrapper.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/Compression/DeflateWrapper.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/ContentEncryption/ContentEncryption.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/ContentEncryption/ContentEncryption.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/ContentEncryption/DefaultCrypto/AESCBC/AESCBCEncryption.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/ContentEncryption/DefaultCrypto/AESCBC/AESCBCEncryption.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/ContentEncryption/DefaultCrypto/AESGCM/AESGCMEncryption.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/ContentEncryption/DefaultCrypto/AESGCM/AESGCMEncryption.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/Decrypter.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/Decrypter.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/Encrypter.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/Encrypter.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/JWE.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/JWE.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/JWEHeader.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/JWEHeader.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/AESKW/AESKeyWrappingMode.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/AESKW/AESKeyWrappingMode.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/DirectEncryption/DirectEncryptionMode.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/DirectEncryption/DirectEncryptionMode.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/EC/ECKeyEncryption.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/EC/ECKeyEncryption.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/PBES2/PBES2KeyEncryptionMode.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/PBES2/PBES2KeyEncryptionMode.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/RSA/RSAKeyEncryptionMode.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/RSA/RSAKeyEncryptionMode.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/KeyManagement/KeyManagementMode.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWE/KeyManagement/KeyManagementMode.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/DataECPrivateKey.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/DataECPrivateKey.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/DataECPublicKey.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/DataECPublicKey.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/ECKeyCodable.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/ECKeyCodable.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/ECKeyPair.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/ECKeyPair.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/ECKeys.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/ECKeys.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/SecKeyECPrivateKey.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/SecKeyECPrivateKey.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/SecKeyECPublicKey.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/EC/SecKeyECPublicKey.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/JWK.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/JWK.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/JWKExtensions.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/JWKExtensions.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/JWKParameters.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/JWKParameters.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/JWKSet.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/JWKSet.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/JWKSetCodable.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/JWKSetCodable.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/RSA/DataRSAPublicKey.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/RSA/DataRSAPublicKey.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/RSA/RSAKeyCodable.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/RSA/RSAKeyCodable.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/RSA/RSAKeys.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/RSA/RSAKeys.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/RSA/SecKeyRSAPublicKey.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/RSA/SecKeyRSAPublicKey.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/Symmetric/DataSymmetricKey.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/Symmetric/DataSymmetricKey.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/Symmetric/SymmetricKeyCodable.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/Symmetric/SymmetricKeyCodable.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/Symmetric/SymmetricKeys.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWK/Symmetric/SymmetricKeys.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/DefaultCrypto/EC/ECSigner.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/DefaultCrypto/EC/ECSigner.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/DefaultCrypto/EC/ECVerifier.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/DefaultCrypto/EC/ECVerifier.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/DefaultCrypto/HMAC/HMACSigner.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/DefaultCrypto/HMAC/HMACSigner.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/DefaultCrypto/HMAC/HMACVerifier.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/DefaultCrypto/HMAC/HMACVerifier.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/DefaultCrypto/RSA/RSASigner.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/DefaultCrypto/RSA/RSASigner.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/DefaultCrypto/RSA/RSAVerifier.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/DefaultCrypto/RSA/RSAVerifier.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/JWS.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/JWS.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/JWSHeader.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/JWSHeader.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/Signer.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/Signer.swift.swiftconstvalues, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/Verifier.swift.o, bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/JWS/Verifier.swift.swiftconstvalues]
+  Environment: [APPLE_SDK_PLATFORM=iPhoneSimulator, APPLE_SDK_VERSION_OVERRIDE=18.4, XCODE_VERSION_OVERRIDE=16.3.0.16E140]
+  Command Line: (exec bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker \
+    swiftc \
+    -target \
+    arm64-apple-ios15.0-simulator \
+    -sdk \
+    __BAZEL_XCODE_SDKROOT__ \
+    -debug-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=/PLACEHOLDER_DEVELOPER_DIR' \
+    '-Xwrapped-swift=-bazel-target-label=@@+_repo_rules+JOSESwift//:JOSESwift' \
+    -emit-object \
+    -output-file-map \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift.output_file_map.json \
+    -Xfrontend \
+    -no-clang-module-breadcrumbs \
+    -emit-module-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift.swiftmodule \
+    '-enforce-exclusivity=checked' \
+    -emit-const-values-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/ASN1DEREncoding.swift.swiftconstvalues \
+    -Xfrontend \
+    -const-gather-protocols-file \
+    -Xfrontend \
+    external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json \
+    -DDEBUG \
+    -Onone \
+    -Xfrontend \
+    -internalize-at-link \
+    -Xfrontend \
+    -no-serialize-debugging-options \
+    -enable-testing \
+    -disable-sandbox \
+    -gline-tables-only \
+    '-Xwrapped-swift=-file-prefix-pwd-is-dot' \
+    -module-cache-path \
+    bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache \
+    '-Xwrapped-swift=-macro-expansion-dir=bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift.macro-expansions' \
+    -Xcc \
+    -iquote. \
+    -Xcc \
+    -iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin \
+    -Xfrontend \
+    -color-diagnostics \
+    -enable-batch-mode \
+    -module-name \
+    JOSESwift \
+    -file-prefix-map \
+    '__BAZEL_XCODE_DEVELOPER_DIR__=DEVELOPER_DIR' \
+    -enable-bare-slash-regex \
+    -Xfrontend \
+    -disable-clang-spi \
+    -enable-experimental-feature \
+    AccessLevelOnImport \
+    -parse-as-library \
+    -static \
+    -Xcc \
+    -O0 \
+    -Xcc \
+    '-DDEBUG=1' \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/ASN1DEREncoding.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/ASN1DERParsing.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/AlgorithmExtensions.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/Algorithms.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/DataConvertible.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/DataExtensions.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/Deserializer.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/JOSEHeader.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/JOSESwiftError.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/Payload.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/Serializer.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/AESCBC/AES.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/AESGCM/AESGCM.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/EC/EC.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/EC/ECDHKeyAgreement.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/HMAC/HMAC.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/PBES2/PBES2.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/RSA/RSA.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/Randomness/SecureRandom.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/SHA/Thumbprint.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/Compression/Compressor.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/Compression/DeflateWrapper.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/ContentEncryption/ContentEncryption.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/ContentEncryption/DefaultCrypto/AESCBC/AESCBCEncryption.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/ContentEncryption/DefaultCrypto/AESGCM/AESGCMEncryption.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/Decrypter.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/Encrypter.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/JWE.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/JWEHeader.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/AESKW/AESKeyWrappingMode.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/DirectEncryption/DirectEncryptionMode.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/EC/ECKeyEncryption.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/PBES2/PBES2KeyEncryptionMode.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/RSA/RSAKeyEncryptionMode.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/KeyManagementMode.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/DataECPrivateKey.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/DataECPublicKey.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/ECKeyCodable.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/ECKeyPair.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/ECKeys.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/SecKeyECPrivateKey.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/SecKeyECPublicKey.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWK.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWKExtensions.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWKParameters.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWKSet.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWKSetCodable.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/RSA/DataRSAPublicKey.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/RSA/RSAKeyCodable.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/RSA/RSAKeys.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/RSA/SecKeyRSAPublicKey.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/Symmetric/DataSymmetricKey.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/Symmetric/SymmetricKeyCodable.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/Symmetric/SymmetricKeys.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/EC/ECSigner.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/EC/ECVerifier.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/HMAC/HMACSigner.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/HMAC/HMACVerifier.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/RSA/RSASigner.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/RSA/RSAVerifier.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/JWS.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/JWSHeader.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/Signer.swift \
+    external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/Verifier.swift)
+# Configuration: 27139f25077e48193b640d3ccc307560f330a8618f0f34531d7b3a866e1d6561
+# Execution platform: @@platforms//host:host
+  ExecutionInfo: {requires-darwin: '', requires-worker-protocol: json, supports-workers: 1, supports-xcode-requirements-set: ''}
+

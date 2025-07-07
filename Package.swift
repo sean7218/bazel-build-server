@@ -54,7 +54,14 @@ let package = Package(
         ),
         .target(name: "BSPError"),
         .target(name: "ShellCommand"),
-        .testTarget(name: "ActionQueryTests", dependencies: ["ActionQuery"]),
+        .testTarget(
+            name: "ActionQueryTests",
+            dependencies: ["ActionQuery"],
+            resources: [
+                .copy("Resources/aquery.json"),
+                .copy("Resources/aquery.txt")
+            ]
+        ),
         .testTarget(name: "ShellCommandTests", dependencies: ["ShellCommand"]),
     ]
 )
