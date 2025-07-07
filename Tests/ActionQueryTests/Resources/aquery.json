@@ -1,0 +1,4295 @@
+{
+  "artifacts": [
+    {
+      "id": 1,
+      "pathFragmentId": 1
+    },
+    {
+      "id": 2,
+      "pathFragmentId": 7
+    },
+    {
+      "id": 3,
+      "pathFragmentId": 13
+    },
+    {
+      "id": 4,
+      "pathFragmentId": 16
+    },
+    {
+      "id": 5,
+      "pathFragmentId": 18
+    },
+    {
+      "id": 6,
+      "pathFragmentId": 20
+    },
+    {
+      "id": 7,
+      "pathFragmentId": 23
+    },
+    {
+      "id": 8,
+      "pathFragmentId": 30
+    },
+    {
+      "id": 9,
+      "pathFragmentId": 33
+    },
+    {
+      "id": 10,
+      "pathFragmentId": 34
+    },
+    {
+      "id": 11,
+      "pathFragmentId": 35
+    },
+    {
+      "id": 12,
+      "pathFragmentId": 36,
+      "isTreeArtifact": true
+    },
+    {
+      "id": 13,
+      "pathFragmentId": 37
+    },
+    {
+      "id": 14,
+      "pathFragmentId": 39
+    },
+    {
+      "id": 15,
+      "pathFragmentId": 40
+    },
+    {
+      "id": 16,
+      "pathFragmentId": 42
+    },
+    {
+      "id": 17,
+      "pathFragmentId": 45
+    },
+    {
+      "id": 18,
+      "pathFragmentId": 47
+    },
+    {
+      "id": 19,
+      "pathFragmentId": 50
+    },
+    {
+      "id": 20,
+      "pathFragmentId": 51
+    },
+    {
+      "id": 21,
+      "pathFragmentId": 52
+    },
+    {
+      "id": 22,
+      "pathFragmentId": 53
+    },
+    {
+      "id": 23,
+      "pathFragmentId": 54
+    },
+    {
+      "id": 24,
+      "pathFragmentId": 55,
+      "isTreeArtifact": true
+    },
+    {
+      "id": 25,
+      "pathFragmentId": 56
+    },
+    {
+      "id": 26,
+      "pathFragmentId": 59
+    },
+    {
+      "id": 27,
+      "pathFragmentId": 60
+    },
+    {
+      "id": 28,
+      "pathFragmentId": 61
+    },
+    {
+      "id": 29,
+      "pathFragmentId": 62
+    },
+    {
+      "id": 30,
+      "pathFragmentId": 63
+    },
+    {
+      "id": 31,
+      "pathFragmentId": 64
+    },
+    {
+      "id": 32,
+      "pathFragmentId": 65
+    },
+    {
+      "id": 33,
+      "pathFragmentId": 68
+    },
+    {
+      "id": 34,
+      "pathFragmentId": 69
+    },
+    {
+      "id": 35,
+      "pathFragmentId": 70,
+      "isTreeArtifact": true
+    },
+    {
+      "id": 36,
+      "pathFragmentId": 71
+    },
+    {
+      "id": 37,
+      "pathFragmentId": 73
+    },
+    {
+      "id": 38,
+      "pathFragmentId": 74
+    },
+    {
+      "id": 39,
+      "pathFragmentId": 75
+    },
+    {
+      "id": 40,
+      "pathFragmentId": 77
+    },
+    {
+      "id": 41,
+      "pathFragmentId": 78
+    },
+    {
+      "id": 42,
+      "pathFragmentId": 79,
+      "isTreeArtifact": true
+    },
+    {
+      "id": 43,
+      "pathFragmentId": 80
+    },
+    {
+      "id": 44,
+      "pathFragmentId": 82
+    },
+    {
+      "id": 45,
+      "pathFragmentId": 83
+    },
+    {
+      "id": 46,
+      "pathFragmentId": 84
+    },
+    {
+      "id": 47,
+      "pathFragmentId": 86
+    },
+    {
+      "id": 48,
+      "pathFragmentId": 87
+    },
+    {
+      "id": 49,
+      "pathFragmentId": 88,
+      "isTreeArtifact": true
+    },
+    {
+      "id": 50,
+      "pathFragmentId": 89
+    },
+    {
+      "id": 51,
+      "pathFragmentId": 91
+    },
+    {
+      "id": 52,
+      "pathFragmentId": 92
+    },
+    {
+      "id": 53,
+      "pathFragmentId": 93
+    },
+    {
+      "id": 54,
+      "pathFragmentId": 97
+    },
+    {
+      "id": 55,
+      "pathFragmentId": 98
+    },
+    {
+      "id": 56,
+      "pathFragmentId": 99
+    },
+    {
+      "id": 57,
+      "pathFragmentId": 100
+    },
+    {
+      "id": 58,
+      "pathFragmentId": 101
+    },
+    {
+      "id": 59,
+      "pathFragmentId": 102
+    },
+    {
+      "id": 60,
+      "pathFragmentId": 103
+    },
+    {
+      "id": 61,
+      "pathFragmentId": 104
+    },
+    {
+      "id": 62,
+      "pathFragmentId": 105,
+      "isTreeArtifact": true
+    },
+    {
+      "id": 63,
+      "pathFragmentId": 106
+    },
+    {
+      "id": 64,
+      "pathFragmentId": 110
+    },
+    {
+      "id": 65,
+      "pathFragmentId": 111
+    },
+    {
+      "id": 66,
+      "pathFragmentId": 112
+    },
+    {
+      "id": 67,
+      "pathFragmentId": 113
+    },
+    {
+      "id": 68,
+      "pathFragmentId": 114
+    },
+    {
+      "id": 69,
+      "pathFragmentId": 115
+    },
+    {
+      "id": 70,
+      "pathFragmentId": 116
+    },
+    {
+      "id": 71,
+      "pathFragmentId": 117
+    },
+    {
+      "id": 72,
+      "pathFragmentId": 118
+    },
+    {
+      "id": 73,
+      "pathFragmentId": 119
+    },
+    {
+      "id": 74,
+      "pathFragmentId": 120
+    },
+    {
+      "id": 75,
+      "pathFragmentId": 121
+    },
+    {
+      "id": 76,
+      "pathFragmentId": 122
+    },
+    {
+      "id": 77,
+      "pathFragmentId": 123
+    },
+    {
+      "id": 78,
+      "pathFragmentId": 124
+    },
+    {
+      "id": 79,
+      "pathFragmentId": 129
+    },
+    {
+      "id": 80,
+      "pathFragmentId": 130
+    },
+    {
+      "id": 81,
+      "pathFragmentId": 131
+    },
+    {
+      "id": 82,
+      "pathFragmentId": 132
+    },
+    {
+      "id": 83,
+      "pathFragmentId": 133
+    },
+    {
+      "id": 84,
+      "pathFragmentId": 134
+    },
+    {
+      "id": 85,
+      "pathFragmentId": 135
+    },
+    {
+      "id": 86,
+      "pathFragmentId": 136
+    },
+    {
+      "id": 87,
+      "pathFragmentId": 137
+    },
+    {
+      "id": 88,
+      "pathFragmentId": 138
+    },
+    {
+      "id": 89,
+      "pathFragmentId": 139
+    },
+    {
+      "id": 90,
+      "pathFragmentId": 142
+    },
+    {
+      "id": 91,
+      "pathFragmentId": 144
+    },
+    {
+      "id": 92,
+      "pathFragmentId": 146
+    },
+    {
+      "id": 93,
+      "pathFragmentId": 147
+    },
+    {
+      "id": 94,
+      "pathFragmentId": 149
+    },
+    {
+      "id": 95,
+      "pathFragmentId": 151
+    },
+    {
+      "id": 96,
+      "pathFragmentId": 153
+    },
+    {
+      "id": 97,
+      "pathFragmentId": 155
+    },
+    {
+      "id": 98,
+      "pathFragmentId": 157
+    },
+    {
+      "id": 99,
+      "pathFragmentId": 160
+    },
+    {
+      "id": 100,
+      "pathFragmentId": 161
+    },
+    {
+      "id": 101,
+      "pathFragmentId": 163
+    },
+    {
+      "id": 102,
+      "pathFragmentId": 166
+    },
+    {
+      "id": 103,
+      "pathFragmentId": 168
+    },
+    {
+      "id": 104,
+      "pathFragmentId": 169
+    },
+    {
+      "id": 105,
+      "pathFragmentId": 170
+    },
+    {
+      "id": 106,
+      "pathFragmentId": 171
+    },
+    {
+      "id": 107,
+      "pathFragmentId": 172
+    },
+    {
+      "id": 108,
+      "pathFragmentId": 176
+    },
+    {
+      "id": 109,
+      "pathFragmentId": 178
+    },
+    {
+      "id": 110,
+      "pathFragmentId": 180
+    },
+    {
+      "id": 111,
+      "pathFragmentId": 182
+    },
+    {
+      "id": 112,
+      "pathFragmentId": 184
+    },
+    {
+      "id": 113,
+      "pathFragmentId": 185
+    },
+    {
+      "id": 114,
+      "pathFragmentId": 188
+    },
+    {
+      "id": 115,
+      "pathFragmentId": 189
+    },
+    {
+      "id": 116,
+      "pathFragmentId": 190
+    },
+    {
+      "id": 117,
+      "pathFragmentId": 191
+    },
+    {
+      "id": 118,
+      "pathFragmentId": 192
+    },
+    {
+      "id": 119,
+      "pathFragmentId": 193
+    },
+    {
+      "id": 120,
+      "pathFragmentId": 194
+    },
+    {
+      "id": 121,
+      "pathFragmentId": 195
+    },
+    {
+      "id": 122,
+      "pathFragmentId": 196
+    },
+    {
+      "id": 123,
+      "pathFragmentId": 197
+    },
+    {
+      "id": 124,
+      "pathFragmentId": 198
+    },
+    {
+      "id": 125,
+      "pathFragmentId": 199
+    },
+    {
+      "id": 126,
+      "pathFragmentId": 201
+    },
+    {
+      "id": 127,
+      "pathFragmentId": 202
+    },
+    {
+      "id": 128,
+      "pathFragmentId": 203
+    },
+    {
+      "id": 129,
+      "pathFragmentId": 204
+    },
+    {
+      "id": 130,
+      "pathFragmentId": 206
+    },
+    {
+      "id": 131,
+      "pathFragmentId": 207
+    },
+    {
+      "id": 132,
+      "pathFragmentId": 208
+    },
+    {
+      "id": 133,
+      "pathFragmentId": 212
+    },
+    {
+      "id": 134,
+      "pathFragmentId": 213
+    },
+    {
+      "id": 135,
+      "pathFragmentId": 215
+    },
+    {
+      "id": 136,
+      "pathFragmentId": 216
+    },
+    {
+      "id": 137,
+      "pathFragmentId": 218
+    },
+    {
+      "id": 138,
+      "pathFragmentId": 219
+    },
+    {
+      "id": 139,
+      "pathFragmentId": 220
+    },
+    {
+      "id": 140,
+      "pathFragmentId": 221
+    },
+    {
+      "id": 141,
+      "pathFragmentId": 222
+    },
+    {
+      "id": 142,
+      "pathFragmentId": 223
+    },
+    {
+      "id": 143,
+      "pathFragmentId": 224
+    },
+    {
+      "id": 144,
+      "pathFragmentId": 225,
+      "isTreeArtifact": true
+    },
+    {
+      "id": 145,
+      "pathFragmentId": 226
+    },
+    {
+      "id": 146,
+      "pathFragmentId": 231
+    },
+    {
+      "id": 147,
+      "pathFragmentId": 232
+    },
+    {
+      "id": 148,
+      "pathFragmentId": 233
+    },
+    {
+      "id": 149,
+      "pathFragmentId": 234
+    },
+    {
+      "id": 150,
+      "pathFragmentId": 235
+    },
+    {
+      "id": 151,
+      "pathFragmentId": 236
+    },
+    {
+      "id": 152,
+      "pathFragmentId": 237
+    },
+    {
+      "id": 153,
+      "pathFragmentId": 238
+    },
+    {
+      "id": 154,
+      "pathFragmentId": 239
+    },
+    {
+      "id": 155,
+      "pathFragmentId": 240
+    },
+    {
+      "id": 156,
+      "pathFragmentId": 241
+    },
+    {
+      "id": 157,
+      "pathFragmentId": 244
+    },
+    {
+      "id": 158,
+      "pathFragmentId": 246
+    },
+    {
+      "id": 159,
+      "pathFragmentId": 248
+    },
+    {
+      "id": 160,
+      "pathFragmentId": 249
+    },
+    {
+      "id": 161,
+      "pathFragmentId": 251
+    },
+    {
+      "id": 162,
+      "pathFragmentId": 253
+    },
+    {
+      "id": 163,
+      "pathFragmentId": 255
+    },
+    {
+      "id": 164,
+      "pathFragmentId": 257
+    },
+    {
+      "id": 165,
+      "pathFragmentId": 259
+    },
+    {
+      "id": 166,
+      "pathFragmentId": 262
+    },
+    {
+      "id": 167,
+      "pathFragmentId": 263
+    },
+    {
+      "id": 168,
+      "pathFragmentId": 265
+    },
+    {
+      "id": 169,
+      "pathFragmentId": 268
+    },
+    {
+      "id": 170,
+      "pathFragmentId": 270
+    },
+    {
+      "id": 171,
+      "pathFragmentId": 271
+    },
+    {
+      "id": 172,
+      "pathFragmentId": 272
+    },
+    {
+      "id": 173,
+      "pathFragmentId": 273
+    },
+    {
+      "id": 174,
+      "pathFragmentId": 274
+    },
+    {
+      "id": 175,
+      "pathFragmentId": 278
+    },
+    {
+      "id": 176,
+      "pathFragmentId": 280
+    },
+    {
+      "id": 177,
+      "pathFragmentId": 282
+    },
+    {
+      "id": 178,
+      "pathFragmentId": 284
+    },
+    {
+      "id": 179,
+      "pathFragmentId": 286
+    },
+    {
+      "id": 180,
+      "pathFragmentId": 287
+    },
+    {
+      "id": 181,
+      "pathFragmentId": 290
+    },
+    {
+      "id": 182,
+      "pathFragmentId": 291
+    },
+    {
+      "id": 183,
+      "pathFragmentId": 292
+    },
+    {
+      "id": 184,
+      "pathFragmentId": 293
+    },
+    {
+      "id": 185,
+      "pathFragmentId": 294
+    },
+    {
+      "id": 186,
+      "pathFragmentId": 295
+    },
+    {
+      "id": 187,
+      "pathFragmentId": 296
+    },
+    {
+      "id": 188,
+      "pathFragmentId": 297
+    },
+    {
+      "id": 189,
+      "pathFragmentId": 298
+    },
+    {
+      "id": 190,
+      "pathFragmentId": 299
+    },
+    {
+      "id": 191,
+      "pathFragmentId": 300
+    },
+    {
+      "id": 192,
+      "pathFragmentId": 301
+    },
+    {
+      "id": 193,
+      "pathFragmentId": 303
+    },
+    {
+      "id": 194,
+      "pathFragmentId": 304
+    },
+    {
+      "id": 195,
+      "pathFragmentId": 305
+    },
+    {
+      "id": 196,
+      "pathFragmentId": 306
+    },
+    {
+      "id": 197,
+      "pathFragmentId": 308
+    },
+    {
+      "id": 198,
+      "pathFragmentId": 309
+    },
+    {
+      "id": 199,
+      "pathFragmentId": 310
+    },
+    {
+      "id": 200,
+      "pathFragmentId": 314
+    },
+    {
+      "id": 201,
+      "pathFragmentId": 315
+    },
+    {
+      "id": 202,
+      "pathFragmentId": 317
+    },
+    {
+      "id": 203,
+      "pathFragmentId": 318
+    },
+    {
+      "id": 204,
+      "pathFragmentId": 320
+    },
+    {
+      "id": 205,
+      "pathFragmentId": 321
+    },
+    {
+      "id": 206,
+      "pathFragmentId": 322
+    },
+    {
+      "id": 207,
+      "pathFragmentId": 323
+    },
+    {
+      "id": 208,
+      "pathFragmentId": 324
+    },
+    {
+      "id": 209,
+      "pathFragmentId": 325
+    },
+    {
+      "id": 210,
+      "pathFragmentId": 326
+    },
+    {
+      "id": 211,
+      "pathFragmentId": 327
+    },
+    {
+      "id": 212,
+      "pathFragmentId": 328
+    },
+    {
+      "id": 213,
+      "pathFragmentId": 329
+    },
+    {
+      "id": 214,
+      "pathFragmentId": 330
+    },
+    {
+      "id": 215,
+      "pathFragmentId": 331
+    },
+    {
+      "id": 216,
+      "pathFragmentId": 332
+    },
+    {
+      "id": 217,
+      "pathFragmentId": 333
+    },
+    {
+      "id": 218,
+      "pathFragmentId": 334
+    },
+    {
+      "id": 219,
+      "pathFragmentId": 335
+    },
+    {
+      "id": 220,
+      "pathFragmentId": 336
+    },
+    {
+      "id": 221,
+      "pathFragmentId": 337
+    },
+    {
+      "id": 222,
+      "pathFragmentId": 338
+    },
+    {
+      "id": 223,
+      "pathFragmentId": 339
+    },
+    {
+      "id": 224,
+      "pathFragmentId": 340
+    },
+    {
+      "id": 225,
+      "pathFragmentId": 341
+    },
+    {
+      "id": 226,
+      "pathFragmentId": 342
+    },
+    {
+      "id": 227,
+      "pathFragmentId": 343
+    },
+    {
+      "id": 228,
+      "pathFragmentId": 344
+    },
+    {
+      "id": 229,
+      "pathFragmentId": 345
+    },
+    {
+      "id": 230,
+      "pathFragmentId": 346
+    },
+    {
+      "id": 231,
+      "pathFragmentId": 347
+    },
+    {
+      "id": 232,
+      "pathFragmentId": 348
+    },
+    {
+      "id": 233,
+      "pathFragmentId": 349
+    },
+    {
+      "id": 234,
+      "pathFragmentId": 350
+    },
+    {
+      "id": 235,
+      "pathFragmentId": 351
+    },
+    {
+      "id": 236,
+      "pathFragmentId": 352
+    },
+    {
+      "id": 237,
+      "pathFragmentId": 353
+    },
+    {
+      "id": 238,
+      "pathFragmentId": 354
+    },
+    {
+      "id": 239,
+      "pathFragmentId": 355
+    },
+    {
+      "id": 240,
+      "pathFragmentId": 356
+    },
+    {
+      "id": 241,
+      "pathFragmentId": 357
+    },
+    {
+      "id": 242,
+      "pathFragmentId": 358
+    },
+    {
+      "id": 243,
+      "pathFragmentId": 359
+    },
+    {
+      "id": 244,
+      "pathFragmentId": 360
+    },
+    {
+      "id": 245,
+      "pathFragmentId": 361
+    },
+    {
+      "id": 246,
+      "pathFragmentId": 362
+    },
+    {
+      "id": 247,
+      "pathFragmentId": 363
+    },
+    {
+      "id": 248,
+      "pathFragmentId": 364
+    },
+    {
+      "id": 249,
+      "pathFragmentId": 365
+    },
+    {
+      "id": 250,
+      "pathFragmentId": 366
+    },
+    {
+      "id": 251,
+      "pathFragmentId": 367
+    },
+    {
+      "id": 252,
+      "pathFragmentId": 368
+    },
+    {
+      "id": 253,
+      "pathFragmentId": 369
+    },
+    {
+      "id": 254,
+      "pathFragmentId": 370
+    },
+    {
+      "id": 255,
+      "pathFragmentId": 371
+    },
+    {
+      "id": 256,
+      "pathFragmentId": 372
+    },
+    {
+      "id": 257,
+      "pathFragmentId": 373
+    },
+    {
+      "id": 258,
+      "pathFragmentId": 374
+    },
+    {
+      "id": 259,
+      "pathFragmentId": 375
+    },
+    {
+      "id": 260,
+      "pathFragmentId": 376
+    },
+    {
+      "id": 261,
+      "pathFragmentId": 377
+    },
+    {
+      "id": 262,
+      "pathFragmentId": 378
+    },
+    {
+      "id": 263,
+      "pathFragmentId": 379
+    },
+    {
+      "id": 264,
+      "pathFragmentId": 380
+    },
+    {
+      "id": 265,
+      "pathFragmentId": 381
+    },
+    {
+      "id": 266,
+      "pathFragmentId": 382
+    },
+    {
+      "id": 267,
+      "pathFragmentId": 383
+    },
+    {
+      "id": 268,
+      "pathFragmentId": 384
+    },
+    {
+      "id": 269,
+      "pathFragmentId": 385
+    },
+    {
+      "id": 270,
+      "pathFragmentId": 386
+    },
+    {
+      "id": 271,
+      "pathFragmentId": 387
+    },
+    {
+      "id": 272,
+      "pathFragmentId": 388
+    }
+  ],
+  "actions": [
+    {
+      "targetId": 1,
+      "actionKey": "4ebb388429cb0fd7148effc7cc50439942837789d1aec8c85b942010e9e198cf",
+      "mnemonic": "SwiftCompile",
+      "configurationId": 1,
+      "arguments": [
+        "bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker",
+        "swiftc",
+        "-target",
+        "arm64-apple-ios15.0-simulator",
+        "-sdk",
+        "__BAZEL_XCODE_SDKROOT__",
+        "-debug-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-Xwrapped-swift\u003d-bazel-target-label\u003d@@//Features/BazelView:BazelView",
+        "-emit-object",
+        "-output-file-map",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView.output_file_map.json",
+        "-Xfrontend",
+        "-no-clang-module-breadcrumbs",
+        "-emit-module-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView.swiftmodule",
+        "-enforce-exclusivity\u003dchecked",
+        "-emit-const-values-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView_objs/BazelView.swift.swiftconstvalues",
+        "-Xfrontend",
+        "-const-gather-protocols-file",
+        "-Xfrontend",
+        "external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json",
+        "-DDEBUG",
+        "-Onone",
+        "-Xfrontend",
+        "-internalize-at-link",
+        "-Xfrontend",
+        "-no-serialize-debugging-options",
+        "-enable-testing",
+        "-disable-sandbox",
+        "-gline-tables-only",
+        "-Xwrapped-swift\u003d-file-prefix-pwd-is-dot",
+        "-module-cache-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache",
+        "-Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils",
+        "-Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack",
+        "-Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics",
+        "-Xwrapped-swift\u003d-macro-expansion-dir\u003dbazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView/BazelView.macro-expansions",
+        "-Xcc",
+        "-iquote.",
+        "-Xcc",
+        "-iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin",
+        "-Xfrontend",
+        "-color-diagnostics",
+        "-enable-batch-mode",
+        "-module-name",
+        "BazelView",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003dDEVELOPER_DIR",
+        "-enable-bare-slash-regex",
+        "-Xfrontend",
+        "-disable-clang-spi",
+        "-enable-experimental-feature",
+        "AccessLevelOnImport",
+        "-parse-as-library",
+        "-static",
+        "-Xcc",
+        "-O0",
+        "-Xcc",
+        "-DDEBUG\u003d1",
+        "Features/BazelView/BazelView.swift"
+      ],
+      "environmentVariables": [
+        {
+          "key": "XCODE_VERSION_OVERRIDE",
+          "value": "16.3.0.16E140"
+        },
+        {
+          "key": "APPLE_SDK_PLATFORM",
+          "value": "iPhoneSimulator"
+        },
+        {
+          "key": "APPLE_SDK_VERSION_OVERRIDE",
+          "value": "18.4"
+        }
+      ],
+      "inputDepSetIds": [
+        1
+      ],
+      "outputIds": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "executionInfo": [
+        {
+          "key": "requires-darwin"
+        },
+        {
+          "key": "requires-worker-protocol",
+          "value": "json"
+        },
+        {
+          "key": "supports-workers",
+          "value": "1"
+        },
+        {
+          "key": "supports-xcode-requirements-set"
+        }
+      ],
+      "primaryOutputId": 9,
+      "executionPlatform": "@@platforms//host:host"
+    },
+    {
+      "targetId": 2,
+      "actionKey": "77b79c285f834a4abb827ac9b7f63fa78d283f1ff17a340b3b11e1b7d894ee77",
+      "mnemonic": "SwiftCompile",
+      "configurationId": 1,
+      "arguments": [
+        "bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker",
+        "swiftc",
+        "-target",
+        "arm64-apple-ios15.0-simulator",
+        "-sdk",
+        "__BAZEL_XCODE_SDKROOT__",
+        "-debug-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-Xwrapped-swift\u003d-bazel-target-label\u003d@@//App:Sources",
+        "-emit-object",
+        "-output-file-map",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources.output_file_map.json",
+        "-Xfrontend",
+        "-no-clang-module-breadcrumbs",
+        "-emit-module-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources.swiftmodule",
+        "-enforce-exclusivity\u003dchecked",
+        "-emit-const-values-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources_objs/Sources/ContentView.swift.swiftconstvalues",
+        "-Xfrontend",
+        "-const-gather-protocols-file",
+        "-Xfrontend",
+        "external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json",
+        "-DDEBUG",
+        "-Onone",
+        "-Xfrontend",
+        "-internalize-at-link",
+        "-Xfrontend",
+        "-no-serialize-debugging-options",
+        "-enable-testing",
+        "-disable-sandbox",
+        "-gline-tables-only",
+        "-Xwrapped-swift\u003d-file-prefix-pwd-is-dot",
+        "-module-cache-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache",
+        "-Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils",
+        "-Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack",
+        "-Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics",
+        "-Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Features/BazelView",
+        "-Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty",
+        "-Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift",
+        "-Xwrapped-swift\u003d-macro-expansion-dir\u003dbazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/App/Sources.macro-expansions",
+        "-Xcc",
+        "-iquote.",
+        "-Xcc",
+        "-iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin",
+        "-Xfrontend",
+        "-color-diagnostics",
+        "-enable-batch-mode",
+        "-module-name",
+        "Sources",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003dDEVELOPER_DIR",
+        "-enable-bare-slash-regex",
+        "-Xfrontend",
+        "-disable-clang-spi",
+        "-enable-experimental-feature",
+        "AccessLevelOnImport",
+        "-parse-as-library",
+        "-static",
+        "-Xcc",
+        "-O0",
+        "-Xcc",
+        "-DDEBUG\u003d1",
+        "App/Sources/ContentView.swift",
+        "App/Sources/ExampleApp.swift",
+        "App/Sources/ExampleApp+String.swift"
+      ],
+      "environmentVariables": [
+        {
+          "key": "XCODE_VERSION_OVERRIDE",
+          "value": "16.3.0.16E140"
+        },
+        {
+          "key": "APPLE_SDK_PLATFORM",
+          "value": "iPhoneSimulator"
+        },
+        {
+          "key": "APPLE_SDK_VERSION_OVERRIDE",
+          "value": "18.4"
+        }
+      ],
+      "inputDepSetIds": [
+        4
+      ],
+      "outputIds": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "executionInfo": [
+        {
+          "key": "requires-darwin"
+        },
+        {
+          "key": "requires-worker-protocol",
+          "value": "json"
+        },
+        {
+          "key": "supports-workers",
+          "value": "1"
+        },
+        {
+          "key": "supports-xcode-requirements-set"
+        }
+      ],
+      "primaryOutputId": 21,
+      "executionPlatform": "@@platforms//host:host"
+    },
+    {
+      "targetId": 3,
+      "actionKey": "c5b73b9487a3febab55940addb37524e66ca2fe7a91326be6dcb77c09baa30d5",
+      "mnemonic": "SwiftCompile",
+      "configurationId": 1,
+      "arguments": [
+        "bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker",
+        "swiftc",
+        "-target",
+        "arm64-apple-ios15.0-simulator",
+        "-sdk",
+        "__BAZEL_XCODE_SDKROOT__",
+        "-debug-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-Xwrapped-swift\u003d-bazel-target-label\u003d@@//Libraries/Utils:Utils",
+        "-emit-object",
+        "-output-file-map",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.output_file_map.json",
+        "-Xfrontend",
+        "-no-clang-module-breadcrumbs",
+        "-emit-module-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.swiftmodule",
+        "-enforce-exclusivity\u003dchecked",
+        "-emit-const-values-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils_objs/Utils.swift.swiftconstvalues",
+        "-Xfrontend",
+        "-const-gather-protocols-file",
+        "-Xfrontend",
+        "external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json",
+        "-DDEBUG",
+        "-Onone",
+        "-Xfrontend",
+        "-internalize-at-link",
+        "-Xfrontend",
+        "-no-serialize-debugging-options",
+        "-enable-testing",
+        "-disable-sandbox",
+        "-gline-tables-only",
+        "-Xwrapped-swift\u003d-file-prefix-pwd-is-dot",
+        "-module-cache-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache",
+        "-Xwrapped-swift\u003d-macro-expansion-dir\u003dbazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils/Utils.macro-expansions",
+        "-Xcc",
+        "-iquote.",
+        "-Xcc",
+        "-iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin",
+        "-Xfrontend",
+        "-color-diagnostics",
+        "-enable-batch-mode",
+        "-module-name",
+        "Utils",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003dDEVELOPER_DIR",
+        "-enable-bare-slash-regex",
+        "-Xfrontend",
+        "-disable-clang-spi",
+        "-enable-experimental-feature",
+        "AccessLevelOnImport",
+        "-parse-as-library",
+        "-static",
+        "-Xcc",
+        "-O0",
+        "-Xcc",
+        "-DDEBUG\u003d1",
+        "Libraries/Utils/Utils.swift"
+      ],
+      "environmentVariables": [
+        {
+          "key": "XCODE_VERSION_OVERRIDE",
+          "value": "16.3.0.16E140"
+        },
+        {
+          "key": "APPLE_SDK_PLATFORM",
+          "value": "iPhoneSimulator"
+        },
+        {
+          "key": "APPLE_SDK_VERSION_OVERRIDE",
+          "value": "18.4"
+        }
+      ],
+      "inputDepSetIds": [
+        6
+      ],
+      "outputIds": [
+        3,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "executionInfo": [
+        {
+          "key": "requires-darwin"
+        },
+        {
+          "key": "requires-worker-protocol",
+          "value": "json"
+        },
+        {
+          "key": "supports-workers",
+          "value": "1"
+        },
+        {
+          "key": "supports-xcode-requirements-set"
+        }
+      ],
+      "primaryOutputId": 3,
+      "executionPlatform": "@@platforms//host:host"
+    },
+    {
+      "targetId": 4,
+      "actionKey": "67ba95b8fc2d95f7c9bce9af85a6e5b7d3c4d809b26ffb25488e4c0e48ebd9c5",
+      "mnemonic": "SwiftCompile",
+      "configurationId": 1,
+      "arguments": [
+        "bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker",
+        "swiftc",
+        "-target",
+        "arm64-apple-ios15.0-simulator",
+        "-sdk",
+        "__BAZEL_XCODE_SDKROOT__",
+        "-debug-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-Xwrapped-swift\u003d-bazel-target-label\u003d@@//Libraries/NetworkStack:NetworkStack",
+        "-emit-object",
+        "-output-file-map",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.output_file_map.json",
+        "-Xfrontend",
+        "-no-clang-module-breadcrumbs",
+        "-emit-module-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.swiftmodule",
+        "-enforce-exclusivity\u003dchecked",
+        "-emit-const-values-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack_objs/NetworkStack.swift.swiftconstvalues",
+        "-Xfrontend",
+        "-const-gather-protocols-file",
+        "-Xfrontend",
+        "external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json",
+        "-DDEBUG",
+        "-Onone",
+        "-Xfrontend",
+        "-internalize-at-link",
+        "-Xfrontend",
+        "-no-serialize-debugging-options",
+        "-enable-testing",
+        "-disable-sandbox",
+        "-gline-tables-only",
+        "-Xwrapped-swift\u003d-file-prefix-pwd-is-dot",
+        "-module-cache-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache",
+        "-Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils",
+        "-Xwrapped-swift\u003d-macro-expansion-dir\u003dbazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack/NetworkStack.macro-expansions",
+        "-Xcc",
+        "-iquote.",
+        "-Xcc",
+        "-iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin",
+        "-Xfrontend",
+        "-color-diagnostics",
+        "-enable-batch-mode",
+        "-module-name",
+        "NetworkStack",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003dDEVELOPER_DIR",
+        "-enable-bare-slash-regex",
+        "-Xfrontend",
+        "-disable-clang-spi",
+        "-enable-experimental-feature",
+        "AccessLevelOnImport",
+        "-parse-as-library",
+        "-static",
+        "-Xcc",
+        "-O0",
+        "-Xcc",
+        "-DDEBUG\u003d1",
+        "Libraries/NetworkStack/NetworkStack.swift"
+      ],
+      "environmentVariables": [
+        {
+          "key": "XCODE_VERSION_OVERRIDE",
+          "value": "16.3.0.16E140"
+        },
+        {
+          "key": "APPLE_SDK_PLATFORM",
+          "value": "iPhoneSimulator"
+        },
+        {
+          "key": "APPLE_SDK_VERSION_OVERRIDE",
+          "value": "18.4"
+        }
+      ],
+      "inputDepSetIds": [
+        8
+      ],
+      "outputIds": [
+        4,
+        40,
+        41,
+        42,
+        43,
+        44
+      ],
+      "executionInfo": [
+        {
+          "key": "requires-darwin"
+        },
+        {
+          "key": "requires-worker-protocol",
+          "value": "json"
+        },
+        {
+          "key": "supports-workers",
+          "value": "1"
+        },
+        {
+          "key": "supports-xcode-requirements-set"
+        }
+      ],
+      "primaryOutputId": 4,
+      "executionPlatform": "@@platforms//host:host"
+    },
+    {
+      "targetId": 5,
+      "actionKey": "897d09db627bf5b7e9ce42ce40bc51814d803bd5e47d9151dbbc3428e02aeddd",
+      "mnemonic": "SwiftCompile",
+      "configurationId": 1,
+      "arguments": [
+        "bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker",
+        "swiftc",
+        "-target",
+        "arm64-apple-ios15.0-simulator",
+        "-sdk",
+        "__BAZEL_XCODE_SDKROOT__",
+        "-debug-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-Xwrapped-swift\u003d-bazel-target-label\u003d@@//Libraries/Analytics:Analytics",
+        "-emit-object",
+        "-output-file-map",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics.output_file_map.json",
+        "-Xfrontend",
+        "-no-clang-module-breadcrumbs",
+        "-emit-module-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics.swiftmodule",
+        "-enforce-exclusivity\u003dchecked",
+        "-emit-const-values-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics_objs/Analytics.swift.swiftconstvalues",
+        "-Xfrontend",
+        "-const-gather-protocols-file",
+        "-Xfrontend",
+        "external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json",
+        "-DDEBUG",
+        "-Onone",
+        "-Xfrontend",
+        "-internalize-at-link",
+        "-Xfrontend",
+        "-no-serialize-debugging-options",
+        "-enable-testing",
+        "-disable-sandbox",
+        "-gline-tables-only",
+        "-Xwrapped-swift\u003d-file-prefix-pwd-is-dot",
+        "-module-cache-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache",
+        "-Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Utils",
+        "-Ibazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/NetworkStack",
+        "-Xwrapped-swift\u003d-macro-expansion-dir\u003dbazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/Libraries/Analytics/Analytics.macro-expansions",
+        "-Xcc",
+        "-iquote.",
+        "-Xcc",
+        "-iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin",
+        "-Xfrontend",
+        "-color-diagnostics",
+        "-enable-batch-mode",
+        "-module-name",
+        "Analytics",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003dDEVELOPER_DIR",
+        "-enable-bare-slash-regex",
+        "-Xfrontend",
+        "-disable-clang-spi",
+        "-enable-experimental-feature",
+        "AccessLevelOnImport",
+        "-parse-as-library",
+        "-static",
+        "-Xcc",
+        "-O0",
+        "-Xcc",
+        "-DDEBUG\u003d1",
+        "Libraries/Analytics/Analytics.swift"
+      ],
+      "environmentVariables": [
+        {
+          "key": "XCODE_VERSION_OVERRIDE",
+          "value": "16.3.0.16E140"
+        },
+        {
+          "key": "APPLE_SDK_PLATFORM",
+          "value": "iPhoneSimulator"
+        },
+        {
+          "key": "APPLE_SDK_VERSION_OVERRIDE",
+          "value": "18.4"
+        }
+      ],
+      "inputDepSetIds": [
+        10
+      ],
+      "outputIds": [
+        5,
+        47,
+        48,
+        49,
+        50,
+        51
+      ],
+      "executionInfo": [
+        {
+          "key": "requires-darwin"
+        },
+        {
+          "key": "requires-worker-protocol",
+          "value": "json"
+        },
+        {
+          "key": "supports-workers",
+          "value": "1"
+        },
+        {
+          "key": "supports-xcode-requirements-set"
+        }
+      ],
+      "primaryOutputId": 5,
+      "executionPlatform": "@@platforms//host:host"
+    },
+    {
+      "targetId": 6,
+      "actionKey": "e3b0dc5f65ac67017a3039ce3bd283e8c3f7948dd026b8c31d9391c69c040b54",
+      "mnemonic": "SwiftCompile",
+      "configurationId": 1,
+      "arguments": [
+        "bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker",
+        "swiftc",
+        "-target",
+        "arm64-apple-ios15.0-simulator",
+        "-sdk",
+        "__BAZEL_XCODE_SDKROOT__",
+        "-debug-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-Xwrapped-swift\u003d-bazel-target-label\u003d@@+_repo_rules2+SwiftNonEmpty//:SwiftNonEmpty",
+        "-emit-object",
+        "-output-file-map",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty.output_file_map.json",
+        "-Xfrontend",
+        "-no-clang-module-breadcrumbs",
+        "-emit-module-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty.swiftmodule",
+        "-enforce-exclusivity\u003dchecked",
+        "-emit-const-values-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty_objs/Sources/NonEmpty/NonEmpty+Dictionary.swift.swiftconstvalues",
+        "-Xfrontend",
+        "-const-gather-protocols-file",
+        "-Xfrontend",
+        "external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json",
+        "-DDEBUG",
+        "-Onone",
+        "-Xfrontend",
+        "-internalize-at-link",
+        "-Xfrontend",
+        "-no-serialize-debugging-options",
+        "-enable-testing",
+        "-disable-sandbox",
+        "-gline-tables-only",
+        "-Xwrapped-swift\u003d-file-prefix-pwd-is-dot",
+        "-module-cache-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache",
+        "-Xwrapped-swift\u003d-macro-expansion-dir\u003dbazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules2+SwiftNonEmpty/SwiftNonEmpty.macro-expansions",
+        "-Xcc",
+        "-iquote.",
+        "-Xcc",
+        "-iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin",
+        "-Xfrontend",
+        "-color-diagnostics",
+        "-enable-batch-mode",
+        "-module-name",
+        "SwiftNonEmpty",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003dDEVELOPER_DIR",
+        "-enable-bare-slash-regex",
+        "-Xfrontend",
+        "-disable-clang-spi",
+        "-enable-experimental-feature",
+        "AccessLevelOnImport",
+        "-parse-as-library",
+        "-static",
+        "-Xcc",
+        "-O0",
+        "-Xcc",
+        "-DDEBUG\u003d1",
+        "external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+Dictionary.swift",
+        "external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+ExpressibleByArrayLiteral.swift",
+        "external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+ExpressibleByDictionaryLiteral.swift",
+        "external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+RangeReplaceableCollection.swift",
+        "external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+SetAlgebra.swift",
+        "external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty+String.swift",
+        "external/+_repo_rules2+SwiftNonEmpty/Sources/NonEmpty/NonEmpty.swift"
+      ],
+      "environmentVariables": [
+        {
+          "key": "XCODE_VERSION_OVERRIDE",
+          "value": "16.3.0.16E140"
+        },
+        {
+          "key": "APPLE_SDK_PLATFORM",
+          "value": "iPhoneSimulator"
+        },
+        {
+          "key": "APPLE_SDK_VERSION_OVERRIDE",
+          "value": "18.4"
+        }
+      ],
+      "inputDepSetIds": [
+        12
+      ],
+      "outputIds": [
+        16,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76
+      ],
+      "executionInfo": [
+        {
+          "key": "requires-darwin"
+        },
+        {
+          "key": "requires-worker-protocol",
+          "value": "json"
+        },
+        {
+          "key": "supports-workers",
+          "value": "1"
+        },
+        {
+          "key": "supports-xcode-requirements-set"
+        }
+      ],
+      "primaryOutputId": 16,
+      "executionPlatform": "@@platforms//host:host"
+    },
+    {
+      "targetId": 7,
+      "actionKey": "7dc061c515eb499ff5bb0aac6c882ec4417355c1c898fb2a03effe4beb483e37",
+      "mnemonic": "SwiftCompile",
+      "configurationId": 1,
+      "arguments": [
+        "bazel-out/darwin_arm64-opt-exec-ST-d57f47055a04/bin/external/rules_swift+/tools/worker/worker",
+        "swiftc",
+        "-target",
+        "arm64-apple-ios15.0-simulator",
+        "-sdk",
+        "__BAZEL_XCODE_SDKROOT__",
+        "-debug-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003d/PLACEHOLDER_DEVELOPER_DIR",
+        "-Xwrapped-swift\u003d-bazel-target-label\u003d@@+_repo_rules+JOSESwift//:JOSESwift",
+        "-emit-object",
+        "-output-file-map",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift.output_file_map.json",
+        "-Xfrontend",
+        "-no-clang-module-breadcrumbs",
+        "-emit-module-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift.swiftmodule",
+        "-enforce-exclusivity\u003dchecked",
+        "-emit-const-values-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift_objs/JOSESwift/Sources/Common/ASN1DEREncoding.swift.swiftconstvalues",
+        "-Xfrontend",
+        "-const-gather-protocols-file",
+        "-Xfrontend",
+        "external/rules_swift+/swift/toolchains/config/const_protocols_to_gather.json",
+        "-DDEBUG",
+        "-Onone",
+        "-Xfrontend",
+        "-internalize-at-link",
+        "-Xfrontend",
+        "-no-serialize-debugging-options",
+        "-enable-testing",
+        "-disable-sandbox",
+        "-gline-tables-only",
+        "-Xwrapped-swift\u003d-file-prefix-pwd-is-dot",
+        "-module-cache-path",
+        "bazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/_swift_module_cache",
+        "-Xwrapped-swift\u003d-macro-expansion-dir\u003dbazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin/external/+_repo_rules+JOSESwift/JOSESwift.macro-expansions",
+        "-Xcc",
+        "-iquote.",
+        "-Xcc",
+        "-iquotebazel-out/ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed/bin",
+        "-Xfrontend",
+        "-color-diagnostics",
+        "-enable-batch-mode",
+        "-module-name",
+        "JOSESwift",
+        "-file-prefix-map",
+        "__BAZEL_XCODE_DEVELOPER_DIR__\u003dDEVELOPER_DIR",
+        "-enable-bare-slash-regex",
+        "-Xfrontend",
+        "-disable-clang-spi",
+        "-enable-experimental-feature",
+        "AccessLevelOnImport",
+        "-parse-as-library",
+        "-static",
+        "-Xcc",
+        "-O0",
+        "-Xcc",
+        "-DDEBUG\u003d1",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/ASN1DEREncoding.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/ASN1DERParsing.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/AlgorithmExtensions.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/Algorithms.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/DataConvertible.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/DataExtensions.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/Deserializer.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/JOSEHeader.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/JOSESwiftError.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/Payload.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/Common/Serializer.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/AESCBC/AES.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/AESGCM/AESGCM.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/EC/EC.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/EC/ECDHKeyAgreement.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/HMAC/HMAC.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/PBES2/PBES2.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/RSA/RSA.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/Randomness/SecureRandom.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/CryptoPrimitives/SHA/Thumbprint.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/Compression/Compressor.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/Compression/DeflateWrapper.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/ContentEncryption/ContentEncryption.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/ContentEncryption/DefaultCrypto/AESCBC/AESCBCEncryption.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/ContentEncryption/DefaultCrypto/AESGCM/AESGCMEncryption.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/Decrypter.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/Encrypter.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/JWE.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/JWEHeader.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/AESKW/AESKeyWrappingMode.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/DirectEncryption/DirectEncryptionMode.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/EC/ECKeyEncryption.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/PBES2/PBES2KeyEncryptionMode.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/DefaultCrypto/RSA/RSAKeyEncryptionMode.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWE/KeyManagement/KeyManagementMode.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/DataECPrivateKey.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/DataECPublicKey.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/ECKeyCodable.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/ECKeyPair.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/ECKeys.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/SecKeyECPrivateKey.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/EC/SecKeyECPublicKey.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWK.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWKExtensions.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWKParameters.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWKSet.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/JWKSetCodable.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/RSA/DataRSAPublicKey.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/RSA/RSAKeyCodable.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/RSA/RSAKeys.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/RSA/SecKeyRSAPublicKey.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/Symmetric/DataSymmetricKey.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/Symmetric/SymmetricKeyCodable.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWK/Symmetric/SymmetricKeys.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/EC/ECSigner.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/EC/ECVerifier.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/HMAC/HMACSigner.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/HMAC/HMACVerifier.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/RSA/RSASigner.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/DefaultCrypto/RSA/RSAVerifier.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/JWS.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/JWSHeader.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/Signer.swift",
+        "external/+_repo_rules+JOSESwift/JOSESwift/Sources/JWS/Verifier.swift"
+      ],
+      "environmentVariables": [
+        {
+          "key": "XCODE_VERSION_OVERRIDE",
+          "value": "16.3.0.16E140"
+        },
+        {
+          "key": "APPLE_SDK_PLATFORM",
+          "value": "iPhoneSimulator"
+        },
+        {
+          "key": "APPLE_SDK_VERSION_OVERRIDE",
+          "value": "18.4"
+        }
+      ],
+      "inputDepSetIds": [
+        14
+      ],
+      "outputIds": [
+        17,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        220,
+        221,
+        222,
+        223,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238,
+        239,
+        240,
+        241,
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249,
+        250,
+        251,
+        252,
+        253,
+        254,
+        255,
+        256,
+        257,
+        258,
+        259,
+        260,
+        261,
+        262,
+        263,
+        264,
+        265,
+        266,
+        267,
+        268,
+        269,
+        270,
+        271,
+        272
+      ],
+      "executionInfo": [
+        {
+          "key": "requires-darwin"
+        },
+        {
+          "key": "requires-worker-protocol",
+          "value": "json"
+        },
+        {
+          "key": "supports-workers",
+          "value": "1"
+        },
+        {
+          "key": "supports-xcode-requirements-set"
+        }
+      ],
+      "primaryOutputId": 17,
+      "executionPlatform": "@@platforms//host:host"
+    }
+  ],
+  "targets": [
+    {
+      "id": 1,
+      "label": "//Features/BazelView:BazelView",
+      "ruleClassId": 1
+    },
+    {
+      "id": 2,
+      "label": "//App:Sources",
+      "ruleClassId": 1
+    },
+    {
+      "id": 3,
+      "label": "//Libraries/Utils:Utils",
+      "ruleClassId": 1
+    },
+    {
+      "id": 4,
+      "label": "//Libraries/NetworkStack:NetworkStack",
+      "ruleClassId": 1
+    },
+    {
+      "id": 5,
+      "label": "//Libraries/Analytics:Analytics",
+      "ruleClassId": 1
+    },
+    {
+      "id": 6,
+      "label": "@@+_repo_rules2+SwiftNonEmpty//:SwiftNonEmpty",
+      "ruleClassId": 1
+    },
+    {
+      "id": 7,
+      "label": "@@+_repo_rules+JOSESwift//:JOSESwift",
+      "ruleClassId": 1
+    }
+  ],
+  "depSetOfFiles": [
+    {
+      "id": 2,
+      "directArtifactIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "id": 3,
+      "directArtifactIds": [
+        7,
+        8
+      ]
+    },
+    {
+      "id": 1,
+      "transitiveDepSetIds": [
+        2,
+        3
+      ]
+    },
+    {
+      "id": 5,
+      "directArtifactIds": [
+        15,
+        2,
+        3,
+        4,
+        5,
+        9,
+        16,
+        17,
+        18,
+        19,
+        20
+      ]
+    },
+    {
+      "id": 4,
+      "transitiveDepSetIds": [
+        5,
+        3
+      ]
+    },
+    {
+      "id": 7,
+      "directArtifactIds": [
+        31,
+        2,
+        32
+      ]
+    },
+    {
+      "id": 6,
+      "transitiveDepSetIds": [
+        7,
+        3
+      ]
+    },
+    {
+      "id": 9,
+      "directArtifactIds": [
+        38,
+        2,
+        3,
+        39
+      ]
+    },
+    {
+      "id": 8,
+      "transitiveDepSetIds": [
+        9,
+        3
+      ]
+    },
+    {
+      "id": 11,
+      "directArtifactIds": [
+        45,
+        2,
+        3,
+        4,
+        46
+      ]
+    },
+    {
+      "id": 10,
+      "transitiveDepSetIds": [
+        11,
+        3
+      ]
+    },
+    {
+      "id": 13,
+      "directArtifactIds": [
+        52,
+        2,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59
+      ]
+    },
+    {
+      "id": 12,
+      "transitiveDepSetIds": [
+        13,
+        3
+      ]
+    },
+    {
+      "id": 15,
+      "directArtifactIds": [
+        77,
+        2,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141
+      ]
+    },
+    {
+      "id": 14,
+      "transitiveDepSetIds": [
+        15,
+        3
+      ]
+    }
+  ],
+  "configuration": [
+    {
+      "id": 1,
+      "mnemonic": "ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed",
+      "platformName": "ios_sim_arm64",
+      "checksum": "27139f25077e48193b640d3ccc307560f330a8618f0f34531d7b3a866e1d6561"
+    }
+  ],
+  "ruleClasses": [
+    {
+      "id": 1,
+      "name": "swift_library"
+    }
+  ],
+  "pathFragments": [
+    {
+      "id": 6,
+      "label": "bazel-out"
+    },
+    {
+      "id": 5,
+      "label": "ios_sim_arm64-fastbuild-ios-sim_arm64-min15.0-applebin_ios-ST-048b4cf12fed",
+      "parentId": 6
+    },
+    {
+      "id": 4,
+      "label": "bin",
+      "parentId": 5
+    },
+    {
+      "id": 3,
+      "label": "Features",
+      "parentId": 4
+    },
+    {
+      "id": 2,
+      "label": "BazelView",
+      "parentId": 3
+    },
+    {
+      "id": 1,
+      "label": "BazelView.output_file_map.json",
+      "parentId": 2
+    },
+    {
+      "id": 12,
+      "label": "external"
+    },
+    {
+      "id": 11,
+      "label": "rules_swift+",
+      "parentId": 12
+    },
+    {
+      "id": 10,
+      "label": "swift",
+      "parentId": 11
+    },
+    {
+      "id": 9,
+      "label": "toolchains",
+      "parentId": 10
+    },
+    {
+      "id": 8,
+      "label": "config",
+      "parentId": 9
+    },
+    {
+      "id": 7,
+      "label": "const_protocols_to_gather.json",
+      "parentId": 8
+    },
+    {
+      "id": 15,
+      "label": "Libraries",
+      "parentId": 4
+    },
+    {
+      "id": 14,
+      "label": "Utils",
+      "parentId": 15
+    },
+    {
+      "id": 13,
+      "label": "Utils.swiftmodule",
+      "parentId": 14
+    },
+    {
+      "id": 17,
+      "label": "NetworkStack",
+      "parentId": 15
+    },
+    {
+      "id": 16,
+      "label": "NetworkStack.swiftmodule",
+      "parentId": 17
+    },
+    {
+      "id": 19,
+      "label": "Analytics",
+      "parentId": 15
+    },
+    {
+      "id": 18,
+      "label": "Analytics.swiftmodule",
+      "parentId": 19
+    },
+    {
+      "id": 22,
+      "label": "Features"
+    },
+    {
+      "id": 21,
+      "label": "BazelView",
+      "parentId": 22
+    },
+    {
+      "id": 20,
+      "label": "BazelView.swift",
+      "parentId": 21
+    },
+    {
+      "id": 29,
+      "label": "darwin_arm64-opt-exec-ST-d57f47055a04",
+      "parentId": 6
+    },
+    {
+      "id": 28,
+      "label": "bin",
+      "parentId": 29
+    },
+    {
+      "id": 27,
+      "label": "external",
+      "parentId": 28
+    },
+    {
+      "id": 26,
+      "label": "rules_swift+",
+      "parentId": 27
+    },
+    {
+      "id": 25,
+      "label": "tools",
+      "parentId": 26
+    },
+    {
+      "id": 24,
+      "label": "worker",
+      "parentId": 25
+    },
+    {
+      "id": 23,
+      "label": "worker",
+      "parentId": 24
+    },
+    {
+      "id": 32,
+      "label": "internal",
+      "parentId": 29
+    },
+    {
+      "id": 31,
+      "label": "_middlemen",
+      "parentId": 32
+    },
+    {
+      "id": 30,
+      "label": "external_Srules_Uswift+_Stools_Sworker_Sworker-runfiles",
+      "parentId": 31
+    },
+    {
+      "id": 33,
+      "label": "BazelView.swiftmodule",
+      "parentId": 2
+    },
+    {
+      "id": 34,
+      "label": "BazelView.swiftdoc",
+      "parentId": 2
+    },
+    {
+      "id": 35,
+      "label": "BazelView.swiftsourceinfo",
+      "parentId": 2
+    },
+    {
+      "id": 36,
+      "label": "BazelView.macro-expansions",
+      "parentId": 2
+    },
+    {
+      "id": 38,
+      "label": "BazelView_objs",
+      "parentId": 2
+    },
+    {
+      "id": 37,
+      "label": "BazelView.swift.o",
+      "parentId": 38
+    },
+    {
+      "id": 39,
+      "label": "BazelView.swift.swiftconstvalues",
+      "parentId": 38
+    },
+    {
+      "id": 41,
+      "label": "App",
+      "parentId": 4
+    },
+    {
+      "id": 40,
+      "label": "Sources.output_file_map.json",
+      "parentId": 41
+    },
+    {
+      "id": 44,
+      "label": "external",
+      "parentId": 4
+    },
+    {
+      "id": 43,
+      "label": "+_repo_rules2+SwiftNonEmpty",
+      "parentId": 44
+    },
+    {
+      "id": 42,
+      "label": "SwiftNonEmpty.swiftmodule",
+      "parentId": 43
+    },
+    {
+      "id": 46,
+      "label": "+_repo_rules+JOSESwift",
+      "parentId": 44
+    },
+    {
+      "id": 45,
+      "label": "JOSESwift.swiftmodule",
+      "parentId": 46
+    },
+    {
+      "id": 49,
+      "label": "App"
+    },
+    {
+      "id": 48,
+      "label": "Sources",
+      "parentId": 49
+    },
+    {
+      "id": 47,
+      "label": "ContentView.swift",
+      "parentId": 48
+    },
+    {
+      "id": 50,
+      "label": "ExampleApp.swift",
+      "parentId": 48
+    },
+    {
+      "id": 51,
+      "label": "ExampleApp+String.swift",
+      "parentId": 48
+    },
+    {
+      "id": 52,
+      "label": "Sources.swiftmodule",
+      "parentId": 41
+    },
+    {
+      "id": 53,
+      "label": "Sources.swiftdoc",
+      "parentId": 41
+    },
+    {
+      "id": 54,
+      "label": "Sources.swiftsourceinfo",
+      "parentId": 41
+    },
+    {
+      "id": 55,
+      "label": "Sources.macro-expansions",
+      "parentId": 41
+    },
+    {
+      "id": 58,
+      "label": "Sources_objs",
+      "parentId": 41
+    },
+    {
+      "id": 57,
+      "label": "Sources",
+      "parentId": 58
+    },
+    {
+      "id": 56,
+      "label": "ContentView.swift.o",
+      "parentId": 57
+    },
+    {
+      "id": 59,
+      "label": "ExampleApp.swift.o",
+      "parentId": 57
+    },
+    {
+      "id": 60,
+      "label": "ExampleApp+String.swift.o",
+      "parentId": 57
+    },
+    {
+      "id": 61,
+      "label": "ContentView.swift.swiftconstvalues",
+      "parentId": 57
+    },
+    {
+      "id": 62,
+      "label": "ExampleApp.swift.swiftconstvalues",
+      "parentId": 57
+    },
+    {
+      "id": 63,
+      "label": "ExampleApp+String.swift.swiftconstvalues",
+      "parentId": 57
+    },
+    {
+      "id": 64,
+      "label": "Utils.output_file_map.json",
+      "parentId": 14
+    },
+    {
+      "id": 67,
+      "label": "Libraries"
+    },
+    {
+      "id": 66,
+      "label": "Utils",
+      "parentId": 67
+    },
+    {
+      "id": 65,
+      "label": "Utils.swift",
+      "parentId": 66
+    },
+    {
+      "id": 68,
+      "label": "Utils.swiftdoc",
+      "parentId": 14
+    },
+    {
+      "id": 69,
+      "label": "Utils.swiftsourceinfo",
+      "parentId": 14
+    },
+    {
+      "id": 70,
+      "label": "Utils.macro-expansions",
+      "parentId": 14
+    },
+    {
+      "id": 72,
+      "label": "Utils_objs",
+      "parentId": 14
+    },
+    {
+      "id": 71,
+      "label": "Utils.swift.o",
+      "parentId": 72
+    },
+    {
+      "id": 73,
+      "label": "Utils.swift.swiftconstvalues",
+      "parentId": 72
+    },
+    {
+      "id": 74,
+      "label": "NetworkStack.output_file_map.json",
+      "parentId": 17
+    },
+    {
+      "id": 76,
+      "label": "NetworkStack",
+      "parentId": 67
+    },
+    {
+      "id": 75,
+      "label": "NetworkStack.swift",
+      "parentId": 76
+    },
+    {
+      "id": 77,
+      "label": "NetworkStack.swiftdoc",
+      "parentId": 17
+    },
+    {
+      "id": 78,
+      "label": "NetworkStack.swiftsourceinfo",
+      "parentId": 17
+    },
+    {
+      "id": 79,
+      "label": "NetworkStack.macro-expansions",
+      "parentId": 17
+    },
+    {
+      "id": 81,
+      "label": "NetworkStack_objs",
+      "parentId": 17
+    },
+    {
+      "id": 80,
+      "label": "NetworkStack.swift.o",
+      "parentId": 81
+    },
+    {
+      "id": 82,
+      "label": "NetworkStack.swift.swiftconstvalues",
+      "parentId": 81
+    },
+    {
+      "id": 83,
+      "label": "Analytics.output_file_map.json",
+      "parentId": 19
+    },
+    {
+      "id": 85,
+      "label": "Analytics",
+      "parentId": 67
+    },
+    {
+      "id": 84,
+      "label": "Analytics.swift",
+      "parentId": 85
+    },
+    {
+      "id": 86,
+      "label": "Analytics.swiftdoc",
+      "parentId": 19
+    },
+    {
+      "id": 87,
+      "label": "Analytics.swiftsourceinfo",
+      "parentId": 19
+    },
+    {
+      "id": 88,
+      "label": "Analytics.macro-expansions",
+      "parentId": 19
+    },
+    {
+      "id": 90,
+      "label": "Analytics_objs",
+      "parentId": 19
+    },
+    {
+      "id": 89,
+      "label": "Analytics.swift.o",
+      "parentId": 90
+    },
+    {
+      "id": 91,
+      "label": "Analytics.swift.swiftconstvalues",
+      "parentId": 90
+    },
+    {
+      "id": 92,
+      "label": "SwiftNonEmpty.output_file_map.json",
+      "parentId": 43
+    },
+    {
+      "id": 96,
+      "label": "+_repo_rules2+SwiftNonEmpty",
+      "parentId": 12
+    },
+    {
+      "id": 95,
+      "label": "Sources",
+      "parentId": 96
+    },
+    {
+      "id": 94,
+      "label": "NonEmpty",
+      "parentId": 95
+    },
+    {
+      "id": 93,
+      "label": "NonEmpty+Dictionary.swift",
+      "parentId": 94
+    },
+    {
+      "id": 97,
+      "label": "NonEmpty+ExpressibleByArrayLiteral.swift",
+      "parentId": 94
+    },
+    {
+      "id": 98,
+      "label": "NonEmpty+ExpressibleByDictionaryLiteral.swift",
+      "parentId": 94
+    },
+    {
+      "id": 99,
+      "label": "NonEmpty+RangeReplaceableCollection.swift",
+      "parentId": 94
+    },
+    {
+      "id": 100,
+      "label": "NonEmpty+SetAlgebra.swift",
+      "parentId": 94
+    },
+    {
+      "id": 101,
+      "label": "NonEmpty+String.swift",
+      "parentId": 94
+    },
+    {
+      "id": 102,
+      "label": "NonEmpty.swift",
+      "parentId": 94
+    },
+    {
+      "id": 103,
+      "label": "SwiftNonEmpty.swiftdoc",
+      "parentId": 43
+    },
+    {
+      "id": 104,
+      "label": "SwiftNonEmpty.swiftsourceinfo",
+      "parentId": 43
+    },
+    {
+      "id": 105,
+      "label": "SwiftNonEmpty.macro-expansions",
+      "parentId": 43
+    },
+    {
+      "id": 109,
+      "label": "SwiftNonEmpty_objs",
+      "parentId": 43
+    },
+    {
+      "id": 108,
+      "label": "Sources",
+      "parentId": 109
+    },
+    {
+      "id": 107,
+      "label": "NonEmpty",
+      "parentId": 108
+    },
+    {
+      "id": 106,
+      "label": "NonEmpty+Dictionary.swift.o",
+      "parentId": 107
+    },
+    {
+      "id": 110,
+      "label": "NonEmpty+ExpressibleByArrayLiteral.swift.o",
+      "parentId": 107
+    },
+    {
+      "id": 111,
+      "label": "NonEmpty+ExpressibleByDictionaryLiteral.swift.o",
+      "parentId": 107
+    },
+    {
+      "id": 112,
+      "label": "NonEmpty+RangeReplaceableCollection.swift.o",
+      "parentId": 107
+    },
+    {
+      "id": 113,
+      "label": "NonEmpty+SetAlgebra.swift.o",
+      "parentId": 107
+    },
+    {
+      "id": 114,
+      "label": "NonEmpty+String.swift.o",
+      "parentId": 107
+    },
+    {
+      "id": 115,
+      "label": "NonEmpty.swift.o",
+      "parentId": 107
+    },
+    {
+      "id": 116,
+      "label": "NonEmpty+Dictionary.swift.swiftconstvalues",
+      "parentId": 107
+    },
+    {
+      "id": 117,
+      "label": "NonEmpty+ExpressibleByArrayLiteral.swift.swiftconstvalues",
+      "parentId": 107
+    },
+    {
+      "id": 118,
+      "label": "NonEmpty+ExpressibleByDictionaryLiteral.swift.swiftconstvalues",
+      "parentId": 107
+    },
+    {
+      "id": 119,
+      "label": "NonEmpty+RangeReplaceableCollection.swift.swiftconstvalues",
+      "parentId": 107
+    },
+    {
+      "id": 120,
+      "label": "NonEmpty+SetAlgebra.swift.swiftconstvalues",
+      "parentId": 107
+    },
+    {
+      "id": 121,
+      "label": "NonEmpty+String.swift.swiftconstvalues",
+      "parentId": 107
+    },
+    {
+      "id": 122,
+      "label": "NonEmpty.swift.swiftconstvalues",
+      "parentId": 107
+    },
+    {
+      "id": 123,
+      "label": "JOSESwift.output_file_map.json",
+      "parentId": 46
+    },
+    {
+      "id": 128,
+      "label": "+_repo_rules+JOSESwift",
+      "parentId": 12
+    },
+    {
+      "id": 127,
+      "label": "JOSESwift",
+      "parentId": 128
+    },
+    {
+      "id": 126,
+      "label": "Sources",
+      "parentId": 127
+    },
+    {
+      "id": 125,
+      "label": "Common",
+      "parentId": 126
+    },
+    {
+      "id": 124,
+      "label": "ASN1DEREncoding.swift",
+      "parentId": 125
+    },
+    {
+      "id": 129,
+      "label": "ASN1DERParsing.swift",
+      "parentId": 125
+    },
+    {
+      "id": 130,
+      "label": "AlgorithmExtensions.swift",
+      "parentId": 125
+    },
+    {
+      "id": 131,
+      "label": "Algorithms.swift",
+      "parentId": 125
+    },
+    {
+      "id": 132,
+      "label": "DataConvertible.swift",
+      "parentId": 125
+    },
+    {
+      "id": 133,
+      "label": "DataExtensions.swift",
+      "parentId": 125
+    },
+    {
+      "id": 134,
+      "label": "Deserializer.swift",
+      "parentId": 125
+    },
+    {
+      "id": 135,
+      "label": "JOSEHeader.swift",
+      "parentId": 125
+    },
+    {
+      "id": 136,
+      "label": "JOSESwiftError.swift",
+      "parentId": 125
+    },
+    {
+      "id": 137,
+      "label": "Payload.swift",
+      "parentId": 125
+    },
+    {
+      "id": 138,
+      "label": "Serializer.swift",
+      "parentId": 125
+    },
+    {
+      "id": 141,
+      "label": "CryptoPrimitives",
+      "parentId": 126
+    },
+    {
+      "id": 140,
+      "label": "AESCBC",
+      "parentId": 141
+    },
+    {
+      "id": 139,
+      "label": "AES.swift",
+      "parentId": 140
+    },
+    {
+      "id": 143,
+      "label": "AESGCM",
+      "parentId": 141
+    },
+    {
+      "id": 142,
+      "label": "AESGCM.swift",
+      "parentId": 143
+    },
+    {
+      "id": 145,
+      "label": "EC",
+      "parentId": 141
+    },
+    {
+      "id": 144,
+      "label": "EC.swift",
+      "parentId": 145
+    },
+    {
+      "id": 146,
+      "label": "ECDHKeyAgreement.swift",
+      "parentId": 145
+    },
+    {
+      "id": 148,
+      "label": "HMAC",
+      "parentId": 141
+    },
+    {
+      "id": 147,
+      "label": "HMAC.swift",
+      "parentId": 148
+    },
+    {
+      "id": 150,
+      "label": "PBES2",
+      "parentId": 141
+    },
+    {
+      "id": 149,
+      "label": "PBES2.swift",
+      "parentId": 150
+    },
+    {
+      "id": 152,
+      "label": "RSA",
+      "parentId": 141
+    },
+    {
+      "id": 151,
+      "label": "RSA.swift",
+      "parentId": 152
+    },
+    {
+      "id": 154,
+      "label": "Randomness",
+      "parentId": 141
+    },
+    {
+      "id": 153,
+      "label": "SecureRandom.swift",
+      "parentId": 154
+    },
+    {
+      "id": 156,
+      "label": "SHA",
+      "parentId": 141
+    },
+    {
+      "id": 155,
+      "label": "Thumbprint.swift",
+      "parentId": 156
+    },
+    {
+      "id": 159,
+      "label": "JWE",
+      "parentId": 126
+    },
+    {
+      "id": 158,
+      "label": "Compression",
+      "parentId": 159
+    },
+    {
+      "id": 157,
+      "label": "Compressor.swift",
+      "parentId": 158
+    },
+    {
+      "id": 160,
+      "label": "DeflateWrapper.swift",
+      "parentId": 158
+    },
+    {
+      "id": 162,
+      "label": "ContentEncryption",
+      "parentId": 159
+    },
+    {
+      "id": 161,
+      "label": "ContentEncryption.swift",
+      "parentId": 162
+    },
+    {
+      "id": 165,
+      "label": "DefaultCrypto",
+      "parentId": 162
+    },
+    {
+      "id": 164,
+      "label": "AESCBC",
+      "parentId": 165
+    },
+    {
+      "id": 163,
+      "label": "AESCBCEncryption.swift",
+      "parentId": 164
+    },
+    {
+      "id": 167,
+      "label": "AESGCM",
+      "parentId": 165
+    },
+    {
+      "id": 166,
+      "label": "AESGCMEncryption.swift",
+      "parentId": 167
+    },
+    {
+      "id": 168,
+      "label": "Decrypter.swift",
+      "parentId": 159
+    },
+    {
+      "id": 169,
+      "label": "Encrypter.swift",
+      "parentId": 159
+    },
+    {
+      "id": 170,
+      "label": "JWE.swift",
+      "parentId": 159
+    },
+    {
+      "id": 171,
+      "label": "JWEHeader.swift",
+      "parentId": 159
+    },
+    {
+      "id": 175,
+      "label": "KeyManagement",
+      "parentId": 159
+    },
+    {
+      "id": 174,
+      "label": "DefaultCrypto",
+      "parentId": 175
+    },
+    {
+      "id": 173,
+      "label": "AESKW",
+      "parentId": 174
+    },
+    {
+      "id": 172,
+      "label": "AESKeyWrappingMode.swift",
+      "parentId": 173
+    },
+    {
+      "id": 177,
+      "label": "DirectEncryption",
+      "parentId": 174
+    },
+    {
+      "id": 176,
+      "label": "DirectEncryptionMode.swift",
+      "parentId": 177
+    },
+    {
+      "id": 179,
+      "label": "EC",
+      "parentId": 174
+    },
+    {
+      "id": 178,
+      "label": "ECKeyEncryption.swift",
+      "parentId": 179
+    },
+    {
+      "id": 181,
+      "label": "PBES2",
+      "parentId": 174
+    },
+    {
+      "id": 180,
+      "label": "PBES2KeyEncryptionMode.swift",
+      "parentId": 181
+    },
+    {
+      "id": 183,
+      "label": "RSA",
+      "parentId": 174
+    },
+    {
+      "id": 182,
+      "label": "RSAKeyEncryptionMode.swift",
+      "parentId": 183
+    },
+    {
+      "id": 184,
+      "label": "KeyManagementMode.swift",
+      "parentId": 175
+    },
+    {
+      "id": 187,
+      "label": "JWK",
+      "parentId": 126
+    },
+    {
+      "id": 186,
+      "label": "EC",
+      "parentId": 187
+    },
+    {
+      "id": 185,
+      "label": "DataECPrivateKey.swift",
+      "parentId": 186
+    },
+    {
+      "id": 188,
+      "label": "DataECPublicKey.swift",
+      "parentId": 186
+    },
+    {
+      "id": 189,
+      "label": "ECKeyCodable.swift",
+      "parentId": 186
+    },
+    {
+      "id": 190,
+      "label": "ECKeyPair.swift",
+      "parentId": 186
+    },
+    {
+      "id": 191,
+      "label": "ECKeys.swift",
+      "parentId": 186
+    },
+    {
+      "id": 192,
+      "label": "SecKeyECPrivateKey.swift",
+      "parentId": 186
+    },
+    {
+      "id": 193,
+      "label": "SecKeyECPublicKey.swift",
+      "parentId": 186
+    },
+    {
+      "id": 194,
+      "label": "JWK.swift",
+      "parentId": 187
+    },
+    {
+      "id": 195,
+      "label": "JWKExtensions.swift",
+      "parentId": 187
+    },
+    {
+      "id": 196,
+      "label": "JWKParameters.swift",
+      "parentId": 187
+    },
+    {
+      "id": 197,
+      "label": "JWKSet.swift",
+      "parentId": 187
+    },
+    {
+      "id": 198,
+      "label": "JWKSetCodable.swift",
+      "parentId": 187
+    },
+    {
+      "id": 200,
+      "label": "RSA",
+      "parentId": 187
+    },
+    {
+      "id": 199,
+      "label": "DataRSAPublicKey.swift",
+      "parentId": 200
+    },
+    {
+      "id": 201,
+      "label": "RSAKeyCodable.swift",
+      "parentId": 200
+    },
+    {
+      "id": 202,
+      "label": "RSAKeys.swift",
+      "parentId": 200
+    },
+    {
+      "id": 203,
+      "label": "SecKeyRSAPublicKey.swift",
+      "parentId": 200
+    },
+    {
+      "id": 205,
+      "label": "Symmetric",
+      "parentId": 187
+    },
+    {
+      "id": 204,
+      "label": "DataSymmetricKey.swift",
+      "parentId": 205
+    },
+    {
+      "id": 206,
+      "label": "SymmetricKeyCodable.swift",
+      "parentId": 205
+    },
+    {
+      "id": 207,
+      "label": "SymmetricKeys.swift",
+      "parentId": 205
+    },
+    {
+      "id": 211,
+      "label": "JWS",
+      "parentId": 126
+    },
+    {
+      "id": 210,
+      "label": "DefaultCrypto",
+      "parentId": 211
+    },
+    {
+      "id": 209,
+      "label": "EC",
+      "parentId": 210
+    },
+    {
+      "id": 208,
+      "label": "ECSigner.swift",
+      "parentId": 209
+    },
+    {
+      "id": 212,
+      "label": "ECVerifier.swift",
+      "parentId": 209
+    },
+    {
+      "id": 214,
+      "label": "HMAC",
+      "parentId": 210
+    },
+    {
+      "id": 213,
+      "label": "HMACSigner.swift",
+      "parentId": 214
+    },
+    {
+      "id": 215,
+      "label": "HMACVerifier.swift",
+      "parentId": 214
+    },
+    {
+      "id": 217,
+      "label": "RSA",
+      "parentId": 210
+    },
+    {
+      "id": 216,
+      "label": "RSASigner.swift",
+      "parentId": 217
+    },
+    {
+      "id": 218,
+      "label": "RSAVerifier.swift",
+      "parentId": 217
+    },
+    {
+      "id": 219,
+      "label": "JWS.swift",
+      "parentId": 211
+    },
+    {
+      "id": 220,
+      "label": "JWSHeader.swift",
+      "parentId": 211
+    },
+    {
+      "id": 221,
+      "label": "Signer.swift",
+      "parentId": 211
+    },
+    {
+      "id": 222,
+      "label": "Verifier.swift",
+      "parentId": 211
+    },
+    {
+      "id": 223,
+      "label": "JOSESwift.swiftdoc",
+      "parentId": 46
+    },
+    {
+      "id": 224,
+      "label": "JOSESwift.swiftsourceinfo",
+      "parentId": 46
+    },
+    {
+      "id": 225,
+      "label": "JOSESwift.macro-expansions",
+      "parentId": 46
+    },
+    {
+      "id": 230,
+      "label": "JOSESwift_objs",
+      "parentId": 46
+    },
+    {
+      "id": 229,
+      "label": "JOSESwift",
+      "parentId": 230
+    },
+    {
+      "id": 228,
+      "label": "Sources",
+      "parentId": 229
+    },
+    {
+      "id": 227,
+      "label": "Common",
+      "parentId": 228
+    },
+    {
+      "id": 226,
+      "label": "ASN1DEREncoding.swift.o",
+      "parentId": 227
+    },
+    {
+      "id": 231,
+      "label": "ASN1DERParsing.swift.o",
+      "parentId": 227
+    },
+    {
+      "id": 232,
+      "label": "AlgorithmExtensions.swift.o",
+      "parentId": 227
+    },
+    {
+      "id": 233,
+      "label": "Algorithms.swift.o",
+      "parentId": 227
+    },
+    {
+      "id": 234,
+      "label": "DataConvertible.swift.o",
+      "parentId": 227
+    },
+    {
+      "id": 235,
+      "label": "DataExtensions.swift.o",
+      "parentId": 227
+    },
+    {
+      "id": 236,
+      "label": "Deserializer.swift.o",
+      "parentId": 227
+    },
+    {
+      "id": 237,
+      "label": "JOSEHeader.swift.o",
+      "parentId": 227
+    },
+    {
+      "id": 238,
+      "label": "JOSESwiftError.swift.o",
+      "parentId": 227
+    },
+    {
+      "id": 239,
+      "label": "Payload.swift.o",
+      "parentId": 227
+    },
+    {
+      "id": 240,
+      "label": "Serializer.swift.o",
+      "parentId": 227
+    },
+    {
+      "id": 243,
+      "label": "CryptoPrimitives",
+      "parentId": 228
+    },
+    {
+      "id": 242,
+      "label": "AESCBC",
+      "parentId": 243
+    },
+    {
+      "id": 241,
+      "label": "AES.swift.o",
+      "parentId": 242
+    },
+    {
+      "id": 245,
+      "label": "AESGCM",
+      "parentId": 243
+    },
+    {
+      "id": 244,
+      "label": "AESGCM.swift.o",
+      "parentId": 245
+    },
+    {
+      "id": 247,
+      "label": "EC",
+      "parentId": 243
+    },
+    {
+      "id": 246,
+      "label": "EC.swift.o",
+      "parentId": 247
+    },
+    {
+      "id": 248,
+      "label": "ECDHKeyAgreement.swift.o",
+      "parentId": 247
+    },
+    {
+      "id": 250,
+      "label": "HMAC",
+      "parentId": 243
+    },
+    {
+      "id": 249,
+      "label": "HMAC.swift.o",
+      "parentId": 250
+    },
+    {
+      "id": 252,
+      "label": "PBES2",
+      "parentId": 243
+    },
+    {
+      "id": 251,
+      "label": "PBES2.swift.o",
+      "parentId": 252
+    },
+    {
+      "id": 254,
+      "label": "RSA",
+      "parentId": 243
+    },
+    {
+      "id": 253,
+      "label": "RSA.swift.o",
+      "parentId": 254
+    },
+    {
+      "id": 256,
+      "label": "Randomness",
+      "parentId": 243
+    },
+    {
+      "id": 255,
+      "label": "SecureRandom.swift.o",
+      "parentId": 256
+    },
+    {
+      "id": 258,
+      "label": "SHA",
+      "parentId": 243
+    },
+    {
+      "id": 257,
+      "label": "Thumbprint.swift.o",
+      "parentId": 258
+    },
+    {
+      "id": 261,
+      "label": "JWE",
+      "parentId": 228
+    },
+    {
+      "id": 260,
+      "label": "Compression",
+      "parentId": 261
+    },
+    {
+      "id": 259,
+      "label": "Compressor.swift.o",
+      "parentId": 260
+    },
+    {
+      "id": 262,
+      "label": "DeflateWrapper.swift.o",
+      "parentId": 260
+    },
+    {
+      "id": 264,
+      "label": "ContentEncryption",
+      "parentId": 261
+    },
+    {
+      "id": 263,
+      "label": "ContentEncryption.swift.o",
+      "parentId": 264
+    },
+    {
+      "id": 267,
+      "label": "DefaultCrypto",
+      "parentId": 264
+    },
+    {
+      "id": 266,
+      "label": "AESCBC",
+      "parentId": 267
+    },
+    {
+      "id": 265,
+      "label": "AESCBCEncryption.swift.o",
+      "parentId": 266
+    },
+    {
+      "id": 269,
+      "label": "AESGCM",
+      "parentId": 267
+    },
+    {
+      "id": 268,
+      "label": "AESGCMEncryption.swift.o",
+      "parentId": 269
+    },
+    {
+      "id": 270,
+      "label": "Decrypter.swift.o",
+      "parentId": 261
+    },
+    {
+      "id": 271,
+      "label": "Encrypter.swift.o",
+      "parentId": 261
+    },
+    {
+      "id": 272,
+      "label": "JWE.swift.o",
+      "parentId": 261
+    },
+    {
+      "id": 273,
+      "label": "JWEHeader.swift.o",
+      "parentId": 261
+    },
+    {
+      "id": 277,
+      "label": "KeyManagement",
+      "parentId": 261
+    },
+    {
+      "id": 276,
+      "label": "DefaultCrypto",
+      "parentId": 277
+    },
+    {
+      "id": 275,
+      "label": "AESKW",
+      "parentId": 276
+    },
+    {
+      "id": 274,
+      "label": "AESKeyWrappingMode.swift.o",
+      "parentId": 275
+    },
+    {
+      "id": 279,
+      "label": "DirectEncryption",
+      "parentId": 276
+    },
+    {
+      "id": 278,
+      "label": "DirectEncryptionMode.swift.o",
+      "parentId": 279
+    },
+    {
+      "id": 281,
+      "label": "EC",
+      "parentId": 276
+    },
+    {
+      "id": 280,
+      "label": "ECKeyEncryption.swift.o",
+      "parentId": 281
+    },
+    {
+      "id": 283,
+      "label": "PBES2",
+      "parentId": 276
+    },
+    {
+      "id": 282,
+      "label": "PBES2KeyEncryptionMode.swift.o",
+      "parentId": 283
+    },
+    {
+      "id": 285,
+      "label": "RSA",
+      "parentId": 276
+    },
+    {
+      "id": 284,
+      "label": "RSAKeyEncryptionMode.swift.o",
+      "parentId": 285
+    },
+    {
+      "id": 286,
+      "label": "KeyManagementMode.swift.o",
+      "parentId": 277
+    },
+    {
+      "id": 289,
+      "label": "JWK",
+      "parentId": 228
+    },
+    {
+      "id": 288,
+      "label": "EC",
+      "parentId": 289
+    },
+    {
+      "id": 287,
+      "label": "DataECPrivateKey.swift.o",
+      "parentId": 288
+    },
+    {
+      "id": 290,
+      "label": "DataECPublicKey.swift.o",
+      "parentId": 288
+    },
+    {
+      "id": 291,
+      "label": "ECKeyCodable.swift.o",
+      "parentId": 288
+    },
+    {
+      "id": 292,
+      "label": "ECKeyPair.swift.o",
+      "parentId": 288
+    },
+    {
+      "id": 293,
+      "label": "ECKeys.swift.o",
+      "parentId": 288
+    },
+    {
+      "id": 294,
+      "label": "SecKeyECPrivateKey.swift.o",
+      "parentId": 288
+    },
+    {
+      "id": 295,
+      "label": "SecKeyECPublicKey.swift.o",
+      "parentId": 288
+    },
+    {
+      "id": 296,
+      "label": "JWK.swift.o",
+      "parentId": 289
+    },
+    {
+      "id": 297,
+      "label": "JWKExtensions.swift.o",
+      "parentId": 289
+    },
+    {
+      "id": 298,
+      "label": "JWKParameters.swift.o",
+      "parentId": 289
+    },
+    {
+      "id": 299,
+      "label": "JWKSet.swift.o",
+      "parentId": 289
+    },
+    {
+      "id": 300,
+      "label": "JWKSetCodable.swift.o",
+      "parentId": 289
+    },
+    {
+      "id": 302,
+      "label": "RSA",
+      "parentId": 289
+    },
+    {
+      "id": 301,
+      "label": "DataRSAPublicKey.swift.o",
+      "parentId": 302
+    },
+    {
+      "id": 303,
+      "label": "RSAKeyCodable.swift.o",
+      "parentId": 302
+    },
+    {
+      "id": 304,
+      "label": "RSAKeys.swift.o",
+      "parentId": 302
+    },
+    {
+      "id": 305,
+      "label": "SecKeyRSAPublicKey.swift.o",
+      "parentId": 302
+    },
+    {
+      "id": 307,
+      "label": "Symmetric",
+      "parentId": 289
+    },
+    {
+      "id": 306,
+      "label": "DataSymmetricKey.swift.o",
+      "parentId": 307
+    },
+    {
+      "id": 308,
+      "label": "SymmetricKeyCodable.swift.o",
+      "parentId": 307
+    },
+    {
+      "id": 309,
+      "label": "SymmetricKeys.swift.o",
+      "parentId": 307
+    },
+    {
+      "id": 313,
+      "label": "JWS",
+      "parentId": 228
+    },
+    {
+      "id": 312,
+      "label": "DefaultCrypto",
+      "parentId": 313
+    },
+    {
+      "id": 311,
+      "label": "EC",
+      "parentId": 312
+    },
+    {
+      "id": 310,
+      "label": "ECSigner.swift.o",
+      "parentId": 311
+    },
+    {
+      "id": 314,
+      "label": "ECVerifier.swift.o",
+      "parentId": 311
+    },
+    {
+      "id": 316,
+      "label": "HMAC",
+      "parentId": 312
+    },
+    {
+      "id": 315,
+      "label": "HMACSigner.swift.o",
+      "parentId": 316
+    },
+    {
+      "id": 317,
+      "label": "HMACVerifier.swift.o",
+      "parentId": 316
+    },
+    {
+      "id": 319,
+      "label": "RSA",
+      "parentId": 312
+    },
+    {
+      "id": 318,
+      "label": "RSASigner.swift.o",
+      "parentId": 319
+    },
+    {
+      "id": 320,
+      "label": "RSAVerifier.swift.o",
+      "parentId": 319
+    },
+    {
+      "id": 321,
+      "label": "JWS.swift.o",
+      "parentId": 313
+    },
+    {
+      "id": 322,
+      "label": "JWSHeader.swift.o",
+      "parentId": 313
+    },
+    {
+      "id": 323,
+      "label": "Signer.swift.o",
+      "parentId": 313
+    },
+    {
+      "id": 324,
+      "label": "Verifier.swift.o",
+      "parentId": 313
+    },
+    {
+      "id": 325,
+      "label": "ASN1DEREncoding.swift.swiftconstvalues",
+      "parentId": 227
+    },
+    {
+      "id": 326,
+      "label": "ASN1DERParsing.swift.swiftconstvalues",
+      "parentId": 227
+    },
+    {
+      "id": 327,
+      "label": "AlgorithmExtensions.swift.swiftconstvalues",
+      "parentId": 227
+    },
+    {
+      "id": 328,
+      "label": "Algorithms.swift.swiftconstvalues",
+      "parentId": 227
+    },
+    {
+      "id": 329,
+      "label": "DataConvertible.swift.swiftconstvalues",
+      "parentId": 227
+    },
+    {
+      "id": 330,
+      "label": "DataExtensions.swift.swiftconstvalues",
+      "parentId": 227
+    },
+    {
+      "id": 331,
+      "label": "Deserializer.swift.swiftconstvalues",
+      "parentId": 227
+    },
+    {
+      "id": 332,
+      "label": "JOSEHeader.swift.swiftconstvalues",
+      "parentId": 227
+    },
+    {
+      "id": 333,
+      "label": "JOSESwiftError.swift.swiftconstvalues",
+      "parentId": 227
+    },
+    {
+      "id": 334,
+      "label": "Payload.swift.swiftconstvalues",
+      "parentId": 227
+    },
+    {
+      "id": 335,
+      "label": "Serializer.swift.swiftconstvalues",
+      "parentId": 227
+    },
+    {
+      "id": 336,
+      "label": "AES.swift.swiftconstvalues",
+      "parentId": 242
+    },
+    {
+      "id": 337,
+      "label": "AESGCM.swift.swiftconstvalues",
+      "parentId": 245
+    },
+    {
+      "id": 338,
+      "label": "EC.swift.swiftconstvalues",
+      "parentId": 247
+    },
+    {
+      "id": 339,
+      "label": "ECDHKeyAgreement.swift.swiftconstvalues",
+      "parentId": 247
+    },
+    {
+      "id": 340,
+      "label": "HMAC.swift.swiftconstvalues",
+      "parentId": 250
+    },
+    {
+      "id": 341,
+      "label": "PBES2.swift.swiftconstvalues",
+      "parentId": 252
+    },
+    {
+      "id": 342,
+      "label": "RSA.swift.swiftconstvalues",
+      "parentId": 254
+    },
+    {
+      "id": 343,
+      "label": "SecureRandom.swift.swiftconstvalues",
+      "parentId": 256
+    },
+    {
+      "id": 344,
+      "label": "Thumbprint.swift.swiftconstvalues",
+      "parentId": 258
+    },
+    {
+      "id": 345,
+      "label": "Compressor.swift.swiftconstvalues",
+      "parentId": 260
+    },
+    {
+      "id": 346,
+      "label": "DeflateWrapper.swift.swiftconstvalues",
+      "parentId": 260
+    },
+    {
+      "id": 347,
+      "label": "ContentEncryption.swift.swiftconstvalues",
+      "parentId": 264
+    },
+    {
+      "id": 348,
+      "label": "AESCBCEncryption.swift.swiftconstvalues",
+      "parentId": 266
+    },
+    {
+      "id": 349,
+      "label": "AESGCMEncryption.swift.swiftconstvalues",
+      "parentId": 269
+    },
+    {
+      "id": 350,
+      "label": "Decrypter.swift.swiftconstvalues",
+      "parentId": 261
+    },
+    {
+      "id": 351,
+      "label": "Encrypter.swift.swiftconstvalues",
+      "parentId": 261
+    },
+    {
+      "id": 352,
+      "label": "JWE.swift.swiftconstvalues",
+      "parentId": 261
+    },
+    {
+      "id": 353,
+      "label": "JWEHeader.swift.swiftconstvalues",
+      "parentId": 261
+    },
+    {
+      "id": 354,
+      "label": "AESKeyWrappingMode.swift.swiftconstvalues",
+      "parentId": 275
+    },
+    {
+      "id": 355,
+      "label": "DirectEncryptionMode.swift.swiftconstvalues",
+      "parentId": 279
+    },
+    {
+      "id": 356,
+      "label": "ECKeyEncryption.swift.swiftconstvalues",
+      "parentId": 281
+    },
+    {
+      "id": 357,
+      "label": "PBES2KeyEncryptionMode.swift.swiftconstvalues",
+      "parentId": 283
+    },
+    {
+      "id": 358,
+      "label": "RSAKeyEncryptionMode.swift.swiftconstvalues",
+      "parentId": 285
+    },
+    {
+      "id": 359,
+      "label": "KeyManagementMode.swift.swiftconstvalues",
+      "parentId": 277
+    },
+    {
+      "id": 360,
+      "label": "DataECPrivateKey.swift.swiftconstvalues",
+      "parentId": 288
+    },
+    {
+      "id": 361,
+      "label": "DataECPublicKey.swift.swiftconstvalues",
+      "parentId": 288
+    },
+    {
+      "id": 362,
+      "label": "ECKeyCodable.swift.swiftconstvalues",
+      "parentId": 288
+    },
+    {
+      "id": 363,
+      "label": "ECKeyPair.swift.swiftconstvalues",
+      "parentId": 288
+    },
+    {
+      "id": 364,
+      "label": "ECKeys.swift.swiftconstvalues",
+      "parentId": 288
+    },
+    {
+      "id": 365,
+      "label": "SecKeyECPrivateKey.swift.swiftconstvalues",
+      "parentId": 288
+    },
+    {
+      "id": 366,
+      "label": "SecKeyECPublicKey.swift.swiftconstvalues",
+      "parentId": 288
+    },
+    {
+      "id": 367,
+      "label": "JWK.swift.swiftconstvalues",
+      "parentId": 289
+    },
+    {
+      "id": 368,
+      "label": "JWKExtensions.swift.swiftconstvalues",
+      "parentId": 289
+    },
+    {
+      "id": 369,
+      "label": "JWKParameters.swift.swiftconstvalues",
+      "parentId": 289
+    },
+    {
+      "id": 370,
+      "label": "JWKSet.swift.swiftconstvalues",
+      "parentId": 289
+    },
+    {
+      "id": 371,
+      "label": "JWKSetCodable.swift.swiftconstvalues",
+      "parentId": 289
+    },
+    {
+      "id": 372,
+      "label": "DataRSAPublicKey.swift.swiftconstvalues",
+      "parentId": 302
+    },
+    {
+      "id": 373,
+      "label": "RSAKeyCodable.swift.swiftconstvalues",
+      "parentId": 302
+    },
+    {
+      "id": 374,
+      "label": "RSAKeys.swift.swiftconstvalues",
+      "parentId": 302
+    },
+    {
+      "id": 375,
+      "label": "SecKeyRSAPublicKey.swift.swiftconstvalues",
+      "parentId": 302
+    },
+    {
+      "id": 376,
+      "label": "DataSymmetricKey.swift.swiftconstvalues",
+      "parentId": 307
+    },
+    {
+      "id": 377,
+      "label": "SymmetricKeyCodable.swift.swiftconstvalues",
+      "parentId": 307
+    },
+    {
+      "id": 378,
+      "label": "SymmetricKeys.swift.swiftconstvalues",
+      "parentId": 307
+    },
+    {
+      "id": 379,
+      "label": "ECSigner.swift.swiftconstvalues",
+      "parentId": 311
+    },
+    {
+      "id": 380,
+      "label": "ECVerifier.swift.swiftconstvalues",
+      "parentId": 311
+    },
+    {
+      "id": 381,
+      "label": "HMACSigner.swift.swiftconstvalues",
+      "parentId": 316
+    },
+    {
+      "id": 382,
+      "label": "HMACVerifier.swift.swiftconstvalues",
+      "parentId": 316
+    },
+    {
+      "id": 383,
+      "label": "RSASigner.swift.swiftconstvalues",
+      "parentId": 319
+    },
+    {
+      "id": 384,
+      "label": "RSAVerifier.swift.swiftconstvalues",
+      "parentId": 319
+    },
+    {
+      "id": 385,
+      "label": "JWS.swift.swiftconstvalues",
+      "parentId": 313
+    },
+    {
+      "id": 386,
+      "label": "JWSHeader.swift.swiftconstvalues",
+      "parentId": 313
+    },
+    {
+      "id": 387,
+      "label": "Signer.swift.swiftconstvalues",
+      "parentId": 313
+    },
+    {
+      "id": 388,
+      "label": "Verifier.swift.swiftconstvalues",
+      "parentId": 313
+    }
+  ]
+}

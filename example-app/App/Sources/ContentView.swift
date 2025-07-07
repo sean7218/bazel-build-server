@@ -1,11 +1,11 @@
 import Analytics
 import BazelView
 import Foundation
+import JOSESwift
 import NetworkStack
+import SwiftNonEmpty
 import SwiftUI
 import Utils
-import SwiftNonEmpty
-import JOSESwift
 
 public struct ContentView: View {
     public var body: some View {
