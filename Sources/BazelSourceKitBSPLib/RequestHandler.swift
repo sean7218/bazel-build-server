@@ -1,7 +1,7 @@
 import BazelActionQuery
 import Foundation
 import Logging
-import ShellOut
+import ShellCommand
 import SystemPackage
 
 /// Handles Build Server Protocol requests
@@ -267,15 +267,11 @@ public class RequestHandler {
         var commandArgs = ["build", config.target]
         commandArgs.append(contentsOf: config.aqueryArgs)
 
-        do {
-            _ = try shellOut(
-                to: "bazel",
-                arguments: commandArgs,
-                at: rootPath.path
-            )
-        } catch {
-            // Don't fail the BSP request even if build fails
-        }
+        let _ = ShellCommand(
+            executable: "bazel",
+            currentDir: rootPath.path(),
+            args: commandArgs
+        ).run()
 
         return JSONRPCResponse(
             id: request.id,
@@ -300,11 +296,11 @@ public class RequestHandler {
     // MARK: - Helper Methods
 
     private static func getExecutionRoot(rootPath: URL) throws -> URL {
-        let output = try shellOut(
-            to: "bazel",
-            arguments: ["info", "execution_root"],
-            at: rootPath.path
-        )
+        let output = ShellCommand(
+            executable: "bazel",
+            currentDir: rootPath.path(),
+            args: ["info", "execution_root"]
+        ).run().output
 
         let execrootPath = output.trimmingCharacters(in: .whitespacesAndNewlines)
         return URL(fileURLWithPath: execrootPath)

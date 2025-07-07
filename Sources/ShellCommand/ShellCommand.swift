@@ -23,7 +23,7 @@ package struct ShellCommand {
         task.standardOutput = outputPipe
         task.standardError = errorPipe
         task.arguments = self.args
-        task.executableURL = URL(fileURLWithPath: "/bin/bash")
+        task.executableURL = URL(fileURLWithPath: executable)
 
         do {
             try task.run()

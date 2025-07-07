@@ -1,5 +1,6 @@
 import BSPError
 import Foundation
+import ShellCommand
 
 // MARK: - Bazel Query Functions
 

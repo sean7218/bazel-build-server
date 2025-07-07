@@ -20,7 +20,6 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.0.0"),
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.0.0"),
-        .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.0.0"),
         .package(url: "https://github.com/apple/swift-system.git", from: "1.0.0"),
     ],
     targets: [
@@ -40,16 +39,20 @@ let package = Package(
                 .product(name: "NIO", package: "swift-nio"),
                 .product(name: "NIOHTTP1", package: "swift-nio"),
                 .product(name: "NIOFoundationCompat", package: "swift-nio"),
-                .product(name: "ShellOut", package: "ShellOut"),
                 .product(name: "SystemPackage", package: "swift-system"),
                 "BazelActionQuery",
                 "BSPError",
+                "ShellCommand"
             ]
         ),
         .target(
             name: "BazelActionQuery",
-            dependencies: ["BSPError"]
+            dependencies: [
+                "BSPError",
+                "ShellCommand"
+            ]
         ),
         .target(name: "BSPError"),
+        .target(name: "ShellCommand"),
     ]
 )
