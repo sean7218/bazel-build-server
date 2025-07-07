@@ -1,3 +1,4 @@
+import BazelActionQuery
 import Foundation
 import Logging
 import ShellOut
@@ -9,7 +10,7 @@ public class RequestHandler {
     public let config: BuildServerConfig
     public let rootPath: URL
     public let execrootPath: URL
-    public var targets: [BazelTarget] = []
+    package var targets: [BazelTarget] = []
 
     private init(logger: Logger, config: BuildServerConfig, rootPath: URL, execrootPath: URL) {
         self.logger = logger
@@ -310,7 +311,7 @@ public class RequestHandler {
     }
 
     private func loadTargets() throws {
-        targets = try executeAquery(
+        targets = try ActionQuery().execute(
             target: config.target,
             rootPath: rootPath,
             execrootPath: execrootPath,
@@ -318,7 +319,6 @@ public class RequestHandler {
             aqueryArgs: config.aqueryArgs,
             extraIncludes: config.extraIncludes ?? [],
             extraFrameworks: config.extraFrameworks ?? [],
-            logger: logger
         )
     }
 

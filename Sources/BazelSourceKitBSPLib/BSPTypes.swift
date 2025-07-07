@@ -1,3 +1,5 @@
+import BazelActionQuery
+import BSPError
 import CoreFoundation
 import Foundation
 
@@ -176,7 +178,7 @@ public struct BuildTarget: Codable {
     public let dataKind: String?
     public let data: BuildTargetData?
 
-    public static func from(bazelTarget: BazelTarget) -> BuildTarget {
+    package static func from(bazelTarget: BazelTarget) -> BuildTarget {
         return BuildTarget(
             id: BuildTargetIdentifier(uri: bazelTarget.uri),
             displayName: normalizeDisplayName(bazelTarget.label),
@@ -388,45 +390,6 @@ public struct Options: Codable {
     public init(options: [String], workingDirectory: String? = nil) {
         self.options = options
         self.workingDirectory = workingDirectory
-    }
-}
-
-// MARK: - Bazel Target Types
-
-public struct BazelTarget: Codable, Hashable {
-    public let id: UInt32
-    public let uri: String
-    public let label: String
-    public let kind: String
-    public let tags: [String]
-    public let inputFiles: [String]
-    public let compilerArguments: [String]
-
-    public init(
-        id: UInt32,
-        uri: String,
-        label: String,
-        kind: String,
-        tags: [String],
-        inputFiles: [String],
-        compilerArguments: [String]
-    ) {
-        self.id = id
-        self.uri = uri
-        self.label = label
-        self.kind = kind
-        self.tags = tags
-        self.inputFiles = inputFiles
-        self.compilerArguments = compilerArguments
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(label)
-    }
-
-    public static func == (lhs: BazelTarget, rhs: BazelTarget) -> Bool {
-        return lhs.id == rhs.id && lhs.label == rhs.label
     }
 }
 

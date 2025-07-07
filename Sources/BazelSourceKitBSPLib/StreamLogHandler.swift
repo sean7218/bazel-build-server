@@ -1,3 +1,4 @@
+import BSPError
 import Foundation
 import Logging
 

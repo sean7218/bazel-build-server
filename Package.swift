@@ -42,7 +42,14 @@ let package = Package(
                 .product(name: "NIOFoundationCompat", package: "swift-nio"),
                 .product(name: "ShellOut", package: "ShellOut"),
                 .product(name: "SystemPackage", package: "swift-system"),
+                "BazelActionQuery",
+                "BSPError",
             ]
         ),
+        .target(
+            name: "BazelActionQuery",
+            dependencies: ["BSPError"]
+        ),
+        .target(name: "BSPError"),
     ]
 )
