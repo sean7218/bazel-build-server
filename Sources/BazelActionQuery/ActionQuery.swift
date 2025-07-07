@@ -28,11 +28,13 @@ package struct ActionQuery: Sendable {
 
         // logger.debug("bazel \(commandArgs.joined(separator: " "))")
 
-        let output = ShellCommand(
+        guard let output = ShellCommand(
             executable: "bazel",
             currentDir: rootPath.path(),
             args: commandArgs,
-        ).run().output
+        ).run().output else {
+            fatalError("Failed to run ActionQuery")
+        }
 
         let queryResult = try parseQueryResult(output: output)
 

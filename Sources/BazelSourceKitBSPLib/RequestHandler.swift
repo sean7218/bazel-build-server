@@ -296,11 +296,13 @@ public class RequestHandler {
     // MARK: - Helper Methods
 
     private static func getExecutionRoot(rootPath: URL) throws -> URL {
-        let output = ShellCommand(
+        guard let output = ShellCommand(
             executable: "bazel",
             currentDir: rootPath.path(),
             args: ["info", "execution_root"]
-        ).run().output
+        ).run().output else {
+            fatalError("Failed to get execution_root")
+        }
 
         let execrootPath = output.trimmingCharacters(in: .whitespacesAndNewlines)
         return URL(fileURLWithPath: execrootPath)

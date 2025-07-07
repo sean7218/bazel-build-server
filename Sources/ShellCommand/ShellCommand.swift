@@ -15,7 +15,7 @@ package struct ShellCommand {
         self.args = args
     }
 
-    package func run() -> (output: String, error: String, exitCode: Int32) {
+    package func run() -> (output: String?, error: String?, exitCode: Int32) {
         let task = Process()
         let outputPipe = Pipe()
         let errorPipe = Pipe()
@@ -23,7 +23,8 @@ package struct ShellCommand {
         task.standardOutput = outputPipe
         task.standardError = errorPipe
         task.arguments = self.args
-        task.executableURL = URL(fileURLWithPath: executable)
+        task.executableURL = URL(fileURLWithPath: "/usr/bin/env")
+        task.currentDirectoryURL = URL(fileURLWithPath: currentDir)
 
         do {
             try task.run()
@@ -37,7 +38,7 @@ package struct ShellCommand {
 
             return (output, error, task.terminationStatus)
         } catch {
-            return ("", "Failed to execute: \(error)", -1)
+            return (nil, "Failed to execute: \(error)", -1)
         }
     }
 }
