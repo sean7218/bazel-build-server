@@ -34,7 +34,7 @@ bazel-example-app
 Icon?
 
 # Legacy (Rust)
-/target
+legacy-rust/target
 
 # VSCode
 .vscode/

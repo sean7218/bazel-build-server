@@ -26,8 +26,6 @@ package struct ActionQuery: Sendable {
         ]
         commandArgs.append(contentsOf: aqueryArgs)
 
-        // logger.debug("bazel \(commandArgs.joined(separator: " "))")
-
         guard let output = ShellCommand(
             executable: "bazel",
             currentDir: rootPath.path(),
@@ -142,6 +140,7 @@ package struct ActionQuery: Sendable {
                 let filePath = buildFilePath(fragments: fragments, leafId: artifact.pathFragmentId)
 
                 // Convert to URL and filter for Swift files
+                // TODO: change external/ to execution_root/external 
                 let fullPath = rootPath.appendingPathComponent(filePath)
                 if fullPath.pathExtension == "swift" {
                     // Check if file exists
@@ -151,6 +150,7 @@ package struct ActionQuery: Sendable {
                         inputFiles.append(fullPath.absoluteString)
                         validPaths.append(fullPath.path)
                     } else {
+                        // TODO: check all invalidPaths and log to user
                         invalidPaths.append(fullPath.path)
                     }
                 }
@@ -184,7 +184,7 @@ package struct ActionQuery: Sendable {
         return artifactIds
     }
 
-    /// Builds file path from fragments
+    /// Builds file path from fragments all file paths are relative to the project root
     func buildFilePath(fragments: [UInt32: PathFragment], leafId: UInt32) -> String {
         guard let leaf = fragments[leafId] else { return "" }
 
@@ -249,9 +249,14 @@ package struct ActionQuery: Sendable {
             // Replace SDK placeholder
             if arg.contains("__BAZEL_XCODE_SDKROOT__") {
                 let transformedArg = arg.replacingOccurrences(
-                    of: "__BAZEL_XCODE_SDKROOT__", with: sdk)
+                    of: "__BAZEL_XCODE_SDKROOT__", 
+                    with: sdk
+                )
                 validateArgumentPath(
-                    arg: transformedArg, validPaths: &validArgPaths, invalidPaths: &invalidArgPaths)
+                    arg: transformedArg,
+                    validPaths: &validArgPaths,
+                    invalidPaths: &invalidArgPaths
+                )
                 compilerArguments.append(transformedArg)
                 index += 1
                 continue
@@ -259,10 +264,13 @@ package struct ActionQuery: Sendable {
 
             // Transform bazel-out/ paths
             if arg.contains("bazel-out/") {
-                let prefix = "\(execrootPath.path)/bazel-out/"
-                let transformedArg = arg.replacingOccurrences(of: "bazel-out/", with: prefix)
+                let _prefix = "\(execrootPath.path)/bazel-out/"
+                let transformedArg = arg.replacingOccurrences(of: "bazel-out/", with: _prefix)
                 validateArgumentPath(
-                    arg: transformedArg, validPaths: &validArgPaths, invalidPaths: &invalidArgPaths)
+                    arg: transformedArg,
+                    validPaths: &validArgPaths,
+                    invalidPaths: &invalidArgPaths
+                )
                 compilerArguments.append(transformedArg)
                 index += 1
                 continue
@@ -270,17 +278,23 @@ package struct ActionQuery: Sendable {
 
             // Transform external/ paths
             if arg.contains("external/") {
-                let prefix = "\(execrootPath.path)/external/"
-                let transformedArg = arg.replacingOccurrences(of: "external/", with: prefix)
+                let _prefix = "\(execrootPath.path)/external/"
+                let transformedArg = arg.replacingOccurrences(of: "external/", with: _prefix)
                 validateArgumentPath(
-                    arg: transformedArg, validPaths: &validArgPaths, invalidPaths: &invalidArgPaths)
+                    arg: transformedArg,
+                    validPaths: &validArgPaths,
+                    invalidPaths: &invalidArgPaths
+                )
                 compilerArguments.append(transformedArg)
                 index += 1
                 continue
             }
 
             validateArgumentPath(
-                arg: arg, validPaths: &validArgPaths, invalidPaths: &invalidArgPaths)
+                arg: arg,
+                validPaths: &validArgPaths,
+                invalidPaths: &invalidArgPaths
+            )
             compilerArguments.append(arg)
             index += 1
         }
@@ -289,7 +303,10 @@ package struct ActionQuery: Sendable {
         for include in extraIncludes {
             let includeArg = "-I\(include)"
             validateArgumentPath(
-                arg: includeArg, validPaths: &validArgPaths, invalidPaths: &invalidArgPaths)
+                arg: includeArg, 
+                validPaths: &validArgPaths,
+                invalidPaths: &invalidArgPaths
+            )
             compilerArguments.append(includeArg)
         }
 
@@ -297,16 +314,22 @@ package struct ActionQuery: Sendable {
         for framework in extraFrameworks {
             let frameworkArg = "-F\(framework)"
             validateArgumentPath(
-                arg: frameworkArg, validPaths: &validArgPaths, invalidPaths: &invalidArgPaths)
+                arg: frameworkArg,
+                validPaths: &validArgPaths,
+                invalidPaths: &invalidArgPaths
+            )
             compilerArguments.append(frameworkArg)
         }
 
+        // TODO: Check invalidArgPaths and log to users
         return compilerArguments
     }
 
     /// Validates paths in compiler arguments
     private func validateArgumentPath(
-        arg: String, validPaths: inout [String], invalidPaths: inout [String]
+        arg: String, 
+        validPaths: inout [String],
+        invalidPaths: inout [String]
     ) {
         // Check if argument looks like a file path (contains / and doesn't start with -)
         if arg.contains("/") && !arg.hasPrefix("-") {
@@ -336,5 +359,4 @@ package struct ActionQuery: Sendable {
         // Simple implementation - in practice you might want more sophisticated URI generation
         return "bazel://\(label)#\(id)"
     }
-
 }

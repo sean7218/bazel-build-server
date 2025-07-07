@@ -41,4 +41,17 @@ final class ActionQueryTests: XCTestCase {
             }
         }
     }
+
+    func testBuildFilePath() throws {
+        // Setup fragments: root/foo/bar.txt
+        let fragRoot = PathFragment(id: 1, label: "root", parentId: nil)
+        let fragFoo = PathFragment(id: 2, label: "foo", parentId: 1)
+        let fragBar = PathFragment(id: 3, label: "bar.txt", parentId: 2)
+        let fragments: [UInt32: PathFragment] = [1: fragRoot, 2: fragFoo, 3: fragBar]
+
+        // Use ActionQuery's buildFilePath (exposed via extension for test)
+        let actionQuery = ActionQuery()
+        let path = actionQuery.buildFilePath(fragments: fragments, leafId: 3)
+        XCTAssertEqual(path, "root/foo/bar.txt")
+    }
 }
