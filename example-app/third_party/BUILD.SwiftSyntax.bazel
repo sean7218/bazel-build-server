@@ -1,0 +1,143 @@
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
+
+swift_library(
+    name = "SwiftSyntax",
+    srcs = glob([
+        "Sources/SwiftSyntax/**/*.swift"
+    ], exclude = [
+        "Sources/SwiftSyntax/Documentation.docc/**",
+        "Sources/SwiftSyntax/**/Documentation.docc/**"
+    ]),
+    module_name = "SwiftSyntax",
+    visibility = ["//visibility:public"]
+)
+
+swift_library(
+    name = "SwiftParser",
+    srcs = glob([
+        "Sources/SwiftParser/**/*.swift"
+    ], exclude = [
+        "Sources/SwiftParser/Documentation.docc/**",
+        "Sources/SwiftParser/**/Documentation.docc/**"
+    ]),
+    module_name = "SwiftParser",
+    deps = [":SwiftSyntax"],
+    visibility = ["//visibility:public"]
+)
+
+swift_library(
+    name = "SwiftParserDiagnostics",
+    srcs = glob([
+        "Sources/SwiftParserDiagnostics/**/*.swift"
+    ], exclude = [
+        "Sources/SwiftParserDiagnostics/Documentation.docc/**",
+        "Sources/SwiftParserDiagnostics/**/Documentation.docc/**"
+    ]),
+    module_name = "SwiftParserDiagnostics",
+    deps = [":SwiftSyntax", ":SwiftParser"],
+    visibility = ["//visibility:public"]
+)
+
+swift_library(
+    name = "SwiftOperators",
+    srcs = glob([
+        "Sources/SwiftOperators/**/*.swift"
+    ], exclude = [
+        "Sources/SwiftOperators/Documentation.docc/**",
+        "Sources/SwiftOperators/**/Documentation.docc/**"
+    ]),
+    module_name = "SwiftOperators",
+    deps = [":SwiftSyntax", ":SwiftDiagnostics", ":SwiftParser"],
+    visibility = ["//visibility:public"]
+)
+
+swift_library(
+    name = "SwiftBasicFormat",
+    srcs = glob([
+        "Sources/SwiftBasicFormat/**/*.swift"
+    ], exclude = [
+        "Sources/SwiftBasicFormat/Documentation.docc/**",
+        "Sources/SwiftBasicFormat/**/Documentation.docc/**"
+    ]),
+    module_name = "SwiftBasicFormat",
+    deps = [":SwiftSyntax"],
+    visibility = ["//visibility:public"]
+)
+
+swift_library(
+    name = "SwiftSyntaxBuilder",
+    srcs = glob([
+        "Sources/SwiftSyntaxBuilder/**/*.swift"
+    ], exclude = [
+        "Sources/SwiftSyntaxBuilder/Documentation.docc/**",
+        "Sources/SwiftSyntaxBuilder/**/Documentation.docc/**"
+    ]),
+    module_name = "SwiftSyntaxBuilder",
+    deps = [":SwiftSyntax", ":SwiftParser", ":SwiftBasicFormat", ":SwiftDiagnostics", ":SwiftParserDiagnostics"],
+    visibility = ["//visibility:public"]
+)
+
+swift_library(
+    name = "SwiftSyntaxMacros",
+    srcs = glob([
+        "Sources/SwiftSyntaxMacros/**/*.swift"
+    ], exclude = [
+        "Sources/SwiftSyntaxMacros/Documentation.docc/**",
+        "Sources/SwiftSyntaxMacros/**/Documentation.docc/**"
+    ]),
+    module_name = "SwiftSyntaxMacros",
+    deps = [":SwiftSyntax", ":SwiftSyntaxBuilder"],
+    visibility = ["//visibility:public"]
+)
+
+swift_library(
+    name = "SwiftSyntaxMacroExpansion",
+    srcs = glob([
+        "Sources/SwiftSyntaxMacroExpansion/**/*.swift"
+    ], exclude = [
+        "Sources/SwiftSyntaxMacroExpansion/Documentation.docc/**",
+        "Sources/SwiftSyntaxMacroExpansion/**/Documentation.docc/**"
+    ]),
+    module_name = "SwiftSyntaxMacroExpansion",
+    deps = [":SwiftSyntax", ":SwiftSyntaxMacros"],
+    visibility = ["//visibility:public"]
+)
+
+swift_library(
+    name = "SwiftCompilerPluginMessageHandling",
+    srcs = glob([
+        "Sources/SwiftCompilerPluginMessageHandling/**/*.swift"
+    ], exclude = [
+        "Sources/SwiftCompilerPluginMessageHandling/Documentation.docc/**",
+        "Sources/SwiftCompilerPluginMessageHandling/**/Documentation.docc/**"
+    ]),
+    module_name = "SwiftCompilerPluginMessageHandling",
+    deps = [":SwiftSyntax", ":SwiftBasicFormat", ":SwiftDiagnostics", ":SwiftOperators", ":SwiftSyntaxMacros", ":SwiftSyntaxMacroExpansion"],
+    visibility = ["//visibility:public"]
+)
+
+swift_library(
+    name = "SwiftCompilerPlugin",
+    srcs = glob([
+        "Sources/SwiftCompilerPlugin/**/*.swift"
+    ], exclude = [
+        "Sources/SwiftCompilerPlugin/Documentation.docc/**",
+        "Sources/SwiftCompilerPlugin/**/Documentation.docc/**"
+    ]),
+    module_name = "SwiftCompilerPlugin",
+    deps = [":SwiftSyntax", ":SwiftSyntaxMacros", ":SwiftCompilerPluginMessageHandling"],
+    visibility = ["//visibility:public"]
+)
+
+swift_library(
+    name = "SwiftDiagnostics",
+    srcs = glob([
+        "Sources/SwiftDiagnostics/**/*.swift"
+    ], exclude = [
+        "Sources/SwiftDiagnostics/Documentation.docc/**",
+        "Sources/SwiftDiagnostics/**/Documentation.docc/**"
+    ]),
+    module_name = "SwiftDiagnostics",
+    deps = [":SwiftSyntax"],
+    visibility = ["//visibility:public"]
+) 

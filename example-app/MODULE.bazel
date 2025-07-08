@@ -35,3 +35,17 @@ external_dependency(
     strip_prefix = "swift-nonempty-0.5.0",
     url = "https://github.com/pointfreeco/swift-nonempty/archive/refs/tags/0.5.0.zip"
 )
+
+external_git_repo(
+    name = "SwiftSyntax",
+    build_file = "//third_party:BUILD.SwiftSyntax.bazel",
+    tag = "509.0.0",
+    remote = "https://github.com/apple/swift-syntax.git"
+)
+
+external_git_repo(
+    name = "HexColors",
+    build_file = "//third_party:BUILD.HexColors.bazel",
+    remote = "https://github.com/alvmo/HexColors.git",
+    branch = "main"
+)

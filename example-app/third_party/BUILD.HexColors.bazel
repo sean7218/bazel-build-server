@@ -1,0 +1,24 @@
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library", "swift_compiler_plugin")
+
+swift_compiler_plugin(
+    name = "HexColorsMacros",
+    srcs = glob([
+        "Sources/HexColorsMacros/**/*.swift"
+    ]),
+    deps = [
+        "@SwiftSyntax//:SwiftSyntaxMacros",
+        "@SwiftSyntax//:SwiftCompilerPlugin",
+        "@SwiftSyntax//:SwiftDiagnostics"
+    ],
+    visibility = ["//visibility:public"]
+)
+
+swift_library(
+    name = "HexColors",
+    srcs = glob([
+        "Sources/HexColors/**/*.swift"
+    ]),
+    module_name = "HexColors",
+    plugins = [":HexColorsMacros"],
+    visibility = ["//visibility:public"]
+) 
