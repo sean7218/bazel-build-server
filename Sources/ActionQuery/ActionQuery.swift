@@ -13,9 +13,7 @@ package struct ActionQuery: Sendable {
         rootPath: URL,
         execrootPath: URL,
         sdk: String,
-        aqueryArgs: [String],
-        extraIncludes: [String],
-        extraFrameworks: [String],
+        aqueryArgs: [String]
     ) throws -> [BazelTarget] {
         let mnemonic = "mnemonic(\"SwiftCompile\", deps(\(target)))"
 
@@ -30,7 +28,7 @@ package struct ActionQuery: Sendable {
             executable: "bazel",
             currentDir: rootPath.path(),
             args: commandArgs,
-        ).run() 
+        ).run()
 
         guard let output = output, output != "" else {
             throw BSPError.custom(
@@ -49,9 +47,7 @@ package struct ActionQuery: Sendable {
             queryResult: queryResult,
             rootPath: rootPath,
             execrootPath: execrootPath,
-            sdk: sdk,
-            extraIncludes: extraIncludes,
-            extraFrameworks: extraFrameworks,
+            sdk: sdk
         )
     }
 
@@ -64,7 +60,7 @@ package struct ActionQuery: Sendable {
         guard !data.isEmpty else {
             throw BSPError.custom("QueryResult output is empty")
         }
-    
+
         do {
             let decoder = JSONDecoder()
             return try decoder.decode(QueryResult.self, from: data)
@@ -79,9 +75,7 @@ package struct ActionQuery: Sendable {
         queryResult: QueryResult,
         rootPath: URL,
         execrootPath: URL,
-        sdk: String,
-        extraIncludes: [String],
-        extraFrameworks: [String]
+        sdk: String
     ) throws -> [BazelTarget] {
         // Convert arrays to hashmaps for efficient lookup
         let artifacts = Dictionary(uniqueKeysWithValues: queryResult.artifacts.map { ($0.id, $0) })
@@ -103,9 +97,7 @@ package struct ActionQuery: Sendable {
             let compilerArguments = try processCompilerArguments(
                 action: action,
                 execrootPath: execrootPath,
-                sdk: sdk,
-                extraIncludes: extraIncludes,
-                extraFrameworks: extraFrameworks,
+                sdk: sdk
             )
 
             guard let target = queryResult.targets.first(where: { $0.id == action.targetId }) else {
@@ -119,7 +111,7 @@ package struct ActionQuery: Sendable {
                 id: action.targetId,
                 uri: uri,
                 label: target.label,
-                kind: "swift_library",  // TODO: Get from rule class
+                kind: "swift_library", // TODO: Get from rule class
                 tags: [],
                 inputFiles: inputFiles,
                 compilerArguments: compilerArguments
@@ -154,7 +146,7 @@ package struct ActionQuery: Sendable {
                 let filePath = buildFilePath(fragments: fragments, leafId: artifact.pathFragmentId)
 
                 // Convert to URL and filter for Swift files
-                // TODO: change external/ to execution_root/external 
+                // TODO: change external/ to execution_root/external
                 let fullPath = rootPath.appendingPathComponent(filePath)
                 if fullPath.pathExtension == "swift" {
                     // Check if file exists
@@ -214,9 +206,7 @@ package struct ActionQuery: Sendable {
     func processCompilerArguments(
         action: Action,
         execrootPath: URL,
-        sdk: String,
-        extraIncludes: [String],
-        extraFrameworks: [String]
+        sdk: String
     ) throws -> [String] {
         var compilerArguments: [String] = []
         var validArgPaths: [String] = []
@@ -229,8 +219,7 @@ package struct ActionQuery: Sendable {
             let arg = action.arguments[index]
 
             // Skip swiftc executable and wrapper arguments
-            if arg.contains("-Xwrapped-swift") || arg.hasSuffix("worker") || arg.hasPrefix("swiftc")
-            {
+            if arg.contains("-Xwrapped-swift") || arg.hasSuffix("worker") || arg.hasPrefix("swiftc") {
                 index += 1
                 continue
             }
@@ -263,7 +252,7 @@ package struct ActionQuery: Sendable {
             // Replace SDK placeholder
             if arg.contains("__BAZEL_XCODE_SDKROOT__") {
                 let transformedArg = arg.replacingOccurrences(
-                    of: "__BAZEL_XCODE_SDKROOT__", 
+                    of: "__BAZEL_XCODE_SDKROOT__",
                     with: sdk
                 )
                 validateArgumentPath(
@@ -313,35 +302,13 @@ package struct ActionQuery: Sendable {
             index += 1
         }
 
-        // Add extra includes
-        for include in extraIncludes {
-            let includeArg = "-I\(include)"
-            validateArgumentPath(
-                arg: includeArg, 
-                validPaths: &validArgPaths,
-                invalidPaths: &invalidArgPaths
-            )
-            compilerArguments.append(includeArg)
-        }
-
-        // Add extra frameworks
-        for framework in extraFrameworks {
-            let frameworkArg = "-F\(framework)"
-            validateArgumentPath(
-                arg: frameworkArg,
-                validPaths: &validArgPaths,
-                invalidPaths: &invalidArgPaths
-            )
-            compilerArguments.append(frameworkArg)
-        }
-
         // TODO: Check invalidArgPaths and log to users
         return compilerArguments
     }
 
     /// Validates paths in compiler arguments
     private func validateArgumentPath(
-        arg: String, 
+        arg: String,
         validPaths: inout [String],
         invalidPaths: inout [String]
     ) {

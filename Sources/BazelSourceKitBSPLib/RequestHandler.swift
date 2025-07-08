@@ -314,9 +314,7 @@ public class RequestHandler {
             rootPath: rootPath,
             execrootPath: execrootPath,
             sdk: config.sdk,
-            aqueryArgs: config.aqueryArgs,
-            extraIncludes: config.extraIncludes ?? [],
-            extraFrameworks: config.extraFrameworks ?? [],
+            aqueryArgs: config.aqueryArgs
         )
     }
 

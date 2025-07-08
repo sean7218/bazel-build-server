@@ -399,8 +399,6 @@ public struct BuildServerConfig: Codable {
     public let indexStorePath: String
     public let indexDatabasePath: String
     public let aqueryArgs: [String]
-    public let extraIncludes: [String]?
-    public let extraFrameworks: [String]?
 
     // Legacy support for old format
     public let defaultSettings: [String]?
@@ -415,9 +413,7 @@ public struct BuildServerConfig: Codable {
         sdk: String,
         indexStorePath: String,
         indexDatabasePath: String,
-        aqueryArgs: [String],
-        extraIncludes: [String]? = nil,
-        extraFrameworks: [String]? = nil
+        aqueryArgs: [String]
     ) {
         self.name = name
         self.argv = argv
@@ -429,8 +425,6 @@ public struct BuildServerConfig: Codable {
         self.indexStorePath = indexStorePath
         self.indexDatabasePath = indexDatabasePath
         self.aqueryArgs = aqueryArgs
-        self.extraIncludes = extraIncludes
-        self.extraFrameworks = extraFrameworks
         defaultSettings = nil
     }
 
