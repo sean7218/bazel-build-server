@@ -263,16 +263,31 @@ public class RequestHandler {
     }
 
     private func buildTargetPrepare(request: JSONRPCRequest) throws -> JSONRPCResponse {
-        // Build the target using Bazel
+        // Build the target using Bazel on a background thread
         var commandArgs = ["build", config.target]
         commandArgs.append(contentsOf: config.aqueryArgs)
 
-        let _ = ShellCommand(
-            executable: "bazel",
-            currentDir: rootPath.path(),
-            args: commandArgs
-        ).run()
+        let rootPath = self.rootPath
+        let logger = self.logger
 
+        Task {
+            let result = ShellCommand(
+                executable: "bazel",
+                currentDir: rootPath.path(),
+                args: commandArgs
+            ).run()
+
+            if result.exitCode == 0 {
+                logger.info("Build completed successfully")
+            } else {
+                logger.error("Build failed with exit code \(result.exitCode)")
+                if let output = result.output {
+                    logger.error("Build output: \(output)")
+                }
+            }
+        }
+
+        // Return immediately without waiting for the build to complete
         return JSONRPCResponse(
             id: request.id,
             result: .null
