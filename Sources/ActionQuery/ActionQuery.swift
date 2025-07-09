@@ -87,43 +87,63 @@ package struct ActionQuery: Sendable {
         let fragments = Dictionary(
             uniqueKeysWithValues: queryResult.pathFragments.map { ($0.id, $0) })
 
-        var bazelTargets: [BazelTarget] = []
+        nonisolated(unsafe) var bazelTargets: [BazelTarget] = []
+        let lock = NSLock()
+        nonisolated(unsafe) var processedCount = 0
+        let totalCount = queryResult.actions.count
 
-        for (index, action) in queryResult.actions.enumerated() {
-            logger.info("Processing action \(index + 1)/\(queryResult.actions.count)")
+        logger.info("Processing \(totalCount) actions in parallel")
 
-            let inputFiles = try buildInputFiles(
-                artifacts: artifacts,
-                files: files,
-                fragments: fragments,
-                action: action,
-                rootPath: rootPath
-            )
+        DispatchQueue.concurrentPerform(iterations: totalCount) { index in
+            let action = queryResult.actions[index]
 
-            let compilerArguments = try processCompilerArguments(
-                action: action,
-                execrootPath: execrootPath,
-                sdk: sdk
-            )
+            do {
+                let inputFiles = try buildInputFiles(
+                    artifacts: artifacts,
+                    files: files,
+                    fragments: fragments,
+                    action: action,
+                    rootPath: rootPath
+                )
 
-            guard let target = queryResult.targets.first(where: { $0.id == action.targetId }) else {
-                print("Target not found for action: \(action.targetId)")
-                continue
+                let compilerArguments = try processCompilerArguments(
+                    action: action,
+                    execrootPath: execrootPath,
+                    sdk: sdk
+                )
+
+                guard let target = queryResult.targets.first(where: { $0.id == action.targetId }) else {
+                    print("Target not found for action: \(action.targetId)")
+                    return
+                }
+
+                let uri = try bazelToUri(rootPath: rootPath, label: target.label, id: target.id)
+
+                let bazelTarget = BazelTarget(
+                    id: action.targetId,
+                    uri: uri,
+                    label: target.label,
+                    kind: "swift_library", // TODO: Get from rule class
+                    tags: [],
+                    inputFiles: inputFiles,
+                    compilerArguments: compilerArguments
+                )
+
+                lock.lock()
+                bazelTargets.append(bazelTarget)
+                processedCount += 1
+
+                // Log progress every 10 actions or for the last action
+                let currentCount = processedCount
+                lock.unlock()
+
+                if currentCount % 10 == 0 || currentCount == totalCount {
+                    logger.info("Processed \(currentCount)/\(totalCount) actions")
+                }
+
+            } catch {
+                logger.error("Error processing action \(index + 1): \(error)")
             }
-
-            let uri = try bazelToUri(rootPath: rootPath, label: target.label, id: target.id)
-
-            let bazelTarget = BazelTarget(
-                id: action.targetId,
-                uri: uri,
-                label: target.label,
-                kind: "swift_library", // TODO: Get from rule class
-                tags: [],
-                inputFiles: inputFiles,
-                compilerArguments: compilerArguments
-            )
-
-            bazelTargets.append(bazelTarget)
         }
 
         // Deduplicate targets
