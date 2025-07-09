@@ -255,10 +255,34 @@ public class RequestHandler {
     }
 
     private func didChangeWatchedFiles(request _: JSONRPCRequest) throws -> JSONRPCNotification {
-        // For now, just acknowledge
-        return JSONRPCNotification(
+        // Create a proper build target change notification
+        // For now, we'll create a generic "changed" event for all loaded targets
+        // In a full implementation, this would parse the watched files and determine which targets changed
+        var changes: [BuildTargetEvent] = []
+
+        // If we have loaded targets, create change events for them
+        if !targets.isEmpty {
+            for target in targets {
+                let buildTargetIdentifier = BuildTargetIdentifier(uri: target.uri)
+                let event = BuildTargetEvent(
+                    target: buildTargetIdentifier,
+                    kind: .changed,
+                    data: BuildTargetEventData()
+                )
+                changes.append(event)
+            }
+        } else {
+            // If no targets are loaded, we can't determine what changed
+            // Create a minimal notification indicating something changed
+            // This is better than sending null params
+            logger.warning("No targets loaded for buildTarget/didChange notification")
+        }
+
+        let notification = BuildTargetDidChangeNotification(changes: changes)
+
+        return try JSONRPCNotification(
             method: "buildTarget/didChange",
-            params: .null
+            params: notification.toJSONValue()
         )
     }
 

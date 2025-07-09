@@ -508,6 +508,44 @@ public struct BuildExitNotification: Codable {
     }
 }
 
+// MARK: - BuildTarget Change Notification
+
+public struct BuildTargetDidChangeNotification: Codable {
+    public let changes: [BuildTargetEvent]
+
+    public init(changes: [BuildTargetEvent]) {
+        self.changes = changes
+    }
+
+    public func toJSONValue() throws -> JSONValue {
+        let data = try JSONEncoder.bspEncoder.encode(self)
+        return try JSONValue.from(data: data)
+    }
+}
+
+public struct BuildTargetEvent: Codable {
+    public let target: BuildTargetIdentifier
+    public let kind: BuildTargetEventKind?
+    public let data: BuildTargetEventData?
+
+    public init(target: BuildTargetIdentifier, kind: BuildTargetEventKind? = nil, data: BuildTargetEventData? = nil) {
+        self.target = target
+        self.kind = kind
+        self.data = data
+    }
+}
+
+public enum BuildTargetEventKind: Int, Codable {
+    case created = 1
+    case changed = 2
+    case deleted = 3
+}
+
+public struct BuildTargetEventData: Codable {
+    // This can be extended with specific data about what changed
+    public init() {}
+}
+
 // MARK: - JSONValue Extensions
 
 public extension JSONValue {
