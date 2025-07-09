@@ -1,5 +1,6 @@
 import BSPError
 import Foundation
+import Logging
 import ShellCommand
 
 // MARK: - Bazel Query Functions
@@ -13,7 +14,8 @@ package struct ActionQuery: Sendable {
         rootPath: URL,
         execrootPath: URL,
         sdk: String,
-        aqueryArgs: [String]
+        aqueryArgs: [String],
+        logger: Logger
     ) throws -> [BazelTarget] {
         let mnemonic = "mnemonic(\"SwiftCompile\", deps(\(target)))"
 
@@ -47,7 +49,8 @@ package struct ActionQuery: Sendable {
             queryResult: queryResult,
             rootPath: rootPath,
             execrootPath: execrootPath,
-            sdk: sdk
+            sdk: sdk,
+            logger: logger
         )
     }
 
@@ -75,7 +78,8 @@ package struct ActionQuery: Sendable {
         queryResult: QueryResult,
         rootPath: URL,
         execrootPath: URL,
-        sdk: String
+        sdk: String,
+        logger: Logger,
     ) throws -> [BazelTarget] {
         // Convert arrays to hashmaps for efficient lookup
         let artifacts = Dictionary(uniqueKeysWithValues: queryResult.artifacts.map { ($0.id, $0) })
@@ -85,7 +89,9 @@ package struct ActionQuery: Sendable {
 
         var bazelTargets: [BazelTarget] = []
 
-        for action in queryResult.actions {
+        for (index, action) in queryResult.actions.enumerated() {
+            logger.info("Processing action \(index + 1)/\(queryResult.actions.count)")
+
             let inputFiles = try buildInputFiles(
                 artifacts: artifacts,
                 files: files,
