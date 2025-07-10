@@ -111,7 +111,8 @@ package struct ActionQuery: Sendable {
                     sdk: sdk
                 )
 
-                guard let target = queryResult.targets.first(where: { $0.id == action.targetId }) else {
+                guard let target = queryResult.targets.first(where: { $0.id == action.targetId })
+                else {
                     print("Target not found for action: \(action.targetId)")
                     return
                 }
@@ -122,7 +123,7 @@ package struct ActionQuery: Sendable {
                     id: action.targetId,
                     uri: uri,
                     label: target.label,
-                    kind: "swift_library", // TODO: Get from rule class
+                    kind: "swift_library",  // TODO: Get from rule class
                     tags: [],
                     inputFiles: inputFiles,
                     compilerArguments: compilerArguments
@@ -227,8 +228,8 @@ package struct ActionQuery: Sendable {
         }
     }
 
-    /// Getting default Apple SDKs, some targets such as Swift macros needs MacOSX.sdk 
-    /// but UIKit/SwiftUI targets needs iPhoneSimulator.sdk. 
+    /// Getting default Apple SDKs, some targets such as Swift macros needs MacOSX.sdk
+    /// but UIKit/SwiftUI targets needs iPhoneSimulator.sdk.
     /// TODO: Enable users specify the actual SDK instead of using the default
     func selectAppleSDK(_ action: Action) throws -> String {
         let applePlatform = action.environmentVariables.first {
@@ -236,13 +237,17 @@ package struct ActionQuery: Sendable {
         }
 
         guard let applePlatform = applePlatform?.value else {
-            throw BSPError.custom("Can't determine AppleSDK. Target should be either iPhoneSimulator.sdk or MacOSX.sdk")
+            throw BSPError.custom(
+                "Can't determine AppleSDK. Target should be either iPhoneSimulator.sdk or MacOSX.sdk"
+            )
         }
 
         if applePlatform == "iPhoneSimulator" {
-            return "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk"
+            return
+                "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk"
         } else {
-            return "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+            return
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
         }
     }
 
@@ -263,7 +268,8 @@ package struct ActionQuery: Sendable {
             let arg = action.arguments[index]
 
             // Skip swiftc executable and wrapper arguments
-            if arg.contains("-Xwrapped-swift") || arg.hasSuffix("worker") || arg.hasPrefix("swiftc") {
+            if arg.contains("-Xwrapped-swift") || arg.hasSuffix("worker") || arg.hasPrefix("swiftc")
+            {
                 index += 1
                 continue
             }
@@ -308,7 +314,7 @@ package struct ActionQuery: Sendable {
                 index += 1
                 continue
             }
-            
+
             // replace Xcode Developer Directory
             if arg.contains("__BAZEL_XCODE_DEVELOPER_DIR__/") {
                 let transformedArg = arg.replacingOccurrences(
