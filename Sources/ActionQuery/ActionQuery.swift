@@ -16,7 +16,7 @@ package struct ActionQuery: Sendable {
         aqueryArgs: [String],
         logger: Logger
     ) throws -> [BazelTarget] {
-        let mnemonic = "mnemonic(\"SwiftCompile\", deps(\(target)))"
+        let mnemonic = "mnemonic(\"SwiftCompile|ObjcCompile\", deps(\(target)))"
 
         var commandArgs: [String] = [
             "aquery",
@@ -171,10 +171,10 @@ package struct ActionQuery: Sendable {
 
                 let filePath = buildFilePath(fragments: fragments, leafId: artifact.pathFragmentId)
 
-                // Convert to URL and filter for Swift files
+                // Convert to URL and filter for Swift and Objc files
                 // TODO: change external/ to execution_root/external
                 let fullPath = rootPath.appendingPathComponent(filePath)
-                if fullPath.pathExtension == "swift" {
+                if fullPath.pathExtension == "swift" || fullPath.pathExtension == "m" || fullPath.pathExtension == "h" {
                     // Check if file exists
                     let fileExists = FileManager.default.fileExists(atPath: fullPath.path)
 
@@ -270,6 +270,22 @@ package struct ActionQuery: Sendable {
             // Skip swiftc executable and wrapper arguments
             if arg.contains("-Xwrapped-swift") || arg.hasSuffix("worker") || arg.hasPrefix("swiftc")
             {
+                index += 1
+                continue
+            }
+
+            // skip clang
+            if arg.contains("wrapped_clang") {
+                index += 1
+                continue
+            }
+
+            if arg.contains("__BAZEL_EXECUTION_ROOT__") {
+                let transformedArg = arg.replacingOccurrences(
+                    of: "__BAZEL_EXECUTION_ROOT__",
+                    with: execrootPath.absoluteString
+                )
+                compilerArguments.append(transformedArg)
                 index += 1
                 continue
             }

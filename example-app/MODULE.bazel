@@ -21,6 +21,11 @@ bazel_dep(
     repo_name = "build_bazel_apple_support"
 )
 
+bazel_dep(
+    name = "rules_cc",
+    version = "0.1.2"
+)
+
 external_git_repo(
     name = "JOSESwift",
     build_file = "//third_party:BUILD.JOSESwift.bazel",
