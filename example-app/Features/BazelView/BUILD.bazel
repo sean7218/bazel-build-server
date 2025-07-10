@@ -7,6 +7,7 @@ swift_library(
         "//Libraries/Analytics:Analytics",
         "//Libraries/NetworkStack:NetworkStack",
         "//Libraries/Utils:Utils",
+        "//Libraries/ObjcFunc:ObjcFuncSwift",
         "@HexColors//:HexColors",
     ],
     visibility = ["//visibility:public"],

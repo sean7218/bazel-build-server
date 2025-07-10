@@ -1,0 +1,4 @@
+module ObjcFunc {
+    header "ObjcFunc.h"
+    export *
+}
