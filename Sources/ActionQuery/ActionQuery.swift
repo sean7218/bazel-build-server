@@ -308,6 +308,17 @@ package struct ActionQuery: Sendable {
                 index += 1
                 continue
             }
+            
+            // replace Xcode Developer Directory
+            if arg.contains("__BAZEL_XCODE_DEVELOPER_DIR__/") {
+                let transformedArg = arg.replacingOccurrences(
+                    of: "__BAZEL_XCODE_DEVELOPER_DIR__/",
+                    with: "/Application/Xcode.app/Contents/Developer/"
+                )
+                compilerArguments.append(transformedArg)
+                index += 1
+                continue
+            }
 
             // Transform bazel-out/ paths
             if arg.contains("bazel-out/") {
