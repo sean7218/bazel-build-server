@@ -352,7 +352,6 @@ public class RequestHandler {
             target: config.target,
             rootPath: rootPath,
             execrootPath: execrootPath,
-            sdk: config.sdk,
             aqueryArgs: config.aqueryArgs,
             logger: logger
         )

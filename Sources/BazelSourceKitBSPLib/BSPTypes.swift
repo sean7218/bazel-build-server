@@ -395,7 +395,6 @@ public struct BuildServerConfig: Codable {
     public let bspVersion: String
     public let languages: [String]
     public let target: String
-    public let sdk: String
     public let indexStorePath: String
     public let indexDatabasePath: String
     public let aqueryArgs: [String]
@@ -410,7 +409,6 @@ public struct BuildServerConfig: Codable {
         bspVersion: String,
         languages: [String],
         target: String,
-        sdk: String,
         indexStorePath: String,
         indexDatabasePath: String,
         aqueryArgs: [String]
@@ -421,7 +419,6 @@ public struct BuildServerConfig: Codable {
         self.bspVersion = bspVersion
         self.languages = languages
         self.target = target
-        self.sdk = sdk
         self.indexStorePath = indexStorePath
         self.indexDatabasePath = indexDatabasePath
         self.aqueryArgs = aqueryArgs

@@ -13,7 +13,6 @@ package struct ActionQuery: Sendable {
         target: String,
         rootPath: URL,
         execrootPath: URL,
-        sdk: String,
         aqueryArgs: [String],
         logger: Logger
     ) throws -> [BazelTarget] {
@@ -49,7 +48,6 @@ package struct ActionQuery: Sendable {
             queryResult: queryResult,
             rootPath: rootPath,
             execrootPath: execrootPath,
-            sdk: sdk,
             logger: logger
         )
     }
@@ -78,7 +76,6 @@ package struct ActionQuery: Sendable {
         queryResult: QueryResult,
         rootPath: URL,
         execrootPath: URL,
-        sdk: String,
         logger: Logger,
     ) throws -> [BazelTarget] {
         // Convert arrays to hashmaps for efficient lookup
@@ -105,6 +102,8 @@ package struct ActionQuery: Sendable {
                     action: action,
                     rootPath: rootPath
                 )
+
+                let sdk = try selectAppleSDK(action)
 
                 let compilerArguments = try processCompilerArguments(
                     action: action,
@@ -225,6 +224,25 @@ package struct ActionQuery: Sendable {
             return parentPath + "/" + leaf.label
         } else {
             return leaf.label
+        }
+    }
+
+    /// Getting default Apple SDKs, some targets such as Swift macros needs MacOSX.sdk 
+    /// but UIKit/SwiftUI targets needs iPhoneSimulator.sdk. 
+    /// TODO: Enable users specify the actual SDK instead of using the default
+    func selectAppleSDK(_ action: Action) throws -> String {
+        let applePlatform = action.environmentVariables.first {
+            $0.key == "APPLE_SDK_PLATFORM"
+        }
+
+        guard let applePlatform = applePlatform?.value else {
+            throw BSPError.custom("Can't determine AppleSDK. Target should be either iPhoneSimulator.sdk or MacOSX.sdk")
+        }
+
+        if applePlatform == "iPhoneSimulator" {
+            return "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk"
+        } else {
+            return "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
         }
     }
 
