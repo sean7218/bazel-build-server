@@ -319,7 +319,7 @@ package struct ActionQuery: Sendable {
             if arg.contains("__BAZEL_XCODE_DEVELOPER_DIR__/") {
                 let transformedArg = arg.replacingOccurrences(
                     of: "__BAZEL_XCODE_DEVELOPER_DIR__/",
-                    with: "/Application/Xcode.app/Contents/Developer/"
+                    with: "/Applications/Xcode.app/Contents/Developer/"
                 )
                 compilerArguments.append(transformedArg)
                 index += 1
