@@ -258,6 +258,8 @@ public class RequestHandler {
     }
 
     private func didChangeWatchedFiles(request _: JSONRPCRequest) throws -> JSONRPCNotification {
+        invokeBazelBuild()
+
         // Create a proper build target change notification
         // For now, we'll create a generic "changed" event for all loaded targets
         // In a full implementation, this would parse the watched files and determine which targets changed
@@ -291,6 +293,16 @@ public class RequestHandler {
 
     private func buildTargetPrepare(request: JSONRPCRequest) throws -> JSONRPCResponse {
         // Build the target using Bazel on a background thread
+        invokeBazelBuild()
+
+        // Return immediately without waiting for the build to complete
+        return JSONRPCResponse(
+            id: request.id,
+            result: .null
+        )
+    }
+
+    private func invokeBazelBuild() {
         var commandArgs = ["build", config.target]
         commandArgs.append(contentsOf: config.aqueryArgs)
 
@@ -318,12 +330,6 @@ public class RequestHandler {
                 }
             }
         }
-
-        // Return immediately without waiting for the build to complete
-        return JSONRPCResponse(
-            id: request.id,
-            result: .null
-        )
     }
 
     private func buildShutdown(request: JSONRPCRequest) throws -> JSONRPCResponse {
