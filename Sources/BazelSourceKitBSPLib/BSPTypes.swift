@@ -395,7 +395,6 @@ public struct BuildServerConfig: Codable {
     public let bspVersion: String
     public let languages: [String]
     public let target: String
-    public let indexStorePath: String
     public let indexDatabasePath: String
     public let aqueryArgs: [String]
 
@@ -409,7 +408,6 @@ public struct BuildServerConfig: Codable {
         bspVersion: String,
         languages: [String],
         target: String,
-        indexStorePath: String,
         indexDatabasePath: String,
         aqueryArgs: [String]
     ) {
@@ -419,7 +417,6 @@ public struct BuildServerConfig: Codable {
         self.bspVersion = bspVersion
         self.languages = languages
         self.target = target
-        self.indexStorePath = indexStorePath
         self.indexDatabasePath = indexDatabasePath
         self.aqueryArgs = aqueryArgs
         defaultSettings = nil
@@ -446,6 +443,11 @@ public struct BuildServerConfig: Codable {
         } catch {
             throw BSPError.jsonError(error)
         }
+    }
+
+    /// Computes the index store path based on execution root
+    public static func computeIndexStorePath(execrootPath: URL) -> String {
+        return execrootPath.appendingPathComponent("bazel-out/_global_index_store").path
     }
 }
 

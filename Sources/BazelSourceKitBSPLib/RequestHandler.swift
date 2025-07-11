@@ -123,9 +123,11 @@ public class RequestHandler {
             canReload: false
         )
 
+        let computedIndexStorePath = BuildServerConfig.computeIndexStorePath(execrootPath: execrootPath)
+
         let data = SourceKitInitializeBuildResponseData(
             indexDatabasePath: config.indexDatabasePath,
-            indexStorePath: config.indexStorePath,
+            indexStorePath: computedIndexStorePath,
             outputPathsProvider: false,
             prepareProvider: true,
             sourceKitOptionsProvider: true,
