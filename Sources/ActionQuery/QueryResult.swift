@@ -56,4 +56,3 @@ package struct DepSetOfFiles: Codable {
     package let directArtifactIds: [UInt32]?
     package let transitiveDepSetIds: [UInt32]?
 }
-

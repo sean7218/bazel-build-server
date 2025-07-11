@@ -305,7 +305,8 @@ public class RequestHandler {
     }
 
     private func invokeBazelBuild() {
-        var commandArgs = ["build", config.target]
+        var commandArgs = ["build"]
+        commandArgs.append(contentsOf: config.targets)
         commandArgs.append(contentsOf: config.aqueryArgs)
 
         let rootPath = self.rootPath
@@ -365,7 +366,7 @@ public class RequestHandler {
 
     private func loadTargets() throws {
         targets = try ActionQuery().execute(
-            target: config.target,
+            targets: config.targets,
             rootPath: rootPath,
             execrootPath: execrootPath,
             aqueryArgs: config.aqueryArgs,

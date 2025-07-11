@@ -10,13 +10,15 @@ package struct ActionQuery: Sendable {
 
     /// Executes Bazel aquery and returns processed targets
     package func execute(
-        target: String,
+        targets: [String],
         rootPath: URL,
         execrootPath: URL,
         aqueryArgs: [String],
         logger: Logger
     ) throws -> [BazelTarget] {
-        let mnemonic = "mnemonic(\"SwiftCompile|ObjcCompile\", deps(\(target)))"
+        // Generate combined mnemonic query for multiple targets using set()
+        let targetSet = targets.joined(separator: " ")
+        let mnemonic = "mnemonic(\"SwiftCompile|ObjcCompile\", deps(set(\(targetSet))))"
 
         var commandArgs: [String] = [
             "aquery",
@@ -24,6 +26,8 @@ package struct ActionQuery: Sendable {
             "--output=jsonproto",
         ]
         commandArgs.append(contentsOf: aqueryArgs)
+
+        logger.info("Running aquery with mnemonic: \(mnemonic)")
 
         let (output, error, status) = ShellCommand(
             executable: "bazel",
@@ -67,7 +71,7 @@ package struct ActionQuery: Sendable {
             return try decoder.decode(QueryResult.self, from: data)
         } catch {
             let jsonError = error.localizedDescription
-            throw BSPError.custom("jsonError: \(jsonError) \n \(data)")
+            throw BSPError.custom("ActionQuery JSON parsing failed: \(jsonError). Data size: \(data.count) bytes")
         }
     }
 
@@ -113,7 +117,7 @@ package struct ActionQuery: Sendable {
 
                 guard let target = queryResult.targets.first(where: { $0.id == action.targetId })
                 else {
-                    print("Target not found for action: \(action.targetId)")
+                    logger.warning("Target not found for action: \(action.targetId)")
                     return
                 }
 
@@ -123,7 +127,7 @@ package struct ActionQuery: Sendable {
                     id: action.targetId,
                     uri: uri,
                     label: target.label,
-                    kind: "swift_library",  // TODO: Get from rule class
+                    kind: "swift_library", // TODO: Get from rule class
                     tags: [],
                     inputFiles: inputFiles,
                     compilerArguments: compilerArguments
@@ -268,8 +272,7 @@ package struct ActionQuery: Sendable {
             let arg = action.arguments[index]
 
             // Skip swiftc executable and wrapper arguments
-            if arg.contains("-Xwrapped-swift") || arg.hasSuffix("worker") || arg.hasPrefix("swiftc")
-            {
+            if arg.contains("-Xwrapped-swift") || arg.hasSuffix("worker") || arg.hasPrefix("swiftc") {
                 index += 1
                 continue
             }

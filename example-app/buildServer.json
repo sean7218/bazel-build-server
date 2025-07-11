@@ -6,7 +6,7 @@
   "version": "1.0.0",
   "bspVersion": "2.0.0",
   "languages": ["swift"],
-  "target": "//App:App",
+  "targets": ["//App:App"],
   "indexDatabasePath": "/Users/sean7218/bazel-build-server/example-app/.index-db",
   "aqueryArgs": []
 }
