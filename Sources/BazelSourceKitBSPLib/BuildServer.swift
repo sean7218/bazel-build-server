@@ -5,11 +5,13 @@ import SystemPackage
 /// Main BuildServer class that handles JSON-RPC communication
 public class BuildServer {
     public let logger: Logger
+    public let activityLogger: Logger
     private let stdin: FileHandle
     private let stdout: FileHandle
 
-    public init(logger: Logger) throws {
+    public init(logger: Logger, activityLogger: Logger) throws {
         self.logger = logger
+        self.activityLogger = activityLogger
         stdin = FileHandle.standardInput
         stdout = FileHandle.standardOutput
     }
@@ -22,7 +24,7 @@ public class BuildServer {
             throw JSONRPCError.invalidRequest("Expected build/initialize, got \(request.method)")
         }
 
-        let requestHandler = try RequestHandler.initialize(request: request, logger: logger)
+        let requestHandler = try RequestHandler.initialize(request: request, logger: logger, activityLogger: activityLogger)
 
         let response = try requestHandler.buildInitialize(request: request)
         try sendResponse(response)
@@ -62,6 +64,10 @@ public class BuildServer {
         // Parse JSON
         do {
             let request = try JSONDecoder().decode(JSONRPCRequest.self, from: jsonData)
+
+            // Log just the request method name to activity logger
+            activityLogger.info("Request: \(request.method)")
+
             return request
         } catch {
             throw JSONRPCError.parseError("Failed to parse JSON: \(error)")
@@ -292,4 +298,3 @@ public enum JSONRPCError: Error, Codable {
         }
     }
 }
-

@@ -33,8 +33,24 @@ struct BazelSourceKitBSP: ParsableCommand {
         let logger = Logger(label: "com.bazel.sourcekit.bsp")
         logger.info("🚀 Starting Bazel SourceKit BSP Server")
 
+        // Setup activity logger for tracking requests and builds
+        let activityLogURL = FileManager
+            .default
+            .homeDirectoryForCurrentUser
+            .appending(path: ".bazel-sourcekit-bsp/activity.log")
+
+        let activityLogger = Logger(label: "activity") { label in
+            do {
+                return try ActivityLogHandler.activityLog(label: label, fileURL: activityLogURL, logLevel: .info, truncate: true)
+            } catch {
+                // Fallback to the main logger if activity logging fails
+                print("⚠️ Failed to setup activity logging: \(error). Activity logs will be disabled.")
+                return try! FileLogHandler.file(label: label, fileURL: logURL, logLevel: .debug, truncate: false)
+            }
+        }
+
         do {
-            try runBuildServer(logger: logger)
+            try runBuildServer(logger: logger, activityLogger: activityLogger)
         } catch {
             logger.error("❌ Build server error: \(error)")
             throw error
@@ -54,8 +70,8 @@ struct BazelSourceKitBSP: ParsableCommand {
         }
     }
 
-    private func runBuildServer(logger: Logger) throws {
-        let server = try BuildServer(logger: logger)
+    private func runBuildServer(logger: Logger, activityLogger: Logger) throws {
+        let server = try BuildServer(logger: logger, activityLogger: activityLogger)
 
         // Handle initialization request first
         let requestHandler = try server.handleInitialization()

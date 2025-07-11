@@ -7,20 +7,22 @@ import SystemPackage
 /// Handles Build Server Protocol requests
 public class RequestHandler {
     public let logger: Logger
+    public let activityLogger: Logger
     public let config: BuildServerConfig
     public let rootPath: URL
     public let execrootPath: URL
     package var targets: [BazelTarget] = []
 
-    private init(logger: Logger, config: BuildServerConfig, rootPath: URL, execrootPath: URL) {
+    private init(logger: Logger, activityLogger: Logger, config: BuildServerConfig, rootPath: URL, execrootPath: URL) {
         self.logger = logger
+        self.activityLogger = activityLogger
         self.config = config
         self.rootPath = rootPath
         self.execrootPath = execrootPath
     }
 
     /// Initialize the request handler from a build/initialize request
-    public static func initialize(request: JSONRPCRequest, logger: Logger) throws -> RequestHandler {
+    public static func initialize(request: JSONRPCRequest, logger: Logger, activityLogger: Logger) throws -> RequestHandler {
         guard let params = request.params else {
             throw JSONRPCError.invalidRequest("Missing initialization parameters")
         }
@@ -37,6 +39,7 @@ public class RequestHandler {
 
         let handler = RequestHandler(
             logger: logger,
+            activityLogger: activityLogger,
             config: config,
             rootPath: rootPath,
             execrootPath: execrootPath
@@ -293,6 +296,11 @@ public class RequestHandler {
 
         let rootPath = self.rootPath
         let logger = self.logger
+        let activityLogger = self.activityLogger
+
+        // Log build invocation to activity logger
+        let buildCommand = "bazel " + commandArgs.joined(separator: " ")
+        activityLogger.info("Bazel Build: \(buildCommand)")
 
         Task {
             let result = ShellCommand(
