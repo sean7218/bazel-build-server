@@ -40,4 +40,3 @@ package struct BazelTarget: Codable, Hashable {
         return lhs.id == rhs.id && lhs.label == rhs.label
     }
 }
-

@@ -213,11 +213,6 @@ public class RequestHandler {
 
         let registerRequest = try RegisterForChanges.from(jsonValue: params)
 
-        // If targets haven't been loaded yet, load them now
-        if targets.isEmpty {
-            try loadTargets()
-        }
-
         // Find compiler arguments for the specific file
         var options: [String] = []
         for target in targets {
@@ -365,13 +360,15 @@ public class RequestHandler {
     }
 
     private func loadTargets() throws {
-        targets = try ActionQuery().execute(
+        try ActionQuery().execute(
             targets: config.targets,
             rootPath: rootPath,
             execrootPath: execrootPath,
             aqueryArgs: config.aqueryArgs,
             logger: logger
-        )
+        ) { [weak self] targets in
+            self?.targets = targets
+        }
     }
 
     private func getSourcesForTarget(_ target: BazelTarget) throws -> [SourceItem] {

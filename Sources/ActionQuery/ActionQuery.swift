@@ -14,8 +14,9 @@ package struct ActionQuery: Sendable {
         rootPath: URL,
         execrootPath: URL,
         aqueryArgs: [String],
-        logger: Logger
-    ) throws -> [BazelTarget] {
+        logger: Logger,
+        completion: @escaping ([BazelTarget]) -> Void
+    ) throws {
         // Generate combined mnemonic query for multiple targets using set()
         let targetSet = targets.joined(separator: " ")
         let mnemonic = "mnemonic(\"SwiftCompile|ObjcCompile\", deps(set(\(targetSet))))"
@@ -48,12 +49,14 @@ package struct ActionQuery: Sendable {
 
         let queryResult = try parseQueryResult(output: output)
 
-        return try processBazelTargets(
+        let result = try processBazelTargets(
             queryResult: queryResult,
             rootPath: rootPath,
             execrootPath: execrootPath,
             logger: logger
         )
+
+        completion(result)
     }
 
     /// Parses Bazel aquery JSON proto output
