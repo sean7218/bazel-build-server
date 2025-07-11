@@ -5,7 +5,7 @@ import ShellCommand
 import SystemPackage
 
 /// Handles Build Server Protocol requests
-public class RequestHandler {
+public class RequestHandler: @unchecked Sendable {
     public let logger: Logger
     public let activityLogger: Logger
     public let config: BuildServerConfig

@@ -15,7 +15,7 @@ package struct ActionQuery: Sendable {
         execrootPath: URL,
         aqueryArgs: [String],
         logger: Logger,
-        completion: @escaping ([BazelTarget]) -> Void
+        completion: @escaping @Sendable ([BazelTarget]) -> Void
     ) throws {
         // Generate combined mnemonic query for multiple targets using set()
         let targetSet = targets.joined(separator: " ")
