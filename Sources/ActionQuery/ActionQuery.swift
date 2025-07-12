@@ -113,8 +113,9 @@ package struct ActionQuery: Sendable {
         return targets.sorted().joined(separator: "|")
     }
 
-    private func getBSPCachePath(rootPath: URL) -> URL {
-        let bspDir = rootPath.appendingPathComponent(".bazel-sourcekit-bsp")
+    private func getBSPCachePath(rootPath _: URL) -> URL {
+        let bspDir = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent(".bazel-sourcekit-bsp")
 
         // Create directory if it doesn't exist
         try? FileManager.default.createDirectory(at: bspDir, withIntermediateDirectories: true)
