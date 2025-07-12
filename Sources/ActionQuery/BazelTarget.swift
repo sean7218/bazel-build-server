@@ -4,7 +4,7 @@ import Foundation
 ///   - label: bazel [label](https://bazel.build/rules/lib/builtins/Label)
 ///   - inputFiles: list of source files, these are absolute path.
 ///   - compilerArguments: list of compiler arguments used by sourcekit-lsp
-package struct BazelTarget: Codable, Hashable {
+package struct BazelTarget: Codable, Hashable, Sendable {
     package let id: UInt32
     package let uri: String
     package let label: String

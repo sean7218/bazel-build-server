@@ -11,7 +11,20 @@ public class RequestHandler: @unchecked Sendable {
     public let config: BuildServerConfig
     public let rootPath: URL
     public let execrootPath: URL
-    package var targets: [BazelTarget] = []
+
+    private let targetsQueue = DispatchQueue(label: "RequestHandler.targets", qos: .userInitiated)
+    private var _targets: [BazelTarget] = []
+
+    package var targets: [BazelTarget] {
+        get {
+            targetsQueue.sync { _targets }
+        }
+        set {
+            targetsQueue.async(flags: .barrier) { [weak self] in
+                self?._targets = newValue
+            }
+        }
+    }
 
     private init(logger: Logger, activityLogger: Logger, config: BuildServerConfig, rootPath: URL, execrootPath: URL) {
         self.logger = logger

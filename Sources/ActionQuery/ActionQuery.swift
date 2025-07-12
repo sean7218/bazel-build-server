@@ -3,9 +3,23 @@ import Foundation
 import Logging
 import ShellCommand
 
+// MARK: - Cache Structures
+
+private struct BazelTargetsCache: Codable {
+    var entries: [String: CacheEntry] = [:]
+
+    struct CacheEntry: Codable {
+        let targets: [BazelTarget]
+        let timestamp: Date
+    }
+}
+
 // MARK: - Bazel Query Functions
 
 package struct ActionQuery: Sendable {
+    private static let cacheFileName = "bazel-targets-cache.json"
+    private static let cacheQueue = DispatchQueue(label: "bazel.cache.queue", qos: .utility)
+
     package init() {}
 
     /// Executes Bazel aquery and returns processed targets
@@ -17,6 +31,168 @@ package struct ActionQuery: Sendable {
         logger: Logger,
         completion: @escaping @Sendable ([BazelTarget]) -> Void
     ) throws {
+        let cacheKey = generateCacheKey(targets: targets)
+        let cacheFilePath = getBSPCachePath(rootPath: rootPath)
+
+        // Try to load from cache first
+        if let cachedTargets = loadFromCache(cacheKey: cacheKey, cacheFilePath: cacheFilePath, logger: logger) {
+            logger.info("Cache hit for targets: \(targets). Returning cached results and refreshing in background.")
+
+            // Return cached results immediately
+            completion(cachedTargets)
+
+            // Kick off background refresh
+            Task {
+                do {
+                    let queryResult = try processAquery(
+                        targets: targets,
+                        rootPath: rootPath,
+                        aqueryArgs: aqueryArgs,
+                        logger: logger
+                    )
+
+                    let freshResult = try processBazelTargets(
+                        queryResult: queryResult,
+                        rootPath: rootPath,
+                        execrootPath: execrootPath,
+                        logger: logger
+                    )
+
+                    // Save to cache
+                    saveToCache(
+                        cacheKey: cacheKey,
+                        targets: freshResult,
+                        cacheFilePath: cacheFilePath,
+                        logger: logger
+                    )
+
+                    // Only call completion again if results are different
+                    if !arraysEqual(cachedTargets, freshResult) {
+                        logger.info("Fresh results differ from cache. Calling completion with updated results.")
+                        completion(freshResult)
+                    } else {
+                        logger.info("Fresh results match cache. No additional completion call needed.")
+                    }
+                } catch {
+                    logger.error("Background refresh failed: \(error)")
+                }
+            }
+        } else {
+            // No cache, process normally
+            logger.info("Cache miss for targets: \(targets). Processing fresh data.")
+
+            let queryResult = try processAquery(
+                targets: targets,
+                rootPath: rootPath,
+                aqueryArgs: aqueryArgs,
+                logger: logger
+            )
+
+            let result = try processBazelTargets(
+                queryResult: queryResult,
+                rootPath: rootPath,
+                execrootPath: execrootPath,
+                logger: logger
+            )
+
+            // Save to cache
+            saveToCache(
+                cacheKey: cacheKey,
+                targets: result,
+                cacheFilePath: cacheFilePath,
+                logger: logger
+            )
+
+            completion(result)
+        }
+    }
+
+    // MARK: - Cache Helper Methods
+
+    private func generateCacheKey(targets: [String]) -> String {
+        return targets.sorted().joined(separator: "|")
+    }
+
+    private func getBSPCachePath(rootPath: URL) -> URL {
+        let bspDir = rootPath.appendingPathComponent(".bazel-sourcekit-bsp")
+
+        // Create directory if it doesn't exist
+        try? FileManager.default.createDirectory(at: bspDir, withIntermediateDirectories: true)
+
+        return bspDir.appendingPathComponent(Self.cacheFileName)
+    }
+
+    private func loadFromCache(cacheKey: String, cacheFilePath: URL, logger: Logger) -> [BazelTarget]? {
+        guard FileManager.default.fileExists(atPath: cacheFilePath.path) else {
+            logger.debug("BSP cache file does not exist: \(cacheFilePath.path)")
+            return nil
+        }
+
+        do {
+            let data = try Data(contentsOf: cacheFilePath)
+            let cache = try JSONDecoder().decode(BazelTargetsCache.self, from: data)
+
+            if let entry = cache.entries[cacheKey] {
+                logger.info("Loaded \(entry.targets.count) targets from cache for key: \(cacheKey)")
+                return entry.targets
+            } else {
+                logger.debug("No cache entry found for key: \(cacheKey)")
+                return nil
+            }
+        } catch {
+            logger.error("Failed to load cache: \(error)")
+            return nil
+        }
+    }
+
+    private func saveToCache(cacheKey: String, targets: [BazelTarget], cacheFilePath: URL, logger: Logger) {
+        Self.cacheQueue.async {
+            do {
+                var cache: BazelTargetsCache
+
+                // Load existing cache or create new one
+                if FileManager.default.fileExists(atPath: cacheFilePath.path) {
+                    let data = try Data(contentsOf: cacheFilePath)
+                    cache = try JSONDecoder().decode(BazelTargetsCache.self, from: data)
+                } else {
+                    cache = BazelTargetsCache()
+                }
+
+                // Update cache entry
+                cache.entries[cacheKey] = BazelTargetsCache.CacheEntry(
+                    targets: targets,
+                    timestamp: Date()
+                )
+
+                // Save to file
+                let encoder = JSONEncoder()
+                encoder.outputFormatting = .prettyPrinted
+                let data = try encoder.encode(cache)
+                try data.write(to: cacheFilePath)
+
+                logger.info("Saved \(targets.count) targets to BSP cache for key: \(cacheKey)")
+            } catch {
+                logger.error("Failed to save cache: \(error)")
+            }
+        }
+    }
+
+    private func arraysEqual(_ lhs: [BazelTarget], _ rhs: [BazelTarget]) -> Bool {
+        guard lhs.count == rhs.count else { return false }
+
+        let lhsSet = Set(lhs)
+        let rhsSet = Set(rhs)
+        return lhsSet == rhsSet
+    }
+
+    // MARK: - Processing Methods
+
+    private func processAquery(
+        targets: [String],
+        rootPath: URL,
+        aqueryArgs: [String],
+        logger: Logger
+    ) throws -> QueryResult {
         // Generate combined mnemonic query for multiple targets using set()
         let targetSet = targets.joined(separator: " ")
         let mnemonic = "mnemonic(\"SwiftCompile|ObjcCompile\", deps(set(\(targetSet))))"
@@ -47,16 +223,7 @@ package struct ActionQuery: Sendable {
             )
         }
 
-        let queryResult = try parseQueryResult(output: output)
-
-        let result = try processBazelTargets(
-            queryResult: queryResult,
-            rootPath: rootPath,
-            execrootPath: execrootPath,
-            logger: logger
-        )
-
-        completion(result)
+        return try parseQueryResult(output: output)
     }
 
     /// Parses Bazel aquery JSON proto output
