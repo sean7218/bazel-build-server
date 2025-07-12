@@ -268,8 +268,6 @@ public class RequestHandler: @unchecked Sendable {
     }
 
     private func didChangeWatchedFiles(request _: JSONRPCRequest) throws -> JSONRPCNotification {
-        invokeBazelBuild()
-
         // Create a proper build target change notification
         // For now, we'll create a generic "changed" event for all loaded targets
         // In a full implementation, this would parse the watched files and determine which targets changed
