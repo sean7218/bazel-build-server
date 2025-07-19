@@ -1,9 +1,10 @@
 import Foundation
-import XCTest
+import Testing
 
 @testable import ShellCommand
 
-final class ShellCommandTests: XCTestCase {
+final class ShellCommandTests {
+    @Test
     func testShellCommand() throws {
         let currentDir = FileManager.default.currentDirectoryPath
         let currentURL = URL(fileURLWithPath: currentDir)
@@ -18,12 +19,13 @@ final class ShellCommandTests: XCTestCase {
             args: ["info", "execution_root"]
         )
         guard let output = command.run().output else {
-            XCTFail()
+            Issue.record("Failed to get output from command")
             return
         }
-        XCTAssert(output.contains("execroot/_main"))
+        #expect(output.contains("execroot/_main"))
     }
 
+    @Test
     func tesAqueryCommand() throws {
         let currentDir = FileManager.default.currentDirectoryPath
         let currentURL = URL(fileURLWithPath: currentDir)
@@ -38,9 +40,9 @@ final class ShellCommandTests: XCTestCase {
             args: ["aquery", "mnemonic(\"SwiftCompile\", deps(//App:App))"]
         )
         guard let output = command.run().output else {
-            XCTFail()
+            Issue.record("Failed to get output from aquery command")
             return
         }
-        XCTAssert(output != "")
+        #expect(output != "")
     }
 }

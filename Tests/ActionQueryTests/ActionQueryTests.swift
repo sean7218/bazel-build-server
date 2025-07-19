@@ -1,23 +1,24 @@
 import Foundation
-import XCTest
+import Testing
 
 @testable import ActionQuery
 
-final class ActionQueryTests: XCTestCase {
+final class ActionQueryTests {
 
+    @Test
     func testQueryCommand() throws {
         guard let aqueryJson = Bundle.module.url(forResource: "aquery", withExtension: "json") else {
-            XCTFail()
+            Issue.record("Failed to find aquery.json resource")
             return
         }
 
         guard let data = try? Data(contentsOf: aqueryJson) else {
-            XCTFail()
+            Issue.record("Failed to read data from aquery.json")
             return
         }
 
         guard let queryResult = try? JSONDecoder().decode(QueryResult.self, from: data) else {
-            XCTFail()
+            Issue.record("Failed to decode QueryResult from JSON data")
             return
         }
 
@@ -37,11 +38,12 @@ final class ActionQueryTests: XCTestCase {
             if actualTargets.contains(expected) {
                 continue
             } else {
-                XCTFail("target: \(expected) not found in parsed action query result")
+                Issue.record("target: \(expected) not found in parsed action query result")
             }
         }
     }
 
+    @Test
     func testBuildFilePath() throws {
         // Setup fragments: root/foo/bar.txt
         let fragRoot = PathFragment(id: 1, label: "root", parentId: nil)
@@ -52,6 +54,6 @@ final class ActionQueryTests: XCTestCase {
         // Use ActionQuery's buildFilePath (exposed via extension for test)
         let actionQuery = ActionQuery()
         let path = actionQuery.buildFilePath(fragments: fragments, leafId: 3)
-        XCTAssertEqual(path, "root/foo/bar.txt")
+        #expect(path == "root/foo/bar.txt")
     }
 }

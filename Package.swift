@@ -21,6 +21,8 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.0.0"),
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-system.git", from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-testing.git", from: "6.1.0"),
+        .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.30.0"),
     ],
     targets: [
         .executableTarget(
@@ -57,12 +59,34 @@ let package = Package(
         .target(name: "ShellCommand"),
         .testTarget(
             name: "ActionQueryTests",
-            dependencies: ["ActionQuery"],
+            dependencies: [
+                "ActionQuery",
+                .product(name: "Testing", package: "swift-testing"),
+            ],
             resources: [
                 .copy("Resources/aquery.json"),
                 .copy("Resources/aquery.txt")
             ]
         ),
-        .testTarget(name: "ShellCommandTests", dependencies: ["ShellCommand"]),
+        .testTarget(
+            name: "ShellCommandTests", 
+            dependencies: [
+                "ShellCommand",
+                .product(name: "Testing", package: "swift-testing"),
+            ]
+        ),
+        .target(
+            name: "QueryParser",
+            dependencies: [
+                .product(name: "SwiftProtobuf", package: "swift-protobuf"),
+            ]
+        ),
+        .testTarget(
+            name: "QueryParserTests",
+            dependencies: [
+                .product(name: "Testing", package: "swift-testing"),
+                "QueryParser"
+            ]
+        )
     ]
 )
