@@ -3,6 +3,7 @@ import BazelBuildServerLib
 import Foundation
 import Logging
 
+@main
 struct BazelSourceKitBSP: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "bazel-build-server",
@@ -16,7 +17,7 @@ struct BazelSourceKitBSP: ParsableCommand {
         let logURL = FileManager
             .default
             .homeDirectoryForCurrentUser
-            .appending(path: ".bazel-sourcekit-bsp/bsp.log")
+            .appending(path: "bazel-build-server.log")
 
         // Bootstrap logging to use file handler from the start
         LoggingSystem.bootstrap { label in

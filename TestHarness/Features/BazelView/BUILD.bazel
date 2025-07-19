@@ -10,6 +10,7 @@ swift_library(
         "//Libraries/ObjcFunc:ObjcFuncSwift",
         "@HexColors//:HexColors",
     ],
+    module_name = "BazelView",
     visibility = ["//visibility:public"],
 )
 

@@ -1,7 +1,7 @@
 {
   "name": "bazel-sourcekit-bsp",
   "argv": [
-    "./bazel-build-server"
+    "/Users/sean7218/bazel-build-server/.build/arm64-apple-macosx/debug/bazel-build-server"
   ],
   "version": "1.0.0",
   "bspVersion": "2.0.0",

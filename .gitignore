@@ -25,7 +25,7 @@ bazel-testlogs
 bazel-out
 .index-db
 .indexstore
-bazel-example-app
+bazel-TestHarness
 
 # macOS
 .DS_Store
