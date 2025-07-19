@@ -38,3 +38,6 @@ legacy-rust/target
 
 # VSCode
 .vscode/
+
+# binary for TestHarness
+TestHarness/bazel-build-server

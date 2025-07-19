@@ -1,12 +1,12 @@
 {
   "name": "bazel-sourcekit-bsp",
   "argv": [
-    "/Users/sean7218/bazel-build-server/.build/debug/bazel-sourcekit-bsp"
+    "./bazel-build-server"
   ],
   "version": "1.0.0",
   "bspVersion": "2.0.0",
   "languages": ["swift"],
   "targets": ["//App:App"],
-  "indexDatabasePath": "/Users/sean7218/bazel-build-server/example-app/.index-db",
+  "indexDatabasePath": "/Users/sean7218/bazel-build-server/TestHarness/.index-db",
   "aqueryArgs": []
 }

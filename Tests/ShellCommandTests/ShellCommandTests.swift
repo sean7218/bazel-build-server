@@ -9,7 +9,7 @@ final class ShellCommandTests: XCTestCase {
         let currentURL = URL(fileURLWithPath: currentDir)
         let examplePath =
             currentURL
-            .appendingPathComponent("example-app")
+            .appendingPathComponent("TestHarness")
             .path()
 
         let command = ShellCommand(
@@ -29,7 +29,7 @@ final class ShellCommandTests: XCTestCase {
         let currentURL = URL(fileURLWithPath: currentDir)
         let examplePath =
             currentURL
-            .appendingPathComponent("example-app")
+            .appendingPathComponent("TestHarness")
             .path()
 
         let command = ShellCommand(
