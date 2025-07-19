@@ -2,18 +2,18 @@
 import PackageDescription
 
 let package = Package(
-    name: "BazelSourceKitBSP",
+    name: "bazel-build-server",
     platforms: [
         .macOS(.v13),
     ],
     products: [
         .executable(
-            name: "bazel-sourcekit-bsp",
-            targets: ["BazelSourceKitBSP"]
+            name: "bazel-build-server",
+            targets: ["BazelBuildServer"]
         ),
         .library(
-            name: "BazelSourceKitBSPLib",
-            targets: ["BazelSourceKitBSPLib"]
+            name: "BazelBuildServerLib",
+            targets: ["BazelBuildServerLib"]
         ),
     ],
     dependencies: [
@@ -24,16 +24,16 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "BazelSourceKitBSP",
+            name: "BazelBuildServer",
             dependencies: [
-                "BazelSourceKitBSPLib",
+                "BazelBuildServerLib",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "Logging", package: "swift-log"),
             ]
         ),
 
         .target(
-            name: "BazelSourceKitBSPLib",
+            name: "BazelBuildServerLib",
             dependencies: [
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "NIO", package: "swift-nio"),
@@ -49,7 +49,8 @@ let package = Package(
             name: "ActionQuery",
             dependencies: [
                 "BSPError",
-                "ShellCommand"
+                "ShellCommand",
+                .product(name: "Logging", package: "swift-log"),
             ]
         ),
         .target(name: "BSPError"),

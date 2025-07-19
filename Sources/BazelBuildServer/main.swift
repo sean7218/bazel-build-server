@@ -1,12 +1,11 @@
 import ArgumentParser
-import BazelSourceKitBSPLib
+import BazelBuildServerLib
 import Foundation
 import Logging
 
-@main
 struct BazelSourceKitBSP: ParsableCommand {
     static let configuration = CommandConfiguration(
-        commandName: "bazel-sourcekit-bsp",
+        commandName: "bazel-build-server",
         abstract: "Bazel Build Server Protocol implementation for Swift and iOS projects",
         version: "1.0.0"
     )
